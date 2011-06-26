@@ -4,13 +4,15 @@
       <li class='first'><a href='[% c.uri_for('/') %]'>Home</a></li>
       <li><a href='[% c.uri_for('/credits') %]'>Credits</a></li>
       <li><a href='[% c.uri_for('/rake') %]'>About Rake</a></li>
-      <li><a href='http://github.com/hippich/Bitcoin-Poker-Room/archives/master'>Download sources</a></li>
-      <li><a href='http://github.com/hippich/Bitcoin-Poker-Room/issues'>Report bugs</a></li>
+      <li><a href='https://github.com/MrMoon/Mooncoin/archives/master'>Download sources</a></li>
+      <li><a href='https://github.com/MrMoon/Mooncoin/issues'>Report bugs</a></li>
       <li><a href='[% c.uri_for('/contactus') %]'>Contact Us</a></li>
-      <li class='last'><a target="_blank" href="http://webchat.freenode.net/?channels=betcoin">#betcoin</a></li> 
+      <li class='last'><a target="_blank" href="http://webchat.freenode.net/?channels=mooncoin">#mooncoin</a></li> 
   </ul>
 </div>
-<div id="copyright">&copy; [% site.copyright %]</div>
+<p>Donate: 13ViDSEwkpwhLimvPQoqBSSMqtR1oydxLw</p>
+<div id="copyright">&copy; 2011 Mooncoin</div>
+
 <!-- END site/footer -->
 
 [% IF c.config.google_analytics_account %]

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
  <head>
-  <title>[% template.title or site.title %]</title>
+  <title>Mooncoin</title>
   <link rel="stylesheet" href="[% c.uri_for('/static/css/styles.css') %]" type="text/css" />
   <!--<link rel="stylesheet" href="[% c.uri_for('/static/jquery/ui.1.8/themes/smoothness/jquery.ui.all.css') %]" type="text/css" /> -->
   <script src="/static/jquery/jquery-1.5.2.min.js"></script>
