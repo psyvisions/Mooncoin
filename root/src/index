@@ -1,16 +1,18 @@
 [% META title = 'Bitcoin Poker Room' %]
 
-<h2 class="content-title">Welcome</h2>
 
 <div class='right_column'>
-  <div id="twitter" style="text-align: center;">
-    <a href="https://twitter.com/betcoin"><img src="/static/img/STB-4.png" /></a>
-  </div>
+<h2>News</h2>
+6/23/2010 - Mooncoin Launches!</br>
+<p>Today Mooncoin officially launched with our online poker tables. We have begun work on e-sports betting which we hope to roll out in the near future. We are also determining what will be necessary to introduce namecoins.</p>
+<h2>Feedback</h2>
 
-  <div id="facebook">
-    <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FTexas-Holdem-with-Bitcoins%2F217143734980207&amp;width=220&amp;colorscheme=light&amp;show_faces=true&amp;stream=true&amp;header=true&amp;height=427" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:220px; height:427px;" allowTransparency="true"></iframe>
-  </div>
+
+  <p>Any suggestions are also welcome. Please, send any questions, suggestions, and comments to <a href="mailto:mrmooncoin@gmail.com">mrmooncoin@gmail.com</a></p>
 </div>
+
+<h2 class="content-title">Blast Off!</h2>
+
 
 <div class='main_content'>
 
@@ -18,25 +20,22 @@
   <h3>Poker Live Show</h3>
   <iframe src='/static/table.html?game_id=[% table.serial %]&auth=N' width='763' height='532' style='border: none' scrolling='no' frameborder="0"></iframe>
   [% END %]
-
-  <p>Betco.in is a browser-based (HTML5/JS) online poker site using Bitcoins as currency. You can begin playing as soon as you register an account and transfer some bitcoins into it.</p>
+  <p><b>Design updates comming soon.</b></p> 
+  <p>Welcome cosmonauts, you have drifted upon a browser-based (HTML5/JS) online poker site using virtual currencies. You can begin playing as soon as you register an account and transfer some bitcoins into it. Soon we hope to soon accept namecoins as well.</p>
 
   <p>Bitcoins are divisible down into very small units, and we have tables at very low stakes (as low as 0.1/0.2 mBTC, or 0.0001/0.0002 BTC). At the tables, a single chip is worth 0.01 BTC. A 1/2 table is really 0.01/0.02 BTC.</p>
 
   <p>If you would like to acquire some bitcoins, check the <a href="http://forum.bitcoin.org">Bitcoin forums</a>, or #bitcoin-otc on Freenode IRC.</p>
 
-  <p>We do not collect any information about players, except for user name, password
-  and, optionally, an email.</p>
+  <p>Privacy and security are high priority, so we do not collect any information about players, except for user name, password
+  and, optionally, an email. We store your passwords using strong SHA encryption.</p>
 
   <p>This project is fully open source under AGPLv3+ (server code) and
   GPLv3+ (html/css/js code) licenses. You can download the latest version following
   "Download sources" in the footer links.</p>
 
   <p>Also, we really appreciate any bug reports. Please, follow the link "Report bugs"
-  in the footer to report a bug in the room.</p>
-
-  <p>Any suggestions are also welcome. Please, send any questions, suggestions,
-  etc to <a href="mailto:pavel@yepcorp.com">pavel@yepcorp.com</a></p>
+  in the footer to report a bug in the room. It really helps the community as a whole.</p>
 </div>
 
 <div class="clear"></div>

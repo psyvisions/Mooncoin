@@ -50,7 +50,7 @@
 .jpoker_table .jpoker_ptable_halfpot a,
 .jpoker_table .jpoker_ptable_threequarterpot a,
 .jpoker_table .jpoker_ptable_sitout_fold a {
-  background: #fe931b url(images/alert-overlay.png) repeat-x;
+  background: #2B3856 url(images/alert-overlay.png) repeat-x;
   display: inline-block;
   padding: 5px 10px 6px;
   color: #fff;
@@ -104,7 +104,7 @@
 
 
 .jpoker_table .jpoker_ptable_raise_range {
-  background: #fe931b;
+  background: #2B3856;
   display: inline-block;
   padding: 5px 10px 6px;
   color: #fff;

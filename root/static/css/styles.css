@@ -9,6 +9,13 @@ ul.menu {
   list-style-image: none;
 }
 
+ul.menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+}
+
 ul.menu li {
   display: inline;
   margin: 0 20px 0 0;
@@ -54,14 +61,15 @@ body {
 }
 
 #header {
-    background-color: #e3e6ea;
-    border-bottom: 1px solid #f08900;
+    background-color: #fff;
+	
+    border-bottom: 1px solid #596D71;
 }
 
 #footer {
-    background-color: #e3e6ea;
+    background-color: #fff;
     text-align: center;
-    border-top: 1px solid #f08900;
+    border-top: 1px solid #596D71;
     width: 100%;
     padding: 4px;
 }
@@ -227,4 +235,8 @@ th {
 .popular-tables {
   margin: 0.5em 0 0.5em 2em;
   padding: 0.5em 0 0.5em 0.5em;
+}
+
+#accountinfolist ul{
+  list-style-type: none;
 }

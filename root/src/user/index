@@ -1,36 +1,41 @@
 [% META title = 'User account' %]
 
-<div class="secondary-menu">
-  <ul>
-    <li><a href='[% c.uri_for('/user/hands') %]'>Hands history</a></li>
-  </ul>
-</div>
-
-<div class="profile-avatar">
-  <img src="[% c.uri_for("/AVATAR/" _ c.user.serial) %]" alt="[% c.user.name %] picture" />
-  <br />
-  <p>To change your avatar, make sure you have valid email set in your account
-  and change your picture on <a href="http://gravatar.com/emails/" target="_blank">gravatar.com</a></p>
-</div>
-
+<div style="width: 100%; height:150; float: none;">
+<div style="float:left;">
 <h2 class="account-info">Account <span><sup><a href="[% c.uri_for('/user/edit') %]">Edit</a></sup></span></h2>
 
-<ul>
+<div id="accountinfolist">
+<ul style="margin-left: -35px;">
   <li><strong>Username:</strong> [% c.user.name %]</li>
   <li><strong>Email:</strong> [% c.user.email %]</li>
   <li><strong>Emergency bitcoin address:</strong> [% c.user.emergency_address %]</li>
   <li><strong>Password:</strong> ***********</li>
 </ul>
+</div>
+</div>
 
+<div style="float:left; margin-left: 75px; height: auto;">
 [% IF c.user.balances %]
-<h2>Your balance</h2>
 
-<ul class="user-balances">
+<h2>Your balance</h2>
   [% FOR balance IN c.user.balances %]
-    <li>
       [% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
       - <span><a href="[% c.uri_for('/user/deposit/bitcoin') %]">Deposit</a></span>
-    </li>
   [% END %]
-</ul>
 [% END %]
+</div>
+
+<div style="float:left; margin-left:75px;">
+<h2>Avatar</h2>
+
+<div style="float:left;">
+ <img src="[% c.uri_for("/AVATAR/" _ c.user.serial) %]" alt="[% c.user.name %] picture" />
+</div>
+
+<div style="float:left; width: 200px; padding-left: 15px; margin-top: -5px;">
+To change your avatar, make sure you have valid email set in your account
+  and change your picture on <a href="http://gravatar.com/emails/" target="_blank">gravatar.com</a>
+</div>
+
+</div>
+</div> 

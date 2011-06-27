@@ -1,3 +1,4 @@
 [% META title = 'Register' %]
-
+<div style="margin-top:25px;">
 [% form %]
+</div>

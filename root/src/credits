@@ -1,6 +1,6 @@
 [% META title = 'Credits' %]
 
-<p>This poker room built on top of few open source technologies:</p>
+<p>The poker room at mooncoin is built on top of few open source technologies</p>
 
 <h2>python-poker-network and python-poker-engine</h2>
 <p>Both used to build "back end" for this poker room. More information: <a href='http://pokersource.info/'>http://pokersource.info/</a></p>
@@ -27,4 +27,4 @@ if we will need to adopt to something new in future we can do this easily. To le
 
 <p></p>
 
-<p>Also I'd like to thanks every poker lover from bitcoin.org forum, who helped me to test, find bugs and fix them. =) </p>
+<p>Mooncoin would also like to give a special thanks to pavel for being the first to glue the poker room together and begin testing. We hope to continue to expand his project as well as continue to add games and currencies.</p>

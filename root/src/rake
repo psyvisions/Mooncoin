@@ -1,9 +1,16 @@
 [% META title = 'Rake' %]
 
-<p>We do take rake. Below you can find our rake structure.</p>
+<p>Mooncoin does collect rake in order to maintain our hosting, improve our code and add new features. 
+
+<p><b>We do our best to offer the best rates.</b></p>
+<p><b>Our current rake is under 1 percent.</b></p>
 
 <p>We do not charge rake if the hand ends on the first betting round - before the flop.</p>
 
-<p><strong>Heads-Up:</strong> we collect 1% rake with x5 BB cap and 0.05 BTC absolute cap.</p>
+<div style="border: solid 1px; padding: 10px; width: 500px;">
+<p><strong>Heads-Up</strong><br /> 
+we collect 0.8% rake with x5 BB cap and 0.5 BTC absolute cap.</p>
 
-<p><strong>Round:</strong> we collect 1% rake with x10 BB cap and 0.25 BTC absolute cap.</p>
+<p><strong>Round</strong><br />
+ we collect 0.8% rake with x10 BB cap and 1 BTC absolute cap.</p>
+</div>
