@@ -240,3 +240,11 @@ th {
 #accountinfolist ul{
   list-style-type: none;
 }
+
+.positive-result {
+  background: #CCFFCC;
+}
+
+.negative-result {
+  background: #FFCCCC;
+}

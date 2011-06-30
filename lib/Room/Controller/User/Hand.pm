@@ -25,7 +25,7 @@ sub base : Chained PathPart('user/hands') CaptureArgs(0) {
       $c->uri_for('/user/login', '', {'destination' => $c->action,})
     );
   }
-
+  $c->stash->{user} = $c->user;
 }
 
 =head2 index
