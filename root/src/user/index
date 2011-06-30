@@ -17,7 +17,7 @@
 <div style="float:left; margin-left: 75px; height: auto;">
 [% IF c.user.balances %]
 
-<h2>Your balances</h2>
+<h2>Your balance</h2>
   [% FOR balance IN c.user.balances %]
      <p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
       - <span><a href="/user/deposit/[% balance.currency.name %]">Deposit</a></span></p>

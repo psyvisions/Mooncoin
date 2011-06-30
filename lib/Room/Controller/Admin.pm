@@ -34,7 +34,7 @@ sub base :Chained :PathPart('admin') :CaptureArgs(0) {
 
 sub index :Chained('base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
-
+  
   $c->stash->{bitcoin_balance} = $c->model("BitcoinServer")->get_balance();
 
   my $rs = $c->model("PokerNetwork::User2Money")->search(
@@ -46,7 +46,23 @@ sub index :Chained('base') :PathPart('') :Args(0) {
 
   my $row = $rs->first;
 
-  $c->stash->{total_ingame_balance} = $row->get_column('total_amount') / 10000;
+  $c->stash->{total_ingame_balance_btc} = $row->get_column('total_amount') / 10000;
+  
+  ##
+  
+  $c->stash->{namecoin_balance} = $c->model("NamecoinServer")->get_balance();
+
+  my $rs1 = $c->model("PokerNetwork::User2Money")->search(
+            { currency_serial => 2 },
+            {
+              '+select' => [{ SUM => 'amount' }],
+              '+as'     => [qw/total_amount/],
+           });
+
+  my $row1 = $rs1->first;
+
+  $c->stash->{total_ingame_balance_nmc} = $row1->get_column('total_amount') / 10000;
+  
 }
 
 
