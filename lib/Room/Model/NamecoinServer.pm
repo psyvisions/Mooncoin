@@ -5,10 +5,6 @@ use warnings;
 
 use base qw/ Catalyst::Model::Namecoin /;
 
-__PACKAGE__->config(
-  uri => '',
-);
-
 =head1 NAME
 
 Room::Model::NamecoinServer - Namecoin Server Model Class

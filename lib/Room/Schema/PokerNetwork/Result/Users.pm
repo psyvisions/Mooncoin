@@ -131,7 +131,7 @@ __PACKAGE__->inflate_column(
 );
 
 __PACKAGE__->add_json_columns(
-  data => qw/bitcoin_address bitcoins_received request_password hide_gravatar emergency_address/,
+  data => qw/bitcoin_address bitcoins_received namecoin_address namecoins_received request_password hide_gravatar emergency_address/,
 );
 
 __PACKAGE__->has_many(
@@ -168,6 +168,15 @@ sub get_bitcoin_deposit_address {
   return $self->data->bitcoin_address;
 }
 
+sub get_namecoin_deposit_address {
+  my ($self) = @_;
+
+  if (! $self->data->namecoin_address) {
+    
+  }
+
+  return $self->data->namecoin_address;
+}
 
 =head1 AUTHOR
 

@@ -1,0 +1,28 @@
+[% META title = 'Withdraw' %]
+
+
+
+<div class='right_column' style="height: 350px">
+<div style="float:right;  height: auto; padding: 7px;">
+[% IF c.user.balances %]
+
+<h2>Your balance</h2>
+  [% FOR balance IN c.user.balances %]
+     <p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
+      - <span><a href="/user/withdraw/[% balance.currency.name %]">Withdraw</a></span></p>
+  [% END %]
+[% END %]
+</div>
+</div>
+<h2>Namecoin Withdraw</h2>
+
+<p>You have the option to withdraw from either <a href="/user/withdraw/bitcoin">Bitcoins</a> or <a href="/user/withdraw/namecoin">Namecoins</a>.</p>
+
+<p>It must be noted that Moonco.in is not an exchange, depositing NMC will only allow you withdraw NMC. Whereas depositing BTC will only allow you to withdraw BTC.</p>
+<p>
+  <strong>Available amount to withdraw:</strong> [% current_balance %] NMC ([% balance.amount * 100 | format('%.2f') %] Chips)
+</p>
+
+<p><i>Please note, larger amounts may require additional <strong>24 hours</strong> processing time. You will be notified if your withdrawal not processed immediately and require additional processing time.</i></p>
+
+[% form %]

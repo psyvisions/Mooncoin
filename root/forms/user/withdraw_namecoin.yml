@@ -1,0 +1,35 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Text
+    name: namecoin_address
+    label: Namecoin address
+    constraints:
+      - Required
+      - type: Equal
+        others: namecoin_address_2
+
+  - type: Text
+    name: namecoin_address_2
+    label: Namecoin address (repeat)
+    constraints:
+      - Required
+
+  - type: Text
+    name: amount
+    label: Amount
+    comment: Enter amount in NMC (not Mooncoins/Chips). Minimum withdrawal amount - 0.01 NMC.
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+
+  - type: Submit
+    value: Withdraw
+    name: submit
+
+constraints:
+  - SingleValue

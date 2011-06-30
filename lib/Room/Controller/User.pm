@@ -303,7 +303,12 @@ sub deposit_bitcoin :Path('deposit/bitcoin') {
   $c->stash->{bitcoins_sent} = $c->user->bitcoins_received || 0;
 }
 
-
+sub deposit_namecoin :Path('deposit/namecoin') {
+  my ( $self, $c ) = @_;
+  $c->forward('deposit_namecoin_refresh');
+  $c->stash->{namecoin_address} = $c->user->namecoin_address;
+  $c->stash->{namecoins_sent} = $c->user->namecoins_received || 0;
+}
 
 sub deposit_bitcoin_refresh :Private {
   my ( $self, $c ) = @_;
@@ -341,6 +346,41 @@ sub deposit_bitcoin_refresh :Private {
   }
 }
 
+sub deposit_namecoin_refresh :Private {
+  my ( $self, $c ) = @_;
+
+  if (! $c->user->namecoin_address) {
+    $c->user->namecoin_address(
+      $c->model("NamecoinServer")->get_new_address()
+    );
+    
+    $c->user->update();
+  }
+
+  my $namecoins_new_balance = $c->model("NamecoinServer")->get_received_by_address( $c->user->namecoin_address );
+
+  if ($namecoins_new_balance > $c->user->namecoins_received) {
+    my $diff = $namecoins_new_balance - $c->user->namecoins_received;
+    $c->user->namecoins_received(
+      $c->user->namecoins_received + $diff
+    );
+
+    $c->user->update;
+
+    $c->user->deposits->create({
+      currency_serial => 2,
+      amount => $diff,
+      processed => 1,
+      info => $c->user->namecoin_address,
+      created_at => DateTime->now,
+      processed_at => DateTime->now,
+    });
+
+    my $balance = $c->user->balances->find_or_create({ currency_serial => 2 });
+    $balance->amount( $balance->amount + $diff );
+    $balance->update();
+  }
+}
 
 
 sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
@@ -402,6 +442,64 @@ sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
   }
 }
 
+sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
+  my ($self, $c) = @_;
+  my $form = $c->stash->{form};
+  my $balance = $c->user->balances->search({currency_serial => 2})->first;
+
+  if (! $balance) {
+    $balance = $c->user->balances->find_or_create({ currency_serial => 2 });
+    $balance->amount(0);
+    $balance->update();
+  }
+
+  $c->stash->{balance} = $balance;
+  $c->stash->{current_balance} = floor($balance->amount * 100) / 100;
+
+  if ($form->submitted_and_valid) {
+    my $address = $form->params->{namecoin_address};
+    my $amount = $form->params->{amount};
+
+    if ($balance->amount < $amount || $amount < 0.01 || int($amount * 100) / 100 < $amount)  {
+      $form->get_field("amount")->get_constraint({ type => "Callback" })->force_errors(1);
+      $form->process();
+      return;
+    }
+
+    $balance->amount(
+      $balance->amount() - $amount
+    );
+    $balance->update();
+
+    my $result = $c->model("NamecoinServer")->send_to_address($address, $amount);
+
+    # Create withdrawal record for tracking purposes.
+    my $withdrawal = $c->user->withdrawals->create({
+      currency_serial => 1,
+      amount => $amount,
+      dest => $address,
+      info => "Result: ". $result ."\n\nError: ". Dumper($c->model('NamecoinServer')->api->error),
+      created_at => DateTime->now,
+    });
+
+    if (! $c->model('NamecoinServer')->api->error) {
+      # Mark as processed if successful
+      $withdrawal->processed_at( DateTime->now() );
+      $withdrawal->processed(1);
+      $withdrawal->update();
+
+      push @{$c->flash->{messages}}, "Namecoins sent.";
+
+    }
+    else {
+      push @{$c->flash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive namecoinnamecoinnamecoins in 24 hours, please contact us.";
+    }
+    
+    $c->res->redirect(
+      $c->uri_for('/user')
+    );
+  }
+}
 
 
 sub no_avatar :Local :Args(1) {

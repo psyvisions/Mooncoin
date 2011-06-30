@@ -1,13 +1,31 @@
 [% META title = 'Deposit' %]
 
-<p>We accept only Bitcoins as deposit option. If you want to know more - 
+<div class='right_column' style="height: 350px">
+<div style="float:right;  height: auto; padding: 7px;">
+[% IF c.user.balances %]
+
+<h2>Your balance</h2>
+  [% FOR balance IN c.user.balances %]
+     <p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
+      - <span><a href="/user/deposit/[% balance.currency.name %]">Deposit</a></span></p>
+  [% END %]
+[% END %]
+</div>
+</div>
+
+<p>We accept both <a href="/user/deposit/bitcoin">Bitcoins</a> and <a href="/user/deposit/namecoin">Namecoins</a> as deposit option. If you want to know more - 
 checkout <a href='http://www.bitcoin.org' target='_blank'>http://www.bitcoin.org</a></p>
+
+<p>It must be noted that Moonco.in is not an exchange, depositing NMC will only allow you to play on Name-Mooncoin tables. Whereas depositing BTC will only allow you to play on Bit-Mooncoin tables.</p>
+
+<h2>Bitcoin Deposit</h2>
 
 <p>We have generated address for all your transactions. Any money sent to this 
 address will be deposited to your account. Please note, that we wait until we 
 get at least one confirmation of the transaction, so it will take some time for 
 sent bitcoins to appear here. This delay depends on network size and load at 
 this moment.</p>
+
 <div style="border: solid 1px; padding-left: 10px;padding-right:10px; width: 500px;">
 <p><strong>You need to come back to this page when you will see confirmations of your
 transaction in order to finalize depositing of Bitcoins.</strong></p>
@@ -18,3 +36,4 @@ transaction in order to finalize depositing of Bitcoins.</strong></p>
 
 <p>You sent so far <strong>&#xe3f;[% bitcoins_sent | format('%.2f') %]</strong>.</p>
 </div>
+

@@ -50,6 +50,7 @@ sub index :Path :Args(0) {
    }
 }
 
+sub archives :Local { }
 
 sub auto :Path {
     my ( $self, $c ) = @_;
