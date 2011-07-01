@@ -6,5 +6,13 @@
   <dd>[% bitcoin_balance %]</dd>
   
   <dt>Current In Game Bitcoin accounts total balance:</dt>
-  <dd>[% total_ingame_balance %]</dd>
+  <dd>[% total_ingame_balance_btc %]</dd>
+</dl>
+
+<dl>
+  <dt>Current Namecoin balance:</dt>
+  <dd>[% namecoin_balance %]</dd>
+  
+  <dt>Current In Game Namecoin accounts total balance:</dt>
+  <dd>[% total_ingame_balance_nmc %]</dd>
 </dl>

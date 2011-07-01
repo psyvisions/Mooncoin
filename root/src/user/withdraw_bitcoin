@@ -4,6 +4,8 @@
 
 <div class='right_column' style="height: 350px">
 <div style="float:right;  height: auto; padding: 7px;">
+Withdraw Bitcoins<br />
+<a href="/user/withdraw/namecoin">Withdraw Namecoins</a>
 [% IF c.user.balances %]
 
 <h2>Your balance</h2>

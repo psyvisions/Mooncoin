@@ -510,6 +510,13 @@ sub no_avatar :Local :Args(1) {
   );
 }
 
+sub bet :Local :FormConfig { 
+  my ( $self, $c ) = @_;
+
+
+}
+
+
 =head1 AUTHOR
 
 Pavel Karoukin

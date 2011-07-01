@@ -1,0 +1,7 @@
+[% META title = 'Bet' %]
+<div style="margin-top:25px;">
+<h2>Foresight</h2>
+<p>Here you can place bet's on future events, put your ability to foresee the future to the test.</p>
+
+[% form %]
+</div>

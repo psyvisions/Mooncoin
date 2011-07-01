@@ -34,7 +34,7 @@ sub base :Chained :PathPart('admin') :CaptureArgs(0) {
 
 sub index :Chained('base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
-  
+
   $c->stash->{bitcoin_balance} = $c->model("BitcoinServer")->get_balance();
 
   my $rs = $c->model("PokerNetwork::User2Money")->search(
@@ -50,7 +50,7 @@ sub index :Chained('base') :PathPart('') :Args(0) {
   
   ##
   
-  $c->stash->{namecoin_balance} = $c->model("NamecoinServer")->get_balance();
+    $c->stash->{namecoin_balance} = $c->model("NamecoinServer")->get_balance();
 
   my $rs1 = $c->model("PokerNetwork::User2Money")->search(
             { currency_serial => 2 },
@@ -66,17 +66,83 @@ sub index :Chained('base') :PathPart('') :Args(0) {
 }
 
 
-sub user :Chained('base') :Args(1) {
+sub users :Chained('base') :Args(0) {
+  my ($self, $c) = @_;
+  my $name = $c->req->params->{'name'};
+  my $email = $c->req->params->{'email'};
+  my $page = $c->req->params->{'page'};
+  $page = 1 if $page < 1;
+
+  my $search;
+  $search->{ 'LOWER(me.name)' } = { 'LIKE' => '%'. $name .'%' } unless $name eq '';
+  $search->{ 'LOWER(me.email)' } = { 'LIKE' => '%'. $name .'%' } unless $email eq '';
+
+  $c->stash->{users} = $c->model('PokerNetwork::Users')->search({
+   'LOWER(name)' => { 'LIKE' => '%'. $name .'%' },
+   'LOWER(email)' => { 'LIKE' => '%'. $email .'%' },
+  }, {
+    rows => 50,
+    page => $page,
+    order_by => 'name' 
+  });
+}
+
+
+sub user :Chained('base') :CaptureArgs(1) {
   my ($self, $c, $user_id) = @_;
   
   $c->stash->{user} = $c->model("PokerNetwork::Users")->find($user_id);
+}
+
+sub kick :Chained('user') :Args(0) {
+  my ($self, $c) = @_;
+
+}
+
+sub profile :Chained('user') :PathPart('') :Args(0) {}
+
+
+sub hands :Chained('user') :Args(0) {
+  my ($self, $c) = @_;
+  my $page = $c->req->params->{'page'};
+  $page = 1 if $page < 1;
+
+  $c->stash->{hands} = $c->stash->{user}->hands->search(undef, {
+    rows => 50,
+    page => $page,
+    order_by => {
+      -desc => 'serial',
+    }
+  });
+
+  $c->stash->{template} = 'user/hand/index';
+}
+
+
+sub view_hand :Chained('user') :PathPart('hands') :Args(1) {
+  my ($self, $c, $id) = @_;
+
+  my $hand = $c->model('PokerNetwork::Hands')->search({serial => $id})->first;
+
+  if (! $hand) {
+    $c->detach('/default');
+  }
+
+  $c->stash->{hand} = $hand->get_parsed_history;
+  
+  $c->stash->{template} = 'user/hand/view_hand';
 }
 
 
 sub withdrawals :Chained('base') :Args(0) {
   my ($self, $c) = @_;
 
+  my $page = $c->req->params->{'page'};
+  $page = 1 if $page < 1;
+
   $c->stash->{withdrawals} = $c->model("PokerNetwork::Withdrawal")->search({}, { 
+      rows => 50,
+      page => $page,
       order_by => { 
         -desc => 'withdrawal_id' 
       } 
@@ -140,6 +206,28 @@ sub withdrawal_reprocess :Chained('withdrawal_base') :PathPart('reprocess') :Arg
   else {
     push @{$c->flash->{errors}}, "Currently, only one currency supported. Currency serial should be equal 1.";
   }
+  
+   # Hardcoded to handle only Namecoins right now
+  if ($withdrawal->currency->serial == 2) {
+    my $result = $c->model("NamecoinServer")->send_to_address($withdrawal->dest, $withdrawal->amount);
+
+    if (! $c->model('NamecoinServer')->api->error) {
+      # Mark as processed if successful
+      $withdrawal->processed_at( DateTime->now() );
+      $withdrawal->processed(1);
+      $withdrawal->update();
+
+      push @{$c->flash->{messages}}, "Order reprocessed. Namecoins sent.";
+    }
+    else {
+      push @{$c->flash->{errors}}, "Namecoins not sent. Here is daemon answer: <pre>\n" . Dumper($result);
+    }
+  }
+  else {
+    push @{$c->flash->{errors}}, "Currently, only one currency supported. Currency serial should be equal 1.";
+  }
+
+  
   
   $c->res->redirect(
     $c->uri_for('/admin/withdrawal/' . $withdrawal->id)

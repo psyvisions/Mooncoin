@@ -10,7 +10,7 @@
       <td>[% hand.serial %]</td>
       <td>[% hand.get_all_players.join(', ') %]</td>
       <td>[% hand.created %]</td>
-      <td>[% result / 100 %] ([% money.total / 100 %] / [% money.share / 100 %])</td>
+      <td>[% result / 100 %] ([% money.total / 100 %] / [% money.share  / 100 %])</td>
       <td><a href='[% c.uri_for('/user/hands/' _ hand.serial) %]'>View</a></td>
     </tr>
   [% END %]
@@ -23,4 +23,3 @@
 [% IF hands.pager.previous_page %]
 <span style="float: left"><a href="[% c.uri_for('/user/hands', undef, { page => hand.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]
-

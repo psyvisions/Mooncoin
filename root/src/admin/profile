@@ -3,7 +3,8 @@
 
 <div class="secondary-menu">
   <ul>
-    <li><a href="[% c.uri_for('admin/user/' _ user.serial _ '/hands') %]">View user's hands.</a></li>
+    <li><a href="[% c.uri_for('/admin/user/' _ user.serial _ '/hands') %]">View user's hands.</a></li>
+    <li><a href="[% c.uri_for('/admin/user/' _ user.serial _ '/kick') %]">Kick user.</a></li>
   </ul>
 </div>
 
@@ -49,7 +50,7 @@
         [% FOR withdrawal IN user.withdrawals %]
             <tr>
               <td>[% withdrawal.id %]</td>
-              <td>[% withdrawal.currency.name %]</td>
+              <td>[% withdrawal.currency.serial %]</td>
               <td>[% withdrawal.amount %]</td>
               <td>[% withdrawal.dest  | html %]</td>
               <td>[% withdrawal.created_at %]</td>
