@@ -15,9 +15,12 @@
       <li><strong>Username:</strong> [% user.name  | html %]</li>
       <li><strong>Email:</strong> [% user.email  | html %]</li>
       <li><strong>Deposit bitcoin address:</strong> [% user.bitcoin_address  | html %]</li>
+      <li><strong>Deposit namecoin address:</strong> [% user.namecoin_address  | html %]</li>
       <li><strong>Emergency bitcoin address:</strong> [% user.emergency_address  | html %]</li>
       <li><strong>Bitcoins received:</strong> [% user.bitcoins_received %]</li>
-      <li><strong>Balance:</strong> [% user.balances.first.amount %]</li>
+      <li><strong>Namecoins received:</strong> [% user.namecoins_received %]</li>
+      <li><strong>BTC Balance:</strong> [% user.balances.first.amount %]</li>
+      <li><strong>NMC Balance:</strong> [% user.balances.1.amount %]</li>
     </ul>
   </div>
 
