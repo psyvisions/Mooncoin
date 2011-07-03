@@ -1,5 +1,6 @@
 [% META title = 'Contact us' %]
 
+<h2>"State the nature of your medical emergency"</h2>
 <p>IRC: freenode.com - <a target="_blank" href="http://webchat.freenode.net/?channels=mooncoin">#mooncoin</a></p>
 
 <p><b>Looking for a table of a specific size and betting structure? Contact us!</b></p>
@@ -7,3 +8,7 @@
 <p>Please, send me email to <a href='mailto:mrmooncoin@gmail.com'>mrmooncoin@gmail.com</a> with any questions, suggestions or comments.</p>
 
 <p>We also appreciate it if you report any suspected bots.</p>
+
+<h2>FAQ</h2>
+<p><b>Q. I can't see the cards/buttons, what do I do?</b></p>
+<p>Try reloading the page, this appears to be a lingering problem in Jpoker that the community is trying to work out. You can reload the page at any time during the game without affecting the play, it will simply catch you up when you return.</p>
