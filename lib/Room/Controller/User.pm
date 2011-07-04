@@ -475,7 +475,7 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
 
     # Create withdrawal record for tracking purposes.
     my $withdrawal = $c->user->withdrawals->create({
-      currency_serial => 1,
+      currency_serial => 2,
       amount => $amount,
       dest => $address,
       info => "Result: ". $result ."\n\nError: ". Dumper($c->model('NamecoinServer')->api->error),
@@ -512,9 +512,26 @@ sub no_avatar :Local :Args(1) {
 
 sub bet :Local :FormConfig { 
   my ( $self, $c ) = @_;
+  my $form = $c->stash->{form};
+  my $balance = $c->user->balances->search({currency_serial => 1})->first;
+  
+  my $amount = $form->params->{amount};
+  my $title = $form->params->{bet_title};
+  my $description = $form->params->{bet_description};
+  my $deadline = $form->params->{bet_deadline};
+  my $time = $form->params->{bet_deadline_time};
+  my $category = $form->params->{bet_category};
+
+    $balance->amount(
+      $balance->amount() - $amount
+    );
+    $balance->update();
+ 
 
 
-}
+
+ push @{$c->flash->{messages}}, "Bet placed.";
+ }
 
 
 =head1 AUTHOR

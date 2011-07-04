@@ -19,8 +19,8 @@
       <li><strong>Emergency bitcoin address:</strong> [% user.emergency_address  | html %]</li>
       <li><strong>Bitcoins received:</strong> [% user.bitcoins_received %]</li>
       <li><strong>Namecoins received:</strong> [% user.namecoins_received %]</li>
-      <li><strong>BTC Balance:</strong> [% user.balances.first.amount %]</li>
-      <li><strong>NMC Balance:</strong> [% user.balances.1.amount %]</li>
+      <li><strong>BTC Balance:</strong>[% FOR balance IN c.user.balances %] [% IF balance.currency_serial == '1' %] [% balance.amount %] [% END %]  [% END %]</li>
+      <li><strong>NMC Balance:</strong> [% FOR balance IN c.user.balances %] [% IF balance.currency_serial == '2' %] [% balance.amount %] [% END %]  [% END %]</li>
     </ul>
   </div>
 
