@@ -321,6 +321,16 @@
             return this.url2hashCache[url];
         },
 
+        getCallAmount: function(betLimit, player) {
+            var call = betLimit.call;
+            var money = player.money;
+            if (call > money) {
+                return money;
+            }
+
+            return call;
+        },
+
         gettext: _
     };
 
@@ -2111,6 +2121,7 @@
                 case 'PacketPokerTimeoutWarning':
                 case 'PacketPokerTimeoutNotice':
                 case 'PacketPokerMuckRequest':
+                case 'PacketPokerSelfInPosition':
                     table.notifyUpdate(packet);
                     break;
 
@@ -3705,6 +3716,7 @@
                 jpoker.plugins.table.dealer(id, table, packet.dealer);
                 break;
 
+            case 'PacketPokerSelfInPosition':
             case 'PacketPokerPosition':
                 jpoker.plugins.table.position(id, table, packet.serial);
                 jpoker.plugins.table.timeout(id, table, packet.serial, 1.0);
@@ -3840,7 +3852,7 @@
         room: 'expected to be overriden by mockup.js but was not',
         tourney_break: '<div>{label}</div><div>{date}</div>',
         powered_by: '',
-        chat: '<div class=\'jpoker_chat_input\'><input value=\'chat here\' type=\'text\' width=\'100%\' /></div><div class=\'jpoker_chat_history_player_box\'><div class=\'jpoker_chat_history_player_heading\'>{chat_history_player_label}</div><div class=\'jpoker_chat_history_player\'></div></div><div class=\'jpoker_chat_history_dealer_box\'><div class=\'jpoker_chat_history_dealer_heading\'>{chat_history_dealer_label}</div><div class=\'jpoker_chat_history_dealer\'></div></div>',
+        chat: '<div class=\'jpoker_chat_input\'><input value=\'chat here\' type=\'text\' width=\'100%\' maxlength=\'128\' /></div><div class=\'jpoker_chat_history_player_box\'><div class=\'jpoker_chat_history_player_heading\'>{chat_history_player_label}</div><div class=\'jpoker_chat_history_player\'></div></div><div class=\'jpoker_chat_history_dealer_box\'><div class=\'jpoker_chat_history_dealer_heading\'>{chat_history_dealer_label}</div><div class=\'jpoker_chat_history_dealer\'></div></div>',
         placeholder: _("connecting to table {name}"),
         table_info: '<div class=\'jpoker_table_info_name\'><span class=\'jpoker_table_info_name_label\'>{name_label}</span>{name}</div><div class=\'jpoker_table_info_variant\'><span class=\'jpoker_table_info_variant_label\'>{variant_label}</span>{variant}</div><div class=\'jpoker_table_info_blind\'><span class=\'jpoker_table_info_blind_label\'>{betting_structure_label}</span>{betting_structure}</div><div class="jpoker_table_info_hand"></div><div class=\'jpoker_table_info_seats\'><span class=\'jpoker_table_info_seats_label\'>{seats_label}</span>{max_players}</div><div class=\'jpoker_table_info_flop\'>{percent_flop}<span class=\'jpoker_table_info_flop_label\'>{percent_flop_label}</span></div><div class=\'jpoker_table_info_player_timeout\'><span class=\'jpoker_table_info_player_timeout_label\'>{player_timeout_label}</span>{player_timeout}</div><div class=\'jpoker_table_info_muck_timeout\'><span class=\'jpoker_table_info_muck_timeout_label\'>{muck_timeout_label}</span>{muck_timeout}</div><div class=\'jpoker_table_info_level\'></div>',
         date: '',
@@ -4466,7 +4478,7 @@
             var serial = packet.serial;
             var player = table.serial2player[serial];
             var names = [ 'check', 'call', 'raise', 'fold', 'allin', 'pot', 'halfpot', 'threequarterpot' ];
-            var labels = [ _("check"), _("call") + ' <span class=\'jpoker_call_amount\'></span>', _("raise"), _("fold"), _("all in"), _("pot"), _("1/2"), _("3/4") ];
+            var labels = [ _("check"), _("call") + ' <span class=\'jpoker_call_amount\'></span>', _("Raise"), _("fold"), _("all in"), _("pot"), _("1/2"), _("3/4") ];
             for(var i = 0; i < names.length; i++) {
                 $('#' + names[i] + id).html(jpoker.plugins.playerSelf.templates.action.supplant({ action: labels[i] })).hover(function(){
                   $(this).addClass('hover');
@@ -4778,7 +4790,9 @@
                 $('.jpoker_auto_action', auto_action_element).show();
                 if (table.betLimit.call > 0) {
                     $('.jpoker_auto_check', auto_action_element).hide();
-                    $('.jpoker_call_amount', auto_action_element).text(jpoker.chips.SHORT(table.betLimit.call));
+
+                    var call = jpoker.getCallAmount(table.betLimit, player);
+                    $('.jpoker_call_amount', auto_action_element).text(jpoker.chips.SHORT(call));
                 } else {
                     $('.jpoker_auto_call', auto_action_element).hide();
                 }
@@ -4791,13 +4805,14 @@
             var auto_action_element = $('#auto_action' + id);
             if (player.in_game) {
                 if (table.betLimit.call > 0) {
+                    var call = jpoker.getCallAmount(table.betLimit, player);
                     $('.jpoker_auto_action', auto_action_element).show();
                     $('input[name=auto_check]')[0].checked = false;
                     $('input[name=auto_call]')[0].checked = false;
                     $('input[name=auto_raise]')[0].checked = false;
                     $('.jpoker_auto_check', auto_action_element).hide();
                     $('.jpoker_auto_call', auto_action_element).show();
-                    $('.jpoker_call_amount', auto_action_element).text(jpoker.chips.SHORT(table.betLimit.call));
+                    $('.jpoker_call_amount', auto_action_element).text(jpoker.chips.SHORT(call));
                 }
             }
         },
@@ -4971,8 +4986,9 @@
             ).show();
             
             if(betLimit.call > 0) {
+                var call = jpoker.getCallAmount(betLimit, player);
                 var call_element = $('#call' + id);
-                $('.jpoker_call_amount', call_element).text(jpoker.chips.SHORT(betLimit.call));
+                $('.jpoker_call_amount', call_element).text(jpoker.chips.SHORT(call));
                 call_element.unbind('click').click(function() { $(this).unbind('click'); return send('Call'); }).show();
             } else {
                 $('#check' + id).unbind('click').click(function() { $(this).unbind('click'); return send('Check'); }).show();
@@ -4984,7 +5000,7 @@
                 
                 if(betLimit.max > betLimit.min) {
                     var raise = $('#raise_range' + id);
-                    raise.html(jpoker.plugins.raise.getHTML(betLimit));
+                    raise.html(jpoker.plugins.raise.getHTML(betLimit, player));
                     raise.show(); // must be visible otherwise outerWeight/outerWidth returns 0
 
                     var raise_input = $('#raise_input' + id);
@@ -5040,10 +5056,14 @@
                         if(server) {
                             var amount = parseInt($('.jpoker_raise_current', raise).attr('title'), 10);
                             if (!isNaN(amount)) {
+                                if (amount > betLimit.allin*100) {
+                                    amount = betLimit.allin*100
+                                }
+
                                 server.sendPacket({ 'type': 'PacketPokerRaise',
                                             'serial': serial,
                                             'game_id': game_id,
-                                            'amount': parseInt($('.jpoker_raise_current', raise).attr('title'), 10)
+                                            'amount': amount
                                             });
                             } else {
                                 jpoker.error('raise with NaN amount: ' + $('.jpoker_raise_current', raise).attr('title'));
@@ -5082,12 +5102,17 @@
                             server.sendPacket({ 'type': 'PacketPokerRaise',
                                         'serial': serial,
                                         'game_id': game_id,
-                                        'amount': 0
+                                        'amount': betLimit.min*100
                                         });
                         }
                     };
                 }
-                $('#raise' + id).unbind('click').click(click).show();
+
+                var raiseLabel = _("Bet")
+                if (betLimit.call > 0 || player.bet > 0) {
+                    raiseLabel = _("Raise")
+                }
+                $('#raise' + id).html(jpoker.plugins.playerSelf.templates.action.supplant({ action: raiseLabel })).unbind('click').click(click).show();
             }
             jpoker.plugins.playerSelf.callback.sound.in_position(server);
             $(window).focus();
@@ -5250,7 +5275,6 @@
             if(chips > 0) {
                 element.show();
                 $('.jpoker_chips_amount', element).text(jpoker.chips.SHORT(chips)).append('mc');
-         
                 element.attr('title', jpoker.chips.LONG(chips));
             } else {
                 element.hide();
@@ -5290,9 +5314,13 @@
     //
     jpoker.plugins.raise = {
         template: '<div class=\'jpoker_raise_label\'>{raise_label}</div><div class=\'jpoker_raise_bound jpoker_raise_min\'>{raise_min}</div><div class=\'jpoker_raise_current\' title=\'{raise_current_title}\'>{raise_current}</div><div class=\'jpoker_raise_bound jpoker_raise_max\'>{raise_max}</div><div class=\'ui-slider-1\'><div class=\'ui-slider-handle\'></div></div>',
-        getHTML: function(betLimit) {
+        getHTML: function(betLimit, player) {
             var t = this.template;
-            return t.supplant({raise_label: _("Raise"),
+            var label = _("Bet")
+            if (betLimit.call > 0 || player.bet > 0) {
+                label = _("Raise")
+            }
+            return t.supplant({raise_label: label,
                                                 raise_min: jpoker.chips.SHORT(betLimit.min),
                                                 raise_current_title: Math.floor(betLimit.min*100),
                                                 raise_current: jpoker.chips.SHORT(betLimit.min),
