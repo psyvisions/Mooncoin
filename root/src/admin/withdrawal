@@ -11,7 +11,13 @@
     <dd>[% withdrawal.currency.symbol %][% withdrawal.amount %]</dd>
 
     <dt>Destination:</dt>
-    <dd><a href="http://blockexplorer.com/address/[% withdrawal.dest | uri %]" target='_blank'>[% withdrawal.dest | html %]</a></dd>
+    <dd>
+    [% IF withdrawal.currency.serial == '1'%]
+    <a href="http://blockexplorer.com/address/[% withdrawal.dest | uri %]" target='_blank'>[% withdrawal.dest | html %]</a>
+    [% ELSE%]
+    <a href="http://explorer.dot-bit.org/a/[% withdrawal.dest | uri %]" target='_blank'>[% withdrawal.dest | html %]</a>
+    [% END %]
+    </dd>
 
     <dt>Order status:</dt>
     <dd>
