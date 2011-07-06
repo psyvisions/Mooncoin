@@ -30,6 +30,11 @@ elements:
     name: emergency_address
     label: Emergency BTC address
     comment: YOUR bitcoin address where funds should be sent in case of emergency (server total loss, earthquake, etc)
+    
+  - type: Text
+    name: emergency_nmc_address
+    label: Emergency NMC address
+    comment: YOUR namecoin address where funds should be sent in case of emergency (server total loss, earthquake, etc)
 
   - type: Checkbox
     name: hide_gravatar

@@ -239,6 +239,10 @@ sub edit :Local :Args(0) :FormConfig {
   $form->get_field({name => 'emergency_address'})->default(
     $c->user->emergency_address
   );
+  
+  $form->get_field({name => 'emergency_nmc_address'})->default(
+    $c->user->emergency_nmc_address
+  );
 
   # If 'Cancel' button pressed - redirect to /user page
   if ($c->req->param('cancel')) {
@@ -282,6 +286,7 @@ sub edit :Local :Args(0) :FormConfig {
 
     $c->user->hide_gravatar( $form->params->{hide_gravatar} );
     $c->user->emergency_address( $form->params->{emergency_address} );
+    $c->user->emergency_nmc_address( $form->params->{emergency_nmc_address} );
 
     $c->user->update();
     $c->user->make_column_dirty('data');
@@ -492,7 +497,7 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
 
     }
     else {
-      push @{$c->flash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive namecoinnamecoinnamecoins in 24 hours, please contact us.";
+      push @{$c->flash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive namecoins in 24 hours, please contact us.";
     }
     
     $c->res->redirect(
@@ -510,28 +515,7 @@ sub no_avatar :Local :Args(1) {
   );
 }
 
-sub bet :Local :FormConfig { 
-  my ( $self, $c ) = @_;
-  my $form = $c->stash->{form};
-  my $balance = $c->user->balances->search({currency_serial => 1})->first;
-  
-  my $amount = $form->params->{amount};
-  my $title = $form->params->{bet_title};
-  my $description = $form->params->{bet_description};
-  my $deadline = $form->params->{bet_deadline};
-  my $time = $form->params->{bet_deadline_time};
-  my $category = $form->params->{bet_category};
 
-    $balance->amount(
-      $balance->amount() - $amount
-    );
-    $balance->update();
- 
-
-
-
- push @{$c->flash->{messages}}, "Bet placed.";
- }
 
 
 =head1 AUTHOR

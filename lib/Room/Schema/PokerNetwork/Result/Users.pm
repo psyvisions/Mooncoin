@@ -131,7 +131,7 @@ __PACKAGE__->inflate_column(
 );
 
 __PACKAGE__->add_json_columns(
-  data => qw/bitcoin_address bitcoins_received namecoin_address namecoins_received request_password hide_gravatar emergency_address/,
+  data => qw/bitcoin_address bitcoins_received namecoin_address namecoins_received request_password hide_gravatar emergency_address emergency_nmc_address/,
 );
 
 __PACKAGE__->has_many(
@@ -156,7 +156,10 @@ __PACKAGE__->has_many(
   'withdrawals' => 'Room::Schema::PokerNetwork::Result::Withdrawal',
   { 'foreign.user_serial' => 'self.serial' },
 );
-
+__PACKAGE__->has_many(
+  'bets' => 'Room::Schema::PokerNetwork::Result::Bets',
+  { 'foreign.user_serial' => 'self.serial' },
+);
 
 sub get_bitcoin_deposit_address {
   my ($self) = @_;
