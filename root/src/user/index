@@ -1,6 +1,6 @@
 [% META title = 'User account' %]
-
-<div style="width: 100%; height:150; float: none;">
+[% PROCESS user/myaccount_submenu %]
+<div style="width: 100%; height: 250px; float: none;">
 <div style="float:left;">
 <h2 class="account-info">Account <span><sup><a href="[% c.uri_for('/user/edit') %]">Edit</a></sup></span></h2>
 

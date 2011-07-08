@@ -1,21 +1,11 @@
 [% META title = 'Withdraw' %]
-
-
+[% PROCESS user/myaccount_submenu %]
+<div style="clear:both;"></div>
 
 <div class='right_column' style="height: 350px">
-<div style="float:right;  height: auto; padding: 7px;">
-<a href="/user/withdraw/bitcoin">Withdraw Bitcoins</a><br />
-Withdraw Namecoins
-[% IF c.user.balances %]
+[% PROCESS user/balance %]
+</div>
 
-<h2>Your balance</h2>
-  [% FOR balance IN c.user.balances %]
-     <p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
-      - <span><a href="/user/withdraw/[% balance.currency.name %]">Withdraw</a></span></p>
-  [% END %]
-[% END %]
-</div>
-</div>
 <h2>Namecoin Withdraw</h2>
 
 <p>You have the option to withdraw from either <a href="/user/withdraw/bitcoin">Bitcoins</a> or <a href="/user/withdraw/namecoin">Namecoins</a>.</p>

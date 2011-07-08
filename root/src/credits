@@ -1,6 +1,6 @@
 [% META title = 'Credits' %]
 
-<p>The poker room at mooncoin is built on top of few open source technologies</p>
+<p>The poker room at mooncoin is built on top of few open source technologies:</p>
 
 <h2>python-poker-network and python-poker-engine</h2>
 <p>Both used to build "back end" for this poker room. More information: <a href='http://pokersource.info/'>http://pokersource.info/</a></p>
@@ -13,6 +13,13 @@
 Most important: players can't spend twice their "coins" and in the same time generation of new "coins" depends on CPU power. So we effectively
 avoid abuse from dishonest players (think about players, who register fresh account, login and go All-In in the first round).</p>
 <p>To learn more: <a href='http://www.bitcoin.org'>http://www.bitcoin.org</a></p>
+
+<h2>Namecoin</h2>
+<p>Namecoin - new technology for digital currencies. namecoins network allows players generate "coins" and use as payment in our poker room. Using the same source code as bitcoin, they use the economy to drive a p2p DNS. 
+Most important: players can't spend twice their "coins" and in the same time generation of new "coins" depends on CPU power. So we effectively
+avoid abuse from dishonest players (think about players, who register fresh account, login and go All-In in the first round).</p>
+<p>To learn more: <a href='http://www.bitcoin.org'>http://www.dot-bit.org</a></p>
+
 
 <h2>Catalyst Framework</h2>
 <p><a href='http://www.catalystframework.org'>Catalyst Framework</a> - modern perl web framework for rapid web development and easy refactoring.

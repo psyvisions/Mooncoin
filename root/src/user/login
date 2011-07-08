@@ -1,6 +1,7 @@
 [% META title = 'Log in' %]
 
 <div style="margin-top:25px;">
+<p>After your game is complete you must enter your status.</p>
 [% form %]
 
 

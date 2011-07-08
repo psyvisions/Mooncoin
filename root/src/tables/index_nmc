@@ -44,7 +44,7 @@
     </div>
     <div class="tables-list-wrapper">
       <div class="tables-list" id="popular-tables">
-        <h2>Popular Tables</h2>
+        <h2>Popular Namecoin Tables</h2>
         <table>
           <tr>
             <th>Name</th>

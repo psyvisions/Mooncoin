@@ -23,9 +23,7 @@
           <td>[% withdrawal.created_at %]</td>
           <td>[% withdrawal.processed_at %]</td>
           <td>
-            <ul class='actions-list'>
-              <li><a href="[% c.uri_for('/admin/withdrawal/' _ withdrawal.id) %]">View</a></li>
-            </ul>
+              <a href="[% c.uri_for('/admin/withdrawal/' _ withdrawal.id) %]">View</a>
           </td>
         </tr>
     [% END %]

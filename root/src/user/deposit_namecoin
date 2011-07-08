@@ -1,26 +1,17 @@
 [% META title = 'Deposit' %]
+[% PROCESS user/myaccount_submenu %]
+<div style="clear:both;"></div>
 
 <div class='right_column' style="height: 350px">
-<div style="float:right;  height: auto; padding: 7px;">
-<a href="/user/deposit/bitcoin">Deposit Bitcoins</a><br />
-Deposit Namecoins
-[% IF c.user.balances %]
+[% PROCESS user/balance %]
+</div>
 
-<h2>Your balance</h2>
-  [% FOR balance IN c.user.balances %]
-     <p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
-      - <span><a href="/user/deposit/[% balance.currency.name %]">Deposit</a></span></p>
-  [% END %]
-[% END %]
-</div>
-</div>
+<h2>Namecoin Deposit</h2>
 
 <p>We accept both <a href="/user/deposit/bitcoin">Bitcoins</a> and <a href="/user/deposit/namecoin">Namecoins</a> as deposit option. If you want to know more - 
 checkout <a href='http://www.bitcoin.org' target='_blank'>http://www.dot-bit.org</a></p>
 
 <p>It must be noted that Moonco.in is not an exchange, depositing NMC will only allow you to play on Name-Mooncoin tables. Whereas depositing BTC will only allow you to play on Bit-Mooncoin tables.</p>
-
-<h2>Namecoin Deposit</h2>
 
 <p>We have generated address for all your transactions. Any money sent to this 
 address will be deposited to your account. Please note, that we wait until we 
