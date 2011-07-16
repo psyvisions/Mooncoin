@@ -1,0 +1,74 @@
+[% META title = 'Report' %]
+[% PROCESS admin/admin_submenu %]
+[% PROCESS admin/admin_bet_submenu %]
+<div style="clear:both;"></div>
+<div class='right_column' style="height: 350px;">
+<h2>Actions</h2>
+  <p><a href="/admin/report/[% report.id %]/delete">Delete Report (Ignore)</a></p>
+  <p><a href="/admin/report/[% report.id %]/cancel">Cancel Bet (Return Coins)</a></p
+  <p><a href="/admin/report/[% report.id %]/freeze">Freeze & Cancel (Hold Coins)</a></p>
+</div>
+  <h2>Report info</h2>
+  <dl>
+    <dt><h3>Reporter</h3></dt>
+    <dd><a href="[% c.uri_for("/admin/user/" _ report.user.serial) %]">[% report.user.name  | html %]</a></dd>
+    
+    <dt><h3>Bet ID</h3></dt>
+    <dd>Admin Page:<a href="/admin/bet/[% report.bet.serial %]/view">[% report.bet.serial %]</a></dd>
+    <dd>User Page:<a href="/bet/[% report.bet.serial %]/view">[% report.bet.serial %]</a></dd>
+    <dt><h3>Bet Type</h3></dt>
+    <dd>[% SWITCH report.bet.type %][% CASE 1 %]Foresight[% CASE 2 %]Skill[% END %]</dd>
+
+    <dt><h3>Timeleft</h3></dt>
+        [% IF report.bet.type == 2 %]
+        <dd> [% IF report.bet.get_timeleft_update.years > 0 %][% report.bet.get_timeleft_update.years %] <span style="color: black; font-size: small; vertical-align: middle;">Years</span> [% END %]
+  [% IF report.bet.get_timeleft_update.months > 0 %][% report.bet.get_timeleft_update.months %] <span style="color: black; font-size: small; vertical-align: middle;">Months</span> [% END %]
+  [% IF report.bet.get_timeleft_update.days > 0 %][% report.bet.get_timeleft_update.days %] <span style="color: black; font-size: small; vertical-align: middle;">Days</span> [% END %]
+  [% IF report.bet.get_timeleft_update.hours > 0 %][% report.bet.get_timeleft_update.hours %] <span style="color: black; font-size: small; vertical-align: middle;">Hours</span> [% END %]
+  [% IF report.bet.get_timeleft_update.minutes > 0 %][% report.bet.get_timeleft_update.minutes %] <span style="color: black; font-size: small; vertical-align: middle;">Minutes</span>[% END %]</span>
+    [% IF report.bet.get_timeleft_update.seconds > 0 %][% report.bet.get_timeleft_update.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF report.bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</span>
+</dd>
+        [% ELSIF report.bet.type == 1 %]
+        <dd>[% IF report.bet.get_timeleft.years > 0 %][% report.bet.get_timeleft.years %] <span style="color: black; font-size: small; vertical-align: middle;">Years</span> [% END %]
+  [% IF report.bet.get_timeleft.months > 0 %][% report.bet.get_timeleft.months %] <span style="color: black; font-size: small; vertical-align: middle;">Months</span> [% END %]
+  [% IF report.bet.get_timeleft.days > 0 %][% report.bet.get_timeleft.days %] <span style="color: black; font-size: small; vertical-align: middle;">Days</span> [% END %]
+  [% IF report.bet.get_timeleft.hours > 0 %][% report.bet.get_timeleft.hours %] <span style="color: black; font-size: small; vertical-align: middle;">Hours</span> [% END %]
+  [% IF report.bet.get_timeleft.minutes > 0 %][% report.bet.get_timeleft.minutes %] <span style="color: black; font-size: small; vertical-align: middle;">Minutes</span>[% END %]</span>
+    [% IF report.bet.get_timeleft.seconds > 0 %][% report.bet.get_timeleft.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF report.bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</span></dd>
+    [% END %]
+    
+    <dt><h3>Participants</h3></dt>
+    [% IF report.bet.type == 2 %]
+    <dd>
+     <br />
+    <a href="[% c.uri_for("/admin/user/" _ report.bet.challenger.serial) %]">[% report.bet.challenger.name %]</a>
+    </dd>
+    [% ELSIF report.bet.type == 1 %]
+    <table style="width:350px;">
+    <tr><th>User</th><th>Amount</th><th>Side</th></tr>
+    [% WHILE (userbet = cur_user_bets.next) %]
+    <tr>  
+      <td><a href="[% c.uri_for("/admin/user/" _ userbet.user.serial) %]">[% userbet.user.name | html %]</a></td><td>[% userbet.amount %]</td><td>[% userbet.side %]</td> 
+    </tr>
+    [% END %]
+    </table>
+    
+     <dt><h3>Event Time</h3></dt>
+    <dd>[% report.bet.event_time_readable %]</dd>
+    
+    [% END %]
+
+    <dt><h3>Title</h3></dt>
+    <dd>[% report.title %]</dd>
+
+    <dt><h3>Description</h3></dt>
+    <dd>
+    [% report.description %]
+    </dd>
+
+    <dt><h3>Report created</h3></dt>
+    <dd>[% report.bet.created_time_readable %]</dd>
+  </dl>
+</div>
+
+

@@ -1,0 +1,6 @@
+<ul class='bets_submenu'>
+  <li><a href='[% c.uri_for('/bets') %]'>All</a></li>
+  <li><a href='[% c.uri_for('/bets/awaiting_challenger') %]'>Awaiting Challenger</a></li>
+  <li><a href='[% c.uri_for('/bets/awaiting_update') %]'>Awaiting Confirmation</a></li>
+  <li><a href='[% c.uri_for('/bets/complete') %]'>Complete</a></li> 
+</ul>

@@ -1,0 +1,37 @@
+[% META title = 'Bets' %]
+
+<p>After reviewing evidence you can decide who the winner is here when a game is in conflict.</p>
+
+<h2>Current Bets</h2>
+
+<table style="text-align: center; float:left; width: 345px;">
+<tr><th colspan='3' style="text-align: center;">Side 1</th></tr>
+
+<tr><th colspan='3' style="text-align: center;"><h3><span style="color:red;">[% bet.side_one %]</span></h3></th></th></tr>
+<tr><th colspan='3' style="text-align: center;">
+[% IF bet.get_h_side != undef %]
+<h3>Odds [% IF bet.get_h_side == 1 %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% ELSE %]<span style="color: green;">1<span style="color:black;"> : </span>[% bet.get_ratio  | format('%.2f') %][% END %]</span></h3>
+[% END %]
+</th></th></tr>
+
+[% WHILE (userbet = userbets_s_one.next) %]
+<tr><td style="width: 60;"><img src="[% c.uri_for("/AVATAR/" _ userbet.user_serial) %]" alt="[% c.user.name %] picture" /></td><td><h2><a href="[% c.uri_for("/admin/user/" _ userbet.user_serial) %]">[% userbet.user.name %]</a></h2><p>[% IF userbet.status != undef %][% userbet.status %][% ELSE %]No result reported[% END %]</p></td><td style="width: 60;"><h3 style="color: green;">[% userbet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
+[% END %]
+<tr><td  colspan='3'>[% IF userbets_s_one.first != undef %]<h3>Total Amount</h3> <h3 style="color: green;">[% total_side_one %]<span style="color:black;"> mc </span></h3>[% END %]</td></tr>
+</table>
+<table style="text-align: center; float:left; width: 345px; margin-left: 30px;">
+<tr><th colspan='3' style="text-align: center;">Side 2</th></tr>
+<tr><th colspan='3' style="text-align: center; vertical-align: middle;"><h3><span style="color:blue;">[% bet.side_two %]</span></h3></th></th></tr>
+<tr><th colspan='3' style="text-align: center;">[% IF bet.get_h_side != undef %]<h3>Odds [% IF bet.get_h_side == 2 %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% ELSE %]<span style="color: green;">1<span style="color:black;"> : </span>[% bet.get_ratio | format('%.2f') %][% END %]</span></h3>[% END %]</th></th></tr>
+[% WHILE (userbet = userbets_s_two.next) %]
+<tr><td style="width: 60;"><img src="[% c.uri_for("/AVATAR/" _ userbet.user_serial) %]" alt="[% c.user.name %] picture" /></td>
+<td><h2><a href="[% c.uri_for("/admin/user/" _ userbet.user_serial) %]">[% userbet.user.name %]</a></h2><p>[% IF userbet.status != undef %][% userbet.status %][% ELSE %]No result reported[% END %]</p></td>
+<td style="width: 60;"><h3 style="color: green;">[% userbet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
+[% END %]
+<tr><td  colspan='3'>[% IF userbets_s_two.first != undef %]<h3>Total Amount</h3> <h3 style="color: green;">[% total_side_two %]<span style="color:black;"> mc </span></h3>[% END %]</td></tr>
+</table>
+<br />
+
+
+[% form %]
+<div style="clear:both;"></div>

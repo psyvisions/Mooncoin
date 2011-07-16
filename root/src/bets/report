@@ -1,0 +1,6 @@
+[% META title = 'Bets' %]
+<div style="margin-top:25px;">
+<p>Here you can describe a problem you have with the bet, it will be reviewed by staff. If you problem is legitimate the bet will be cancelled and everyon's coins will be returned. However if the concern is not legitimate, your report will be deleted and the bet will continue.</p>
+<p>Send replays or other evidence to: mrmooncoin@gmail.com to be reviewed. Please include your bet id(the number found in the url).</p>
+[% form %]
+</div>

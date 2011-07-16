@@ -13,7 +13,7 @@
 <p>It must be noted that Moonco.in is not an exchange, depositing NMC will only allow you withdraw NMC. Whereas depositing BTC will only allow you to withdraw BTC.</p>
 
 <p>
-  <strong>Available amount to withdraw:</strong> [% current_balance %] BTC ([% balance.amount * 100 | format('%.2f') %] Chips)
+  <strong>Available amount to withdraw:</strong> [% current_balance %] BTC ([% current_balance * 100 | format('%.2f') %] Chips)
 </p>
 
 <p><i>Please note, larger amounts may require additional <strong>24 hours</strong> processing time. You will be notified if your withdrawal not processed immediately and require additional processing time.</i></p>

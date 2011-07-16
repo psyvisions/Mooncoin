@@ -1,0 +1,33 @@
+[% META title = 'Bets' %]
+[% PROCESS bets/bets_submenu %]
+Index of all bets. 
+
+<div style='width: auto; min-height: auto;'>
+<h2>Bets awaiting updates</h2>
+<p>The following is a list of bets that you have become associated with, all bets listed are games of skill which you are awaiting an update from either the original author of the bet or the challenger. After the first update by either user, the second user has 7 days to update their status or they forfeit the bet.</p> 
+<div style="height: auto; auto; margin:5px;">    
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('/bets/awaiting_update', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('/bets/awaiting_update', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]
+</div>
+
+    [% WHILE (bet = bets.next) %]
+    
+ <div style="height: auto; width: auto; margin:5px; border-bottom: solid 1px; padding: 10px 0 10px 0;">
+[% PROCESS bets/index_items %]
+</div>
+
+[% END %]
+<div style="height: auto; auto; height: 25px; margin-top:10px;">
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('/bets/awaiting_update', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('/bets/awaiting_update', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]
+</div>

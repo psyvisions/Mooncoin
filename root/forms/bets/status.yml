@@ -1,0 +1,22 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Select
+    name: bet_status_update
+    label: Status
+    empty_first: Category
+    constraints:
+      - Required
+    options:
+      - [ '1', 'I won' ]
+      - [ '2', 'I lost' ]
+      - [ '3', 'Draw' ]
+
+  - type: Submit
+    value: Update Status
+    name: submit
+
+constraints:
+  - SingleValue

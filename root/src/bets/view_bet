@@ -1,0 +1,218 @@
+[% META title = 'Bets' %]
+
+<div style="clear:both;"></div>
+
+<div class='right_column' style='min-height: 250px;'>
+<h2>Current Time</h2>
+<p>[% bet.time_now_readable %]</p>
+[% PROCESS user/balance %]
+[% IF bet.active != undef %]<b style="color: green;">Bet Completed</b>[% END %][% IF bet.active == 1 %]<br /><b style="color: red;">Funds Frozen</b>[% END 
+%]
+	<h2>Bet Options</h2>
+	<p>[% IF (bet.user_serial == c.user.serial and bet.challenger_serial == undef and bet.type == 2) or (bet.type == 1 and bet.userbets == undef and bet.user_serial == c.user.serial)  %]
+      <a href="/bet/[% bet.id %]/delete">Delete</a>
+		[% END %]</p>
+
+
+[% IF bet.deadline_passed == 1 and bet.type == 1 %]
+		<p>Betting has closed.</p>
+		
+		[% IF cur_user_bets.first != undef %]
+		  [% IF has_bet.first != undef %] Your status has been updated. [% ELSE %] <a href="/bet/[% bet.id %]/status">Update Status</a>                    
+		  [% END %]
+       [% END %]
+		
+ [% ELSIF bet.deadline_passed == 0 and bet.type == 1 %]
+		<p>[% form %]</p>
+		<p>Betting closes 30 minutes before the event starts.</p>
+ [% END %]	
+
+		<p>[% IF bet.user_serial != c.user.serial and bet.challenger_serial == NULL and bet.type == 2 %]
+      <a href="/bet/[% bet.id %]/challenge">Accept Challenge</a>
+		[% END %]</p>
+
+		<p>[% IF ((bet.user_serial == c.user.serial and bet.user_status == NULL) or (bet.challenger_serial == c.user.serial and bet.challenger_status == NULL)) and bet.challenger_serial != NULL %]
+	
+      [% IF bet.type == 1 and bet.deadline_passed == 1%]
+      
+      <a href="/bet/[% bet.id %]/status">Update Status</a>
+      
+      [% END %]
+      
+		[% END %]</p>
+
+		<p>[% IF (bet.user_serial == c.user.serial or bet.challenger_serial == c.user.serial) and bet.challenger_serial != NULL %]
+      <a href="/bet/[% bet.id %]/report">Report Issue</a>
+      [% ELSIF bet.type == 1 %]
+       <a href="/bet/[% bet.id %]/report">Report Issue</a>
+		[% END %]</p>
+
+</div>
+
+<div>
+<div style="float: left; margin-right: 10px;"><img src="[% c.uri_for("/AVATAR/" _ bet.user_serial) %]" alt="[% c.user.name %] picture" /></div>
+[% IF bet.type == '1' %]
+<h2>Game of Foresight</h2>
+<h3>[% bet.title %]</h3>
+[% ELSE %]
+<h2>Game of Skill</h2>
+<h3>[% bet.title %]</h3>
+[% END %]
+</div>
+
+<div style="width: 100%; min-height:350px; float: none;">
+
+<div style="float:left;">
+  <h3>Category</h3>         
+[% PROCESS bets/categories_switch %]
+</div>
+
+
+  [% IF bet.type == '1' %] 	   
+  <div style="float:left; margin-left: 30px;">
+  <h3>Event Date and Time</h3>  [% bet.event_time_readable %]
+  </div>
+
+  <div style="float:left;margin-left: 30px;">
+  <h3>Betting time left</h3><span style="color: green; font-size: large;">
+  [% IF bet.get_timeleft.years > 0 %][% bet.get_timeleft.years %] <span style="color: black; font-size: small; vertical-align: middle;">Years</span> [% END %]
+  [% IF bet.get_timeleft.months > 0 %][% bet.get_timeleft.months %] <span style="color: black; font-size: small; vertical-align: middle;">Months</span> [% END %]
+  [% IF bet.get_timeleft.days > 0 %][% bet.get_timeleft.days %] <span style="color: black; font-size: small; vertical-align: middle;">Days</span> [% END %]
+  [% IF bet.get_timeleft.hours > 0 %][% bet.get_timeleft.hours %] <span style="color: black; font-size: small; vertical-align: middle;">Hours</span> [% END %]
+  [% IF bet.get_timeleft.minutes > 0 %][% bet.get_timeleft.minutes %] <span style="color: black; font-size: small; vertical-align: middle;">Minutes</span>[% END %]</span>
+    [% IF bet.get_timeleft.seconds > 0 %][% bet.get_timeleft.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</span>
+  </div>
+  
+  [% ELSIF bet.type == '2' and bet.challenger_serial != undef and ( bet.c_status != undef or bet.u_status != undef ) %]
+  <div style="float:left;margin-left: 50px;">
+  <h3>Amount</h3><p>[% bet.amount | format('%.2f') %] [% bet.currency.symbol %]-MC</p>
+  </div>
+  
+   <div style="float:left;margin-left: 30px;">
+  <h3>Time left to update results</h3><span style="color: green; font-size: large;">
+  [% IF bet.get_timeleft_update.years > 0 %][% bet.get_timeleft_update.years %] <span style="color: black; font-size: small; vertical-align: middle;">Years</span> [% END %]
+  [% IF bet.get_timeleft_update.months > 0 %][% bet.get_timeleft_update.months %] <span style="color: black; font-size: small; vertical-align: middle;">Months</span> [% END %]
+  [% IF bet.get_timeleft_update.days > 0 %][% bet.get_timeleft_update.days %] <span style="color: black; font-size: small; vertical-align: middle;">Days</span> [% END %]
+  [% IF bet.get_timeleft_update.hours > 0 %][% bet.get_timeleft_update.hours %] <span style="color: black; font-size: small; vertical-align: middle;">Hours</span> [% END %]
+  [% IF bet.get_timeleft_update.minutes > 0 %][% bet.get_timeleft_update.minutes %] <span style="color: black; font-size: small; vertical-align: middle;">Minutes</span>[% END %]</span>
+    [% IF bet.get_timeleft_update.seconds > 0 %][% bet.get_timeleft_update.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>A participant has failed to update their status.</i></span>[% END %]</span>
+  </div>
+
+  [% END %]
+
+<div style="float:left; width: 700px;">
+<h2>Description</h2>
+[% bet.description %]
+<br />Created by [% bet.user.name %] on [% bet.created_time_readable %].
+</div>
+
+
+<div style="float:left; height: auto; width: 750px; position: relative;">
+[% IF bet.type == '1' %] 	  
+<h2>Current Bets</h2>
+
+<table style="text-align: center; float:left; width: 345px;">
+<tr><th colspan='3' style="text-align: center;">Side 1</th></tr>
+
+<tr><th colspan='3' style="text-align: center;"><h3><span style="color:red;">[% bet.side_one %]</span></h3></th></th></tr>
+<tr><th colspan='3' style="text-align: center;">
+[% IF bet.get_h_side != undef %]
+<h3>Odds [% IF bet.get_h_side == 1 %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% ELSE %]<span style="color: green;">1<span style="color:black;"> : </span>[% bet.get_ratio  | format('%.2f') %][% END %]</span></h3>
+[% END %]
+</th></th></tr>
+
+[% WHILE (userbet = userbets_s_one.next) %]
+<tr><td style="width: 60;"><img src="[% c.uri_for("/AVATAR/" _ userbet.user_serial) %]" alt="[% c.user.name %] picture" /></td><td><h2>[% userbet.user.name %]</h2></td><td style="width: 60;"><h3 style="color: green;">[% userbet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
+[% END %]
+<tr><td  colspan='3'>[% IF userbets_s_one.first != undef %]<h3>Total Amount</h3> <h3 style="color: green;">[% total_side_one %]<span style="color:black;"> mc </span></h3>[% END %]</td></tr>
+</table>
+<table style="text-align: center; float:left; width: 345px; margin-left: 30px;">
+<tr><th colspan='3' style="text-align: center;">Side 2</th></tr>
+<tr><th colspan='3' style="text-align: center; vertical-align: middle;"><h3><span style="color:blue;">[% bet.side_two %]</span></h3></th></th></tr>
+<tr><th colspan='3' style="text-align: center;">[% IF bet.get_h_side != undef %]<h3>Odds [% IF bet.get_h_side == 2 %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% ELSE %]<span style="color: green;">1<span style="color:black;"> : </span>[% bet.get_ratio | format('%.2f') %][% END %]</span></h3>[% END %]</th></th></tr>
+[% WHILE (userbet = userbets_s_two.next) %]
+<tr><td style="width: 60;"><img src="[% c.uri_for("/AVATAR/" _ userbet.user_serial) %]" alt="[% c.user.name %] picture" /></td>
+<td><h2>[% userbet.user.name %]</h2></td>
+<td style="width: 60;"><h3 style="color: green;">[% userbet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
+[% END %]
+<tr><td  colspan='3'>[% IF userbets_s_two.first != undef %]<h3>Total Amount</h3> <h3 style="color: green;">[% total_side_two %]<span style="color:black;"> mc </span></h3>[% END %]</td></tr>
+</table>
+
+[% END %]
+
+<!-- OO -->
+[% IF bet.type == '2' %] 	  
+<h2>Current Bets</h2>
+
+<table style="text-align: center; float:left; width: 345px;">
+<tr><th colspan='3' style="text-align: center;">Side 1</th></tr>
+
+<tr><th colspan='3' style="text-align: center;"><h3><span style="color:red;">[% bet.user.name %]</span></h3></th></th></tr>
+
+[% IF bet.user_status != undef %]
+<tr><td  colspan='3'><h3>Reported Result</h3> 
+<p style="margin-top: -15px;"><span style="font-size: small;">on [% bet.u_status_time_readable %]</span></p>
+[% SWITCH bet.user_status %]
+[% CASE 1 %]
+<h3 style="color: green;">Win</h3>
+[% CASE 2 %]
+<h3 style="color: red;">Loss</h3>
+[% CASE 3 %]
+<h3>Draw</h3>
+[% CASE undef %]
+No result reported
+[% END %]
+</h3></td></tr>
+
+[% END %]
+
+<tr><td  colspan='3'><h3>Amount</h3> <h3 style="color: green;">[% bet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
+</table>
+<table style="text-align: center; float:left; width: 345px; margin-left: 30px;">
+<tr><th colspan='3' style="text-align: center;">Side 2</th></tr>
+<tr><th colspan='3' style="text-align: center; vertical-align: middle;"><h3><span style="color:blue;">[% IF bet.challenger_serial != NULL %][% bet.challenger.name %][% ELSE %][% IF bet.user_serial != c.user.serial and bet.challenger_serial == NULL and bet.type == 2 %]
+      <a href="/bet/[% bet.id %]/challenge">Accept Challenge</a>
+		[% ELSE %]<span style="color:gray;">No Challenger</span>[% END %][% END %]</span></h3></th></th></tr>
+
+
+[% IF bet.challenger_status != undef %]
+<tr><td  colspan='3'><h3>Reported Result</h3>
+<p style="margin-top: -15px;"><span style="font-size: small;">on [% bet.c_status_time_readable %]</span></p>
+[% SWITCH bet.challenger_status %]
+[% CASE 1 %]
+<h3 style="color: green;">Win</h3>
+[% CASE 2 %]
+<h3 style="color: red;">Loss</h3>
+[% CASE 3 %]
+<h3>Draw</h3>
+[% END %]
+[% END %]
+
+</h3></td></tr>
+
+<tr><td  colspan='3'><h3>Amount</h3> <h3 style="color: green;">[% bet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
+
+</table>
+
+[% END %]
+
+<!-- OO -->
+</div>
+
+
+</div>
+
+
+<div style="clear:both;"></div>
+[% IF (bet.type == 2 and (bet.user_serial == c.user.serial or bet.challenger_serial == c.user.serial )) or bet.type == 1 %]
+<h2>Comments</h2>
+[% WHILE (comment = bet_comments.next) %]
+<div style="height: auto; width: 775px; margin:5px; border-bottom: solid 1px; padding: 10px 0 10px 0;">
+[% comment.comment %]<br />
+[% comment.user.name %] posted on [% comment.created_time_readable %]
+</div>
+[% END %]
+<div style="height: auto; width: 775px; margin:5px; padding: 10px 0 10px 0;">
+<div style="float:right"><a href="/bet/[% bet.id %]/comment">Post Comment</a></div>
+</div>
+[% END %]

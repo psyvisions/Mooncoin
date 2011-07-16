@@ -1,0 +1,75 @@
+[% META title = 'Reports' %]
+[% PROCESS admin/admin_submenu %]
+[% PROCESS admin/admin_bet_submenu %]
+
+<table class='withdrawals'>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Participants</th>
+      <th>Bet ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Created</th>
+      <th>uStatus</th>
+      <th>cStatus</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% WHILE (report = reports.next) %]
+        <tr>
+          <td>[% report.id %]</td>
+          <td><a href="[% c.uri_for("/admin/user/" _ report.user.serial) %]">[% report.user.name %]</a></td>
+          <td><a href="[% c.uri_for("/admin/user/" _ report.bet.challenger.serial) %]">[% report.bet.challenger.name %]</a>
+          <a href="[% c.uri_for("/admin/user/" _ report.bet.user.serial) %]">[% report.bet.user.name %]</a>
+          </td>
+          <td><a href="/admin/bet/[% report.bet_serial %]/view">[% report.bet_serial %]</td>
+          <td>[% report.title %]</td>
+          <td>[% report.description %]</td>
+          <td>[% report.created_at %]</td>
+          
+          [% IF report.bet.user_status == 1 %]
+          <td class="positive-result">
+          Won
+          [% ELSIF report.bet.user_status == 2 %]
+          <td class="negative-result">
+          Lost
+          [% ELSIF report.bet.user_status == 3 %]
+ 		  <td>
+          Draw
+          [% ELSE %]
+          <td>
+          [% END %]
+          </td>
+                   
+          [% IF report.bet.challenger_status == 1 %]
+           <td class="positive-result">
+          Won
+          [% ELSIF report.bet.challenger_status == 2 %]
+          <td class="negative-result">
+          Lost
+          [% ELSIF report.bet.challenger_status == 3 %]
+          <td>
+          Draw
+          [% ELSE %]
+          <td>
+          [% END %]
+          </td>
+
+          <td>
+              <a href="/admin/report/[% report.id %]/view">View</a>
+          </td>
+        </tr>
+    [% END %]
+  </tbody>
+</table>
+
+[% IF reports.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('/admin/reports', undef, { page => reports.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF reports.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('/admin/reports', undef, { page => reports.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]

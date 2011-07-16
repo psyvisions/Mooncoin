@@ -1,0 +1,7 @@
+<ul class='bets_submenu'>
+  <li><a href='[% c.uri_for('/bets/bitcoin') %]'>All</a></li>
+  <li><a href='[% c.uri_for('/bets/bitcoin/skill') %]'>Game of Skill</a></li>
+  <li><a href='[% c.uri_for('/bets/bitcoin/foresight') %]'>Game of Foresight</a></li>|&nbsp;&nbsp;&nbsp;  
+  <li><a href='[% c.uri_for('/bet/skill/bitcoin') %]'>Start Skill Bet</a></li>
+  <li><a href='[% c.uri_for('/bet/foresight/bitcoin') %]'>Start Foresight Bet</a></li>
+</ul>

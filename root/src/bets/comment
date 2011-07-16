@@ -1,0 +1,5 @@
+[% META title = 'Bets' %]
+<div style="margin-top:25px;">
+<p>This area allows you to communicate with fellow participants. In game of skill, these messages are private and can be used to share information to arrange games. In games of foresight, they are public.</p>
+[% form %]
+</div>

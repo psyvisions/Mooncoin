@@ -3,4 +3,6 @@
   <li><a href='[% c.uri_for('/user/deposit/bitcoin') %]'>Deposit Bitcoins</a></li>
   <li><a href='[% c.uri_for('/user/withdraw/namecoin') %]'>Withdraw Namecoins</a></li>
   <li><a href='[% c.uri_for('/user/withdraw/bitcoin') %]'>Withdraw Bitcoins</a></li>
+   <li><a href='[% c.uri_for('/user/hands') %]'>Hand History</a></li>
+  
 </ul>

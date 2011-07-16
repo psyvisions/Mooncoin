@@ -1,0 +1,5 @@
+[% META title = 'View Report' %]
+[% report.id %]
+[% report.user.id %]
+[% report.bet.id %]
+[% report.description %]

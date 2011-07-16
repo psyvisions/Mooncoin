@@ -3,14 +3,16 @@
 <p>Mooncoin does collect rake in order to maintain our hosting, improve our code and add new features. 
 
 <p><b>We do our best to offer the best rates.</b></p>
-<p><b>Our current rake is under 1 percent.</b></p>
+<p><b>Our current rake is 1 percent. This is the same for both poker and other betting.</b></p>
 
 <p>We do not charge rake if the hand ends on the first betting round - before the flop.</p>
 
 <div style="border: solid 1px; padding: 10px; width: 500px;">
 <p><strong>Heads-Up</strong><br /> 
-we collect 0.8% rake with x5 BB cap and 0.5 BTC/NMC absolute cap.</p>
+we collect 1% rake with x5 BB cap and 0.5 BTC/NMC absolute cap.</p>
 
 <p><strong>Round</strong><br />
- we collect 0.8% rake with x10 BB cap and 1 BTC/NMC absolute cap.</p>
+ we collect 1% rake with x10 BB cap and 1 BTC/NMC absolute cap.</p>
 </div>
+
+

@@ -1,0 +1,33 @@
+[% IF bet.type == 2 %]
+[% SWITCH bet.category %] 
+        [% CASE 1 %]
+          Starcraft
+        [% CASE 2 %]
+          Counter-Strike
+        [% CASE 3 %]
+         League of Legends
+        [% CASE 4 %]
+          Other
+   	    [% END %]
+[% ELSIF bet.type == 1 %]
+[% SWITCH bet.category %] 
+        [% CASE 1 %]
+          Starcraft
+        [% CASE 2 %]
+          Street Fighter
+        [% CASE 3 %]
+          Basketball
+        [% CASE 4 %]
+          Baseball
+        [% CASE 5 %]
+          Football
+        [% CASE 6 %]
+          Hockey
+        [% CASE 7 %]
+          Soccer
+        [% CASE 8 %]
+          Politics
+        [% CASE 9 %]
+          Other
+   	    [% END %]
+[% END %]

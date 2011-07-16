@@ -1,0 +1,12 @@
+[% META title = 'Skill' %]
+[% PROCESS bets/bets_submenu %]
+<div style="clear:both;"></div>
+<div class='right_column' style="height: 350px;">
+[% PROCESS user/balance %]
+</div>
+<h2>Games of Skill</h2>
+<p>Here you can place bet's on on your own performance in a game of your choice, put your ability to the test. You will be unable to delete the bet after it has been accepted by a challenger so verify the information in this form is correct before submitting it.</p>
+
+<p>Be clear about the challenge you are making.</p>
+
+[% form %]

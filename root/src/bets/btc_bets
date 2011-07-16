@@ -1,0 +1,92 @@
+[% META title = 'Bets' %]
+[% PROCESS bets/bets_btc_submenu %]
+
+<div style="clear:both;"></div>
+
+
+<div class='right_column' style="float:right; width: auto; padding-right: 5px;">
+<h2>Skill</h2>
+<p><a href="/bets/bitcoin/skill/1">Starcraft</a></p>
+<p><a href="/bets/bitcoin/skill/2">Counter-Strike</a></p>
+<p><a href="/bets/bitcoin/skill/3">League of Legends</a></p>
+<p><a href="/bets/bitcoin/skill/5">Team Fortress</a></p>
+<p><a href="/bets/bitcoin/skill/4">Other</a></p>
+<h2>Foresight</h2>
+<p><a href="/bets/bitcoin/foresight/1">Starcraft</a></p>
+<p><a href="/bets/bitcoin/foresight/2">Street Fighter</a></p>
+<p><a href="/bets/bitcoin/foresight/3">Basketball</a></p>
+<p><a href="/bets/bitcoin/foresight/4">Baseball</a></p>
+<p><a href="/bets/bitcoin/foresight/5">Football</a></p>
+<p><a href="/bets/bitcoin/foresight/6">Hockey</a></p>
+<p><a href="/bets/bitcoin/foresight/7">Soccer(Football)</a></p>
+<p><a href="/bets/bitcoin/foresight/8">Politics</a></p>
+<p><a href="/bets/bitcoin/foresight/9">Other</a></p>
+</div>
+
+
+<div style='width: auto; min-height: 500px;'>
+<h2>Bitcoin Bets</h2>
+<p>The following is a list of bets submitted by users, all bets are in bitcoin-mooncoins.</p> 
+<div style="height: auto; width: 825px; margin:5px;">    
+[% IF game == undef %]
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]
+[% ELSIF game != undef and category == undef %]
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]
+[% ELSE %]
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]
+[% END %]
+</div>
+
+
+[% WHILE (bet = bets.next) %]
+<div style="height: auto; width: 825px; margin:5px; border-bottom: solid 1px; padding: 10px 0 10px 0;">
+[% PROCESS bets/index_items %]
+</div>
+[% END %]
+
+<div style="height: auto; width: 825px; margin:5px;">    
+[% IF game == undef %]
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]
+[% ELSIF game != undef and category == undef %]
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]
+[% ELSE %]
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]
+[% END %]
+</div>
+
+
+</div>

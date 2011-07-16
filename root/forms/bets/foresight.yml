@@ -1,0 +1,71 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Text
+    name: bet_title
+    label: Title
+    size: 60
+    comment: Title of event, and league where possible. 
+    constraints:
+      - Required
+
+  - type: Select
+    name: bet_category
+    label: Category
+    empty_first: Category
+    constraints:
+      - Required
+    options:
+      - [ '1', 'StarCraft' ]
+      - [ '2', 'Street Fighter' ]
+      - [ '3', 'Basketball' ]
+      - [ '4', 'Baseball' ]
+      - [ '5', 'Football' ]
+      - [ '6', 'Hockey' ]
+      - [ '7', 'Soccer' ]
+      - [ '8', 'Politics' ]
+      - [ '9', 'Other' ]
+      
+  - type: DateTime
+    name: bet_deadline
+    label: Ending Date/Time
+    comment: The date and time the event starts. It is best for this to be set before the event rather then after it ends.
+    default_natural: 'today'
+    year:
+      less: 0
+      plus: 2
+    auto_inflate: 1
+    constraints:
+      - Required
+      
+  - type: Text
+    name: bet_side_one
+    label: Side 1
+    size: 100
+    comment: This could be a team, a player, etc
+    constraints:
+      - Required
+   
+  - type: Text
+    name: bet_side_two
+    label: Side 2
+    size: 100
+    comment: This could be a team, a player, etc
+    constraints:
+      - Required
+
+  - type: Textarea
+    name: bet_description
+    label: Description
+    comment: Give details about what you wish to bet on.
+    constraints:
+      - Required
+
+  - type: Submit
+    value: Post Bet
+    name: submit
+
+constraints:
+  - SingleValue

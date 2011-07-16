@@ -1,0 +1,28 @@
+
+[% IF bet.type == 2 %]<p>[% IF bet.user_status != undef %]<span style="color:black;">[% bet.user.name %]</span><span style="color: gray;"> has reported a [% SWITCH bet.user_status %]
+[% CASE 1 %]
+<span style="color: green;">Win</span>
+[% CASE 2 %]
+<span style="color: red;">Loss</span>
+[% CASE 3 %]
+<span style="">Draw</span>
+[% END %]
+on [% bet.u_status_time_readable %].
+[% END %]
+
+
+[% IF bet.challenger_status != undef %]
+<span style="color:black;">[% bet.challenger.name %]</span><span style="color: gray;"> has reported a [% SWITCH bet.challenger_status %]
+[% CASE 1 %]
+<span style="color: green;">Win</span>
+[% CASE 2 %]
+<span style="color: red;">Loss</span>
+[% CASE 3 %]
+<span style="">Draw</span>
+[% END %]
+on [% bet.c_status_time_readable %].
+[% END %]
+
+
+</p>
+[% END %]

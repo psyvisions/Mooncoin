@@ -1,0 +1,9 @@
+<div style="clear:both;"></div>
+<ul class='admin_submenu' style="margin-top: 5px; margin-bottom: 5px;">
+<li><a href='[% c.uri_for('/admin/bets') %]'>All</a></li>
+<li><a href='[% c.uri_for('/admin/bets/ready') %]'>Ready</a></li>
+<li><a href='[% c.uri_for('/admin/bets/conflict') %]'>Conflict</a></li>
+<li><a href='[% c.uri_for('/admin/bets/timedout') %]'>Timed out</a></li>
+<li><a href='[% c.uri_for('/admin/bets/finished') %]'>Finished</a></li>
+  <li><a href='[% c.uri_for('/admin/reports') %]'>Reports</a></li>
+</ul>

@@ -46,6 +46,19 @@ sub index :Path :Args(0) {
     $c->forward('deposit_bitcoin_refresh');
 }
 
+sub profile :Local :CaptureArgs(1) {
+  my ($self, $c, $user_id) = @_;
+  
+  $c->stash->{user} = $c->model("PokerNetwork::Users")->find($user_id);
+}
+
+sub user_view :Chained('profile') :PathPart('profile') :Args(0) {
+  my ($self, $c) = @_;
+
+}
+
+
+
 sub login :Local :Args(0) :FormConfig {
     my ( $self, $c ) = @_;
 

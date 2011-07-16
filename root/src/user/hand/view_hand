@@ -1,4 +1,5 @@
 [% META title = 'Game history' %]
+[% PROCESS user/myaccount_submenu %]
 
 <a href='javascript:history.go(-1);'> &lt;&lt; Back </a>
 <pre>

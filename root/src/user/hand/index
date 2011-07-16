@@ -1,6 +1,6 @@
 [% META title = 'Games history' %]
-
-<table>
+[% PROCESS user/myaccount_submenu %]
+<table style="margin-top: 10px;">
   <tr><th>Hand #</th><th>Players</th><th>Date</th><th>Result</th><th>Action</th></tr>
   [% WHILE (hand = hands.next) %]
     [% money = hand.get_amounts(user.serial) -%]

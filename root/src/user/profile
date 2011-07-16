@@ -1,0 +1,9 @@
+[% META title = 'Profile' %]
+
+<h2>User Profile</h2>
+<div>
+<div style="float: left; margin-right: 10px;"><img src="[% c.uri_for("/AVATAR/" _ c.user.serial) %]" alt="[% c.user.name %] picture" /> </div>
+<h3>[% c.user.name %]</h3>
+<h3>User Standing: Good</h3> 
+</div>
+<div style="clear:both;"></div>

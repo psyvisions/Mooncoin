@@ -1,0 +1,22 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Select
+    name: bet_choose_winner
+    label: Choose Winner
+    empty_first: Category
+    constraints:
+      - Required
+    options:
+      - [ '1', 'Side 1' ]
+      - [ '2', 'Side 2' ]
+      - [ '3', 'Draw' ]
+
+  - type: Submit
+    value: Decide
+    name: submit
+
+constraints:
+  - SingleValue

@@ -167,12 +167,23 @@ table td {
 
 .admin_submenu {
  margin-top: 0px;
- padding-bottom: 10px;
+ margin-bottom: -5px;
  float: right;
 }
 
 .admin_submenu li{
+  list-style: none;
+  margin-right: 15px;
+  display: inline;
+}
 
+.bets_submenu {
+ margin-top: 0px;
+ margin-bottom: -5px;
+ float: right;
+}
+
+.bets_submenu li{
   list-style: none;
   margin-right: 15px;
   display: inline;

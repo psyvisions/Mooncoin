@@ -1,0 +1,5 @@
+[% META title = 'Bets' %]
+<div style="margin-top:25px;">
+<p>After your game is complete you must enter your status. The bet is verified by a person before it is processed, and your honesty is tracked. If there is a conflict make sure you save your replays, videos and save screenshots when applicable.</p>
+[% form %]
+</div>

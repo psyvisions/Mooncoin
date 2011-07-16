@@ -1,0 +1,63 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Text
+    name: bet_title
+    label: Title
+    size: 60
+    comment: What type of game? 1v1, 2v2, etc? Gold level only?
+    constraints:
+      - Required
+
+  - type: Select
+    name: bet_category
+    label: Category
+    empty_first: Category
+    constraints:
+      - Required
+    options:
+      - [ '1', 'StarCraft' ]
+      - [ '2', 'Counter-Strike' ]
+      - [ '3', 'League of Legends' ]
+      - [ '4', 'Team Fortress' ]
+      - [ '4', 'Other' ]
+      
+  - type: Select
+    name: bet_conditions
+    label: Conditions
+    comment: If other specify in the description. 
+    empty_first: Conditions
+    constraints:
+      - Required
+    options:
+      - [ '1', 'One Match' ]
+      - [ '2', 'Best of 3' ]
+      - [ '3', 'Best of 5' ]
+      - [ '4', 'Highest Score' ]
+      - [ '5', 'Other' ]
+   
+  - type: Textarea
+    name: bet_description
+    label: Description
+    comment: Give details about what you wish to bet on.
+    constraints:
+      - Required
+
+  - type: Text
+    name: amount
+    label: Amount
+    comment: Enter amount in Mooncoins (not BTC/NMC). Minimum bet amount - 0.01 MC.
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+
+  - type: Submit
+    value: Place Bet
+    name: submit
+
+constraints:
+  - SingleValue

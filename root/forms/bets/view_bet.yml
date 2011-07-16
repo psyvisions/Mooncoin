@@ -1,0 +1,31 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Select
+    name: side
+    label: Which side?
+    empty_first: Side
+    constraints:
+      - Required
+    options:
+      - [ '1', 'Side 1' ]
+      - [ '2', 'Side 2' ]
+
+  - type: Text
+    name: amount
+    label: Amount
+    comment: Enter amount in Mooncoins (not BTC/NMC). Minimum bet amount - 0.01 MC. You may bet more then once.  
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+      
+  - type: Submit
+    value: Submit Bet
+    name: submit
+
+constraints:
+  - SingleValue
