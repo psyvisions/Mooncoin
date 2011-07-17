@@ -217,27 +217,20 @@ sub get_timeleft{
 
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
-
    
   my $diff1 = DateTime::Duration->new( $dt2 - $dt1 );
-  
-  
+    
   my $bet_stop = DateTime::Duration->new(minutes => 30,);
   
-  my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
-  
-  if( $diff1->minutes < $bet_stop->minutes and $diff1->hours == 0 and $diff1->days == 0 and $diff1->months == 0 and $diff1->years ==$bet_stop->years ){
- 
-  }else{
+  my $diff;
+  my $passed;
+
   $diff = $diff1 + $bet_stop; 
-  }
+  
   if ($diff->is_negative == 0 ){
-  $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+  $diff = $diff - $diff;
   }
   return $diff;
-
-
-
 }
 
 sub deadline_passed{
@@ -254,13 +247,10 @@ sub deadline_passed{
     
   my $bet_stop = DateTime::Duration->new(minutes => 30,);
   
-  my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+  my $diff;
     my $passed;
-  if( $diff1->minutes < $bet_stop->minutes and $diff1->hours == 0 and $diff1->days == 0 and $diff1->months == 0 and $diff1->years ==$bet_stop->years ){
 
-  }else{
   $diff = $diff1 + $bet_stop; 
-  }
   
   if ($diff->is_negative == 0 ){
   $passed = 1;
@@ -279,7 +269,6 @@ sub deadline_passed{
   $timehold = $self->c_status_at;
   }
   
-  
   my $fmt = '%Y-%m-%dT%H:%M:%S';
   my $parser = DateTime::Format::Strptime->new(pattern => $fmt);
 
@@ -297,7 +286,9 @@ sub deadline_passed{
   }else{
   $passed = 0;
   }
-  return $passed;}
+  return $passed;
+ 
+  }
 
 }
 }

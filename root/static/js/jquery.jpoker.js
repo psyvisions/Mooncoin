@@ -503,10 +503,10 @@
             for(var magnitude = 1000000000; magnitude > 0; magnitude /= 1000) {
                 if(chips >= magnitude || magnitude == 1) {
                     if(chips / magnitude < 10) {
-                        chips = chips / ( magnitude / 100 );
-                        return parseInt(chips / 100, 10) + this.fraction + parseInt((chips/10) % 10, 10) + parseInt(chips % 10, 10) + unit[0];
+                        chips = Math.round(chips / ( magnitude / 100 ));
+                        return parseInt(chips / 100, 10) + this.fraction + parseInt( (chips/10) % 10, 10) + parseInt(chips % 10, 10) + unit[0];
                     } else if(chips / magnitude < 100) {
-                        chips = chips / ( magnitude / 10 );
+                        chips = Math.round(chips / ( magnitude / 10 ));
                         return parseInt(chips / 10, 10) + this.fraction + parseInt(chips % 10, 10) + unit[0];
                     } else {
                         return parseInt(chips / magnitude, 10) + unit[0];
@@ -2402,6 +2402,33 @@
                 case 'PacketPokerTableMove':
                 this.notifyUpdate(packet);
                 break;
+
+                case 'PacketPokerBlindRequest':
+                case 'PacketPokerAnteRequest':
+                    serial = packet.serial;
+                    if (server.serial != serial) break;
+                    
+                    game_id = parseInt(packet.game_id);
+                    if (packet.state != "late") {
+                        server.sendPacket({ 'type': 'PacketPokerBlind',
+                                            'serial': serial,
+                                            'game_id': game_id,
+                                            'amount': packet.amount,
+                                            'dead': packet.dead
+                                            });
+
+                        server.sendPacket({ 'type': 'PacketPokerAutoBlindAnte',
+                                            'serial': serial,
+                                            'game_id': game_id
+                                            });
+                    }
+                    else {
+                    server.sendPacket({ 'type': 'PacketPokerWaitBigBlind',
+                                        'serial': serial,
+                                        'game_id': game_id
+                                        });
+                    }
+                    break;
 
                 }
             }
@@ -4554,10 +4581,6 @@
             $('#sitin' + id).click(function() {
                     var server = jpoker.getServer(url);
                     if(server && server.loggedIn()) {
-                        server.sendPacket({ 'type': 'PacketPokerAutoBlindAnte',
-                                    'serial': serial,
-                                    'game_id': game_id
-                                    });
                         server.sendPacket({ 'type': 'PacketPokerSit',
                                     'game_id': table.id,
                                     'serial': serial });
@@ -4749,11 +4772,12 @@
                                         'serial': server.serial,
                                         'game_id': table.id,
                                         'amount': parseInt($('.jpoker_rebuy_current', rebuy).attr('title'), 10)
-                                        });
-                            if ($('.jpoker_auto_sitin input', rebuy).is(':checked')) {
-                                $('#sitin' + id).click();
-                            }
-                            server.preferences.auto_sitin = $('.jpoker_auto_sitin input', rebuy).is(':checked');
+                            }, function() {
+                              if ($('.jpoker_auto_sitin input', rebuy).is(':checked')) {
+                                  $('#sitin' + id).click();
+                              }
+                              server.preferences.auto_sitin = $('.jpoker_auto_sitin input', rebuy).is(':checked');
+                            });
                         } else {
                             jpoker.error('rebuy with NaN amount: ' + $('.jpoker_rebuy_current', rebuy).attr('title'));
                         }
@@ -4873,10 +4897,6 @@
                     if(server) {
                         var player = server.tables[game_id].serial2player[serial];
                         if(player.money > jpoker.chips.epsilon) {
-                            server.sendPacket({ 'type': 'PacketPokerAutoBlindAnte',
-                                        'serial': serial,
-                                        'game_id': game_id
-                                        });
                             server.sendPacket({ 'type': 'PacketPokerSit',
                                         'serial': serial,
                                         'game_id': game_id
@@ -4920,6 +4940,8 @@
             var server = jpoker.getServer(url);
             var table = jpoker.getTable(url, game_id);
             var betLimit = table.betLimit;
+            // TODO: it'd be better to check for blindAnte round here
+            if (betLimit == null) return;
             var send = function(what) {
                 var server = jpoker.getServer(url);
                 if(server) {
@@ -5054,14 +5076,14 @@
                     click = function() {
                         var server = jpoker.getServer(url);
                         if(server) {
-                            var amount = parseInt($('.jpoker_raise_input', raise_input).attr('value'), 10);
+                            var amount = parseFloat($('.jpoker_raise_input', raise_input).attr('value'), 10);
                             if (!isNaN(amount)) {
                                 amount = Math.min(amount, betLimit.max);
                                 amount = Math.min(amount, betLimit.allin);
                                 server.sendPacket({ 'type': 'PacketPokerRaise',
                                             'serial': serial,
                                             'game_id': game_id,
-                                            'amount': amount*100
+                                            'amount': Math.round(amount*100)
                                             });
                             } else {
                                 jpoker.error('raise with NaN amount: ' + $('.jpoker_raise_input', raise_input).attr('value'));
@@ -5074,7 +5096,7 @@
                                 server.sendPacket({ 'type': 'PacketPokerRaise',
                                             'serial': serial,
                                             'game_id': game_id,
-                                            'amount': betLimit.allin*100
+                                            'amount': Math.round(betLimit.allin*100)
                                             });
                             }
                         }).show();
@@ -5101,7 +5123,7 @@
                             server.sendPacket({ 'type': 'PacketPokerRaise',
                                         'serial': serial,
                                         'game_id': game_id,
-                                        'amount': amount
+                                        'amount': Math.round(amount)
                                         });
                         }
                     };
@@ -5273,7 +5295,7 @@
             var element = $(id);
             if(chips > 0) {
                 element.show();
-                $('.jpoker_chips_amount', element).text(jpoker.chips.SHORT(chips)).append('mc');
+                $('.jpoker_chips_amount', element).text(jpoker.chips.SHORT(chips));
                 element.attr('title', jpoker.chips.LONG(chips));
             } else {
                 element.hide();
