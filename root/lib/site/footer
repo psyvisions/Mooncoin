@@ -6,7 +6,7 @@
       <li><a href='[% c.uri_for('/rake') %]'>About Rake</a></li>
       <li><a href='https://github.com/MrMoon/Mooncoin/archives/master'>Download sources</a></li>
       <li><a href='https://github.com/MrMoon/Mooncoin/issues'>Report bugs</a></li>
-      <li><a href='[% c.uri_for('/contactus') %]'>Contact Us</a></li>
+      <li><a href='[% c.uri_for('/contactus') %]'>Contact/FAQ</a></li>
       <li class='last'><a target="_blank" href="http://webchat.freenode.net/?channels=mooncoin">#mooncoin</a></li> 
   </ul>
 </div>

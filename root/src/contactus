@@ -3,12 +3,28 @@
 <h2>"State the nature of your medical emergency"</h2>
 <p>IRC: freenode.com - <a target="_blank" href="http://webchat.freenode.net/?channels=mooncoin">#mooncoin</a></p>
 
-<p><b>Looking for a table of a specific size and betting structure? Contact us!</b></p>
+<p><b>Looking for a table of a specific size and betting structure? Or a new game? Contact us!</b></p>
 
 <p>Please, send me email to <a href='mailto:mrmooncoin@gmail.com'>mrmooncoin@gmail.com</a> with any questions, suggestions or comments.</p>
 
 <p>We also appreciate it if you report any suspected bots.</p>
 
-<h2>FAQ</h2>
+<h1>FAQ</h1>
+<h2>General</h2>
+<p><b>Q. What is the conversion rate to mooncoins?</b></p>
+<p>A. 100 mooncoins = 1 BTC/NMC</p>
+<h2>Games of Foresight</h2>
+<p><b>Q. How are games of foresight resolved?</b></p>
+<p>A. It is a two layer system. Users have the ability to report the result once the event starts, this allows our users to verify outcomes but also allows us to track honesty. On top of that each game of foresight bet is resolved by an actual person who googles the result and verifies what the users claim. It is then processed.</p>
+<p><b>Q. How many people can participate in games of foresight?</b></p>
+<p>A. Unlimited number of users can create an unlimited number of bets (well, limited by your funds). Odds are automatically generated from the bets placed. You are betting against other users, not the house.</p>
+<p><b>Q. How are draws resolved?</b></p>
+<p>A. In case of a draw, coins are returned.</p>
+<h2>Games of Foresight</h2>
+<p><b>Q. What happens in case of dispute?</b></p>
+<p>A. All users are encouraged to save replays, screenshots, video or whatever other evidence to present in the case of a dispute. A person will review them and determine the winner. If a winner cannot be determined the funds will be frozen until a winner can be determined.</p>
+<p><b>Q. What happens in cases where no match took place?</b></p>
+<p>A. Both users can opt for a draw and have their coins returned or arrange another match time.</p>
+<h2>Poker</h2>
 <p><b>Q. I can't see the cards/buttons, what do I do?</b></p>
-<p>Try reloading the page, this appears to be a lingering problem in Jpoker that the community is trying to work out. You can reload the page at any time during the game without affecting the play, it will simply catch you up when you return.</p>
+<p>A. Try reloading the page, this appears to be a lingering problem in Jpoker that the community is trying to work out. You can reload the page at any time during the game without affecting the play, it will simply catch you up when you return.</p>
