@@ -218,16 +218,16 @@ sub get_timeleft{
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
    
-  my $diff1 = DateTime::Duration->new( $dt2 - $dt1 );
+  my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
     
   my $bet_stop = DateTime::Duration->new(minutes => 30,);
   
   my $diff;
   my $passed;
 
-  $diff = $diff1 + $bet_stop; 
+  $diff = $diff1 - $bet_stop; 
   
-  if ($diff->is_negative == 0 ){
+  if ($diff->is_negative == 1 ){
   $diff = $diff - $diff;
   }
   return $diff;
@@ -243,16 +243,16 @@ sub deadline_passed{
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
 
-  my $diff1 = DateTime::Duration->new( $dt2 - $dt1 );
+  my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
     
   my $bet_stop = DateTime::Duration->new(minutes => 30,);
   
   my $diff;
     my $passed;
 
-  $diff = $diff1 + $bet_stop; 
+  $diff = $diff1 - $bet_stop; 
   
-  if ($diff->is_negative == 0 ){
+  if ($diff->is_negative == 1 ){
   $passed = 1;
   }else{
   $passed = 0;

@@ -5295,7 +5295,7 @@
             var element = $(id);
             if(chips > 0) {
                 element.show();
-                $('.jpoker_chips_amount', element).text(jpoker.chips.SHORT(chips));
+                $('.jpoker_chips_amount', element).text(jpoker.chips.SHORT(chips)).append('mc');
                 element.attr('title', jpoker.chips.LONG(chips));
             } else {
                 element.hide();

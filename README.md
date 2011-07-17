@@ -17,6 +17,23 @@ Start by installing python-poker-network:
 
     sudo apt-get install python-poker-network
 
+Install bitcoind from David Armstrong repository:
+
+    sudo add-apt-repository ppa:stretch/bitcoin
+    sudo apt-get update
+    sudo apt-get install bitcoin
+
+Our implementation of python-poker-network software uses /dev/random. Check it
+if it produce a lot of data by default (cat /dev/random) - you need 1-5 Kb/s 
+minumum. If this do not happen you need to install rng-tools:
+
+    sudo apt-get install rng-tools
+
+And configure it to use initial data from /dev/urandom. To do this edit file
+/etc/default/rng-tools and insert following line at the end of the file:
+
+    HRNGDEVICE=/dev/urandom 
+
 Install Apache web server:
 
     sudo apt-get install apache2
@@ -47,6 +64,10 @@ Enable new settings:
 Install Memcached:
 
     sudo apt-get install memcached
+
+Install GIT and build tools
+
+    sudo apt-get install git build-essential
 
 Install and configure Room
 --------------------------
@@ -89,6 +110,10 @@ due failing some tests:
 Copy room-sample.conf to room.conf and edit it inserting correct login/passwords
 for pythonpokernetwork database, bitcoind, twitter, GA, etc.
 
+Import new schema:
+
+    mysql -u root pythonpokernetwork < schema_dump.sql
+
 
 Replace stock Python Poker Network source code with Room's code
 ---------------------------------------------------------------
@@ -113,7 +138,7 @@ And repeat for /usr/share/pyshared.
 Install Python bitstring package:
 
     sudo apt-get install python-pip 
-    pip install bitstring
+    sudo pip install bitstring
 
 And restart poker server:
 
