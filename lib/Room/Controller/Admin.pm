@@ -570,7 +570,8 @@ sub view_bet :Chained('bet_base') :PathPart('view') :Args(0) {
 sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
   my ($self, $c) = @_;
   my $bet = $c->stash->{bet};
-  
+  my $fees;
+  my $amount_due;
   
   if($bet->type == 2){
   my $amount = $c->stash->{bet}->amount;
@@ -584,8 +585,8 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
     $u_balance->update();
   }
   
-    my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
 
     $u_balance->amount(
       $u_balance->amount() + ( $amount_due / 100 )
@@ -606,8 +607,8 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
     $c_balance->update();
   }
   
-    my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
   
       $c_balance->amount(
       $c_balance->amount() + ( $amount_due / 100 )
@@ -628,8 +629,8 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
     $c_balance->update();
   }
   
-      my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+     $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
   
       $c_balance->amount(
       $c_balance->amount() + ( $amount_due / 100 )
@@ -643,8 +644,8 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
     $u_balance->update();
   }
 
-    my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
 
     $u_balance->amount(
       $u_balance->amount() + ( $amount_due / 100 )
@@ -868,6 +869,8 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   my ($self, $c) = @_;
   my $bet = $c->stash->{bet};
   my $form = $c->stash->{form};
+  my $fees;
+  my $amount_due;
   
   if( $bet->type == 2){
   
@@ -886,8 +889,8 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
     $u_balance->update();
   }
 
-     my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
 
     $u_balance->amount(
       $u_balance->amount() + ( $amount_due / 100 )
@@ -909,8 +912,8 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
     $c_balance->update();
   }
   
-      my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
   
       $c_balance->amount(
       $c_balance->amount() + ( $amount_due / 100 )
@@ -933,8 +936,8 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
     $c_balance->update();
   }
   
-      my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
   
       $c_balance->amount(
       $c_balance->amount() + ( $amount_due / 100 )
@@ -948,8 +951,8 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
     $u_balance->update();
   }
 
-    my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
 
     $u_balance->amount(
       $u_balance->amount() + ( $amount_due / 100 )
@@ -985,7 +988,8 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
 sub bet_cancel :Chained('bet_base') :PathPart('cancel') :Args(0) {
   my ($self, $c) = @_;
   my $bet = $c->stash->{bet};
-  
+  my $fees;
+  my $amount_due;
   my $username;
   my $userbet;
   if( $bet->type == 2 ){
@@ -998,8 +1002,8 @@ sub bet_cancel :Chained('bet_base') :PathPart('cancel') :Args(0) {
     $c_balance->update();
   }
   
-      my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
   
       $c_balance->amount(
       $c_balance->amount() + ( $amount_due / 100 )
@@ -1013,8 +1017,8 @@ sub bet_cancel :Chained('bet_base') :PathPart('cancel') :Args(0) {
     $u_balance->update();
   }
 
-    my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
 
     $u_balance->amount(
       $u_balance->amount() + ( $amount_due / 100 )
@@ -1032,8 +1036,8 @@ sub bet_cancel :Chained('bet_base') :PathPart('cancel') :Args(0) {
       $balance->update();
     }
     
-        my $fees = $amount * 0.01;
-    my $amount_due = $amount - $fees;
+    $fees = $amount * 0.01;
+    $amount_due = $amount - $fees;
     $balance->amount(
       $balance->amount() + ( $amount_due / 100 )
     );

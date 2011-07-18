@@ -123,6 +123,10 @@ __PACKAGE__->has_many(
 );
 
 __PACKAGE__->has_many(
+  'participants' => 'Room::Schema::PokerNetwork::Result::User2bet',
+  { 'foreign.user_serial' => 'self.user_serial' }, { cascade_delete => 0 },
+);
+__PACKAGE__->has_many(
   'userbets' => 'Room::Schema::PokerNetwork::Result::User2bet',
   { 'foreign.bet_serial' => 'self.serial' }, { cascade_delete => 0 },
 );
@@ -211,32 +215,38 @@ sub get_h_side {
 
 sub get_timeleft{
   my ($self) = @_;
-  my $bet_stop = DateTime::Duration->new(minutes => 0,);
+  
   my $fmt = '%Y-%m-%dT%H:%M:%S';
   my $parser = DateTime::Format::Strptime->new(pattern => $fmt);
-  my $diff = DateTime::Duration->new(minutes => 0,);
+
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
-   
-  my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
-  
-  if($diff1->is_positive == 1 and $diff1->minutes > 30){  
-  $bet_stop = DateTime::Duration->new(minutes => 30, seconds => 0,);
-  $diff = $diff1 - $bet_stop; 
-  }
-  
-  if ($diff->is_negative == 1 ){
-  $diff = $diff - $diff;
-  }
 
+   
+  my $diff1 = DateTime::Duration->new( $dt2 - $dt1 );
+  
+  
+  my $bet_stop = DateTime::Duration->new(minutes => 30,);
+  
+  my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+  
+  if( $diff1->minutes < $bet_stop->minutes and $diff1->hours == 0 and $diff1->days == 0 and $diff1->months == 0 and $diff1->years ==$bet_stop->years ){
+ 
+  }else{
+  $diff = $diff1 + $bet_stop; 
+  }
+  if ($diff->is_negative == 0 ){
+  $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+  }
   return $diff;
+
+
+
 }
 
 sub deadline_passed{
   my ($self) = @_;
-  my $bet_stop = DateTime::Duration->new(minutes => 0,);
-  my $diff = DateTime::Duration->new(minutes => 0,);
-  my $passed = 0;
+  
   if( $self->type == 1){
   my $fmt = '%Y-%m-%dT%H:%M:%S';
   my $parser = DateTime::Format::Strptime->new(pattern => $fmt);
@@ -244,21 +254,24 @@ sub deadline_passed{
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
 
-  my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
+   
+  my $diff1 = DateTime::Duration->new( $dt2 - $dt1 );
   
-  ### FIX TIMER - start bet that happens soon and it has + 30 minutes on timer
-  if($diff1->is_positive == 1 and $diff1->minutes > 30){  
-  $bet_stop = DateTime::Duration->new(minutes => 30,);
-  $diff = $diff1 - $bet_stop; 
-  }
-    
-  if ($diff->is_negative == 1 ){
-  $passed = 1;
-  }
-  elsif ($diff->is_positive == 1 ){
-  $passed = 0;
+  
+  my $bet_stop = DateTime::Duration->new(minutes => 30,);
+  
+  my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+    my $passed;
+  if( $diff1->minutes < $bet_stop->minutes and $diff1->hours == 0 and $diff1->days == 0 and $diff1->months == 0 and $diff1->years ==$bet_stop->years ){
+
   }else{
+  $diff = $diff1 + $bet_stop; 
+  }
+  
+  if ($diff->is_negative == 0 ){
   $passed = 1;
+  }else{
+  $passed = 0;
   }
   return $passed;
 }elsif ( $self->type == 2){ 
@@ -272,6 +285,7 @@ sub deadline_passed{
   $timehold = $self->c_status_at;
   }
   
+  
   my $fmt = '%Y-%m-%dT%H:%M:%S';
   my $parser = DateTime::Format::Strptime->new(pattern => $fmt);
 
@@ -284,16 +298,12 @@ sub deadline_passed{
   my $u_deadline =  $dt1 + $seven ;
   $diff = $dt2 - $u_deadline;
       my $passed;
-  if ($diff->is_negative == 1 ){
+  if ($diff->is_negative == 0 ){
   $passed = 1;
-  }
-  elsif ($diff->is_positive == 1 ){
-  $passed = 0;
   }else{
-  $passed = 1;
+  $passed = 0;
   }
-  return $passed;
-  }
+  return $passed;}
 
 }
 }
