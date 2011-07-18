@@ -6,7 +6,12 @@
 <h2>Current Time</h2>
 <p>[% bet.time_now_readable %]</p>
 [% PROCESS user/balance %]
-[% IF bet.active != undef %]<b style="color: green;">Bet Completed</b>[% END %][% IF bet.active == 1 %]<br /><b style="color: red;">Funds Frozen</b>[% END 
+[% IF bet.active != undef %]<b style="color: green;">Bet Completed</b>[% END %][% IF bet.active == 1 %]<br /><b style="color: red;">Funds Frozen</b>
+[% ELSIF bet.active == 2 %]<br /><b style="color: red;">Side 1 Won!</b>
+[% ELSIF bet.active == 3 %]<br /><b style="color: blue;">Side 2 Won!</b>
+[% ELSIF bet.active == 4 %]<br /><b style="color: red;">Draw!</b>
+
+[% END 
 %]
 	<h2>Bet Options</h2>
 	<p>[% IF (bet.user_serial == c.user.serial and bet.challenger_serial == undef and bet.type == 2) or (bet.type == 1 and bet.userbets == undef and bet.user_serial == c.user.serial)  %]
@@ -125,6 +130,10 @@
 <tr><td style="width: 60;"><img src="[% c.uri_for("/AVATAR/" _ userbet.user_serial) %]" alt="[% c.user.name %] picture" /></td><td><h2>[% userbet.user.name %]</h2></td><td style="width: 60;"><h3 style="color: green;">[% userbet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
 [% END %]
 <tr><td  colspan='3'>[% IF userbets_s_one.first != undef %]<h3>Total Amount</h3> <h3 style="color: green;">[% total_side_one  | format('%.2f') %]<span style="color:black;"> mc </span></h3>[% END %]</td></tr>
+<tr><td  colspan='3'>[% IF bet.active == 2 %]<br /><b style="color: green; font-size:large;">Won</b>
+[% ELSIF bet.active == 3 %]<br /><b style="color: red; font-size:large;">Lost</b>
+[% ELSIF bet.active == 4 %]<br /><b style="color: gray; font-size:large;">Draw</b>
+[% END %]</td></tr>
 </table>
 <table style="text-align: center; float:left; width: 345px; margin-left: 30px;">
 <tr><th colspan='3' style="text-align: center;">Side 2</th></tr>
@@ -136,6 +145,10 @@
 <td style="width: 60;"><h3 style="color: green;">[% userbet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
 [% END %]
 <tr><td  colspan='3'>[% IF userbets_s_two.first != undef %]<h3>Total Amount</h3> <h3 style="color: green;">[% total_side_two  | format('%.2f') %]<span style="color:black;"> mc </span></h3>[% END %]</td></tr>
+<tr><td  colspan='3'>[% IF bet.active == 2 %]<br /><b style="color: red; font-size:large;">Lost</b>
+[% ELSIF bet.active == 3 %]<br /><b style="color: green; font-size:large;">Won</b>
+[% ELSIF bet.active == 4 %]<br /><b style="color: gray; font-size:large;">Draw</b>
+[% END %]</td></tr>
 </table>
 
 [% END %]

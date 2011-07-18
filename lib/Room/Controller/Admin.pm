@@ -500,7 +500,7 @@ sub finished :Chained('base') :Path('bets/finished') :Args(0) {
   $page = 1 if $page < 1;
 
   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
-    active => ['0','1']
+    active => ['0..4']
  
   }, { 
       rows => 50,
@@ -592,8 +592,8 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
       $u_balance->amount() + ( $amount_due / 100 )
     );
     $u_balance->update();
-  
-  $c->stash->{bet}->active('0');
+  #active 2 is side 1 - confusing but helps record wins easier
+  $c->stash->{bet}->active('2');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
    push @{$c->flash->{messages}}, "Author Won!";
@@ -614,8 +614,8 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
       $c_balance->amount() + ( $amount_due / 100 )
     );
     $c_balance->update();
-    
-  $c->stash->{bet}->active('0');
+  #active 3 is side 2 - confusing but helps record wins easier
+  $c->stash->{bet}->active('3');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
   push @{$c->flash->{messages}}, "Challenger Won!";
@@ -651,8 +651,8 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
       $u_balance->amount() + ( $amount_due / 100 )
     );
     $u_balance->update();
-    
-  $c->stash->{bet}->active('0');
+    #active 4 is draw - confusing but helps record wins easier
+  $c->stash->{bet}->active('4');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
     
@@ -756,7 +756,8 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
   }
 
   }
-  $c->stash->{bet}->active('0');
+  #active 2 is side 1 - confusing but helps record wins easier
+  $c->stash->{bet}->active('2');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
   
@@ -817,7 +818,8 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
   }
 
   }
-    $c->stash->{bet}->active('0');
+   #active 3 is side 2 - confusing but helps record wins easier
+    $c->stash->{bet}->active('3');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
   
@@ -851,8 +853,8 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
     
     $balance->update();
     }
-    
-    $c->stash->{bet}->active('0');
+     #active 4 is draw - confusing but helps record wins easier
+    $c->stash->{bet}->active('4');
     $c->stash->{bet}->finished_at(DateTime->now);
     $c->stash->{bet}->update();
     

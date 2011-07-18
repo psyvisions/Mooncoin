@@ -74,7 +74,7 @@ sub index :Path :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 10,
+      rows => 5,
       page => $page,
       order_by => { 
         -asc => 'deadline' 
@@ -105,7 +105,7 @@ sub nmc_bets :Path('namecoin')  :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 10,
+      rows => 7,
       page => $page,
       order_by => { 
         -asc => 'deadline' 
@@ -138,7 +138,7 @@ sub btc_bets :Chained('base') :Path('bitcoin')  :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 10,
+      rows => 7,
       page => $page,
       order_by => { 
         -asc => 'deadline' 
@@ -191,7 +191,7 @@ sub complete  :Path('complete') :Args(0) {
   $page = 1 if $page < 1;
  
   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
-  active => 0,
+  active => [1..4],
   }, { 
       rows => 5,
       page => $page,
