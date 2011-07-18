@@ -1,6 +1,6 @@
 
 <div>
-<div style="float: left; margin-right: 10px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]"><img src="[% c.uri_for("/AVATAR/" _ bet.user_serial) %]" alt="[% c.user.name %] picture" /></a></div>
+
 [% IF bet.type == '1' %]
 <h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Foresight</a>  <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => Total <span style="color: green;">[% bet.get_total | format('%.2f')  %]</span> mc[% IF bet.get_h_side != 0 %] => Odds <span style="color: green;"> [% IF bet.get_h_side == 2 %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% ELSE %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% END %]</span>[% END %]</span></h2>
 <h3><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %] @ [% bet.event_time_readable %]</a></h3>
@@ -22,6 +22,7 @@
 
 
 [% ELSE %]
+<div style="float: left; margin-right: 10px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]"><img src="[% c.uri_for("/AVATAR/" _ bet.user_serial) %]" alt="[% c.user.name %] picture" /></a></div>
 <h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Skill</a>   <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => <span style="color: green;">[% bet.amount %]</span> mc</h2>
 <h3><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %]</a> created by [% bet.user.name %] at [% bet.created_time_readable %].</h3>
 <p>[% bet.description %]</p>

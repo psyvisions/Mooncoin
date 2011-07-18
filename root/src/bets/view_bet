@@ -18,9 +18,7 @@
 		<p>Betting has closed.</p>
 		
 		[% IF cur_user_bets.first != undef %]
-		  [% IF has_bet.first != undef %] Your status has been updated. [% ELSE %] <a href="/bet/[% bet.id %]/status">Update Status</a>                    
-		  [% END %]
-       [% END %]
+		         [% END %]
 		
  [% ELSIF bet.deadline_passed == 0 and bet.type == 1 %]
 		<p>[% form %]</p>
