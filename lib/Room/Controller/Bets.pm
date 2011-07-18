@@ -74,10 +74,10 @@ sub index :Path :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 5,
+      rows => 10,
       page => $page,
       order_by => { 
-        -desc => 'created_at' 
+        -asc => 'deadline' 
       } 
   });
 }
@@ -105,10 +105,10 @@ sub nmc_bets :Path('namecoin')  :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 5,
+      rows => 10,
       page => $page,
       order_by => { 
-        -desc => 'created_at' 
+        -asc => 'deadline' 
       } 
   });
 }
@@ -138,10 +138,10 @@ sub btc_bets :Chained('base') :Path('bitcoin')  :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 5,
+      rows => 10,
       page => $page,
       order_by => { 
-        -desc => 'created_at' 
+        -asc => 'deadline' 
       } 
   });
 }
@@ -321,6 +321,7 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
       title => $title,
       description => $description,
       category => $category,
+      deadline => DateTime->now( time_zone => 'local' ),
       conditions => $conditions,
       created_at => DateTime->now( time_zone => 'local' ),
     });
@@ -632,7 +633,7 @@ sub status :Chained('base') :PathPart('status') :FormConfig{
   };
   }elsif($c->stash->{bet}->type == 1){
   
-   my $user_ubs = $c->stash->{bet}->userbets->search({ 
+   my $user_ubs = $bet->userbets->search({ 
    user_serial => $c->user->serial,
    });  
   
@@ -645,12 +646,16 @@ sub status :Chained('base') :PathPart('status') :FormConfig{
 
   if ($form->submitted_and_valid) {
   my $status = $form->params->{bet_status_update};
+  my $ub;
   
-  my $save = $user_ubs->first;
+  foreach $ub($user_ubs){
+    $ub->status($status);
+    $ub->status_at(DateTime->now( time_zone => 'local' ));
+    $ub->update();
+ 
+  }
   
- $save->status($status);
-  $save->status_at(DateTime->now( time_zone => 'local' ));
-  $save->update();
+
   
   
   	push @{$c->flash->{messages}}, "You have updated your status in this game.";
