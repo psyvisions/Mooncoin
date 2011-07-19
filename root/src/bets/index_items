@@ -1,10 +1,8 @@
 <div>
 [% IF bet.type == '1' %]
-<h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Foresight</a>  <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => Total <span style="color: green;">[% bet.get_total | format('%.2f')  %]</span> mc[% IF bet.get_h_side != 0 %] => Odds <span style="color: green;"> [% IF bet.get_h_side == 2 %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% ELSE %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% END %]</span>[% END %]</span></h2>
+<h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Foresight</a> <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => Total <span style="color: green;">[% bet.get_total | format('%.2f')  %]</span> mc[% IF bet.get_total != 0 %] => Odds <span style="color: green;"> <span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1</span>[% END %]</span></h2>
 <h3><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %] @ [% bet.event_time_readable %]</a></h3>
-
 <p>[% bet.description %]</p>
-
 <div style="float:right;">
 [% IF bet.deadline_passed == 0 %]<span style="color: gray;">Time left</span>[% END %] 
 <span style="color: green; font-size: large;">
@@ -15,21 +13,15 @@
   [% IF bet.get_timeleft.minutes > 0 %][% bet.get_timeleft.minutes %] <span style="color: black; font-size: small;">Minutes</span>[% END %]</span>
 [% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]
 </div>
-
 [% ELSE %]
 <div style="float: left; margin-right: 10px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]"><img src="[% c.uri_for("/AVATAR/" _ bet.user_serial) %]" alt="[% c.user.name %] picture" /></a></div>
 <h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Skill</a>   <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => <span style="color: green;">[% bet.amount %]</span> mc</h2>
 <h3><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %]</a> created by [% bet.user.name %] at [% bet.created_time_readable %].</h3>
 <p>[% bet.description %]</p>
-
 [% END %]
 </div> 
-
 [% IF bet.type == 1 %]<span style="font-size: x-small; color: gray;">Created by [% bet.user.name %] @ [% bet.created_time_readable %].</span>[% END %]
 [% IF bet.type == 2 %][% IF bet.challenger_serial != undef %]<span style="font-size: large;color: black;">[% bet.user.name %]</span><span style="color: gray;"> was been challenged by </span><span style="font-size: large;color: black;">[% bet.challenger.name %]</span><span style="color: gray;"> on [% bet.challenged_time_readable %].</span>[% ELSE %]<span style="font-size: large; color: black;">[% bet.user.name %]</span> <span style="color: gray;">is awaiting a challenger.</span>[% END %][% END %]
-
 [% PROCESS bets/winloss_switch %]
-
-
 [% IF (bet.type == 2 and bet.challenger_serial != undef) and (bet.challenger_status != undef or bet.user_status != undef) %]
 <i style="color: gray; font-size: small;">[% SWITCH bet.who_won %][% CASE bet.user.serial %][% bet.user.name %]</span> has won the challenge.[% CASE bet.challenger.serial %]<span style="font-size: large;">[% bet.challenger.name %]</span> has won the challenge.[% CASE 0 %]The challenge has ended in a draw.[% CASE 'conflict' %]The challenge has ended in conflict. Staff will begin a review.[% END %]</i>[% END %]

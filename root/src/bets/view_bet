@@ -118,7 +118,7 @@
 
 <tr><th colspan='3' style="text-align: center;"><h3><span style="color:red;">[% bet.side_one %]</span></h3></th></th></tr>
 <tr><th colspan='3' style="text-align: center;">
-[% IF bet.get_h_side != undef %]
+[% IF bet.get_total != 0 %]
 <h3>Odds [% IF bet.get_h_side == 1 %]<span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1[% ELSE %]<span style="color: green;">1<span style="color:black;"> : </span>[% bet.get_ratio  | format('%.2f') %][% END %]</span></h3>
 [% END %]
 </th></th></tr>
