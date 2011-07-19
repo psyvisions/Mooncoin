@@ -27,23 +27,14 @@ sub auto :Private {
     $c->res->redirect(
       $c->uri_for('/user/login', '')
     );
-
     return;
   }
-
-  1;
-}
-sub auto :Private {
-  my ($self, $c) = @_;
-
   if (!$c->user && $c->action->private_path !~ /bets\/(namecoin|bitcoin)/) {
     $c->res->redirect(
       $c->uri_for('/user/login', '')
     );
-
     return;
   }
-
   1;
 }
 
@@ -105,7 +96,7 @@ sub nmc_bets :Path('namecoin')  :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 7,
+      rows => 6,
       page => $page,
       order_by => { 
         -asc => 'deadline' 
@@ -138,7 +129,7 @@ sub btc_bets :Chained('base') :Path('bitcoin')  :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 7,
+      rows => 6,
       page => $page,
       order_by => { 
         -asc => 'deadline' 
@@ -151,7 +142,6 @@ sub awaiting_challenger :Path('awaiting_challenger')  :CaptureArgs(2) {
   
   my $page = $c->req->params->{'page'};
   $page = 1 if $page < 1;
- 
  
   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({ 
   user_serial => $c->user->serial, 
@@ -333,7 +323,6 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
    push @{$c->flash->{messages}}, "Your bet is placed and the coins have been placed in escrow.";
   }
 }
-##
 
 sub view_bet : Chained('base') PathPart('view') Args(0) :FormConfig{
   my ($self, $c) = @_;
@@ -350,25 +339,11 @@ sub view_bet : Chained('base') PathPart('view') Args(0) :FormConfig{
       $c->uri_for('/bets')
     );
      }else{
-      
-      ##coments
+
       $c->stash->{bet_comments} = $c->model("PokerNetwork::Comments")->search({ 
      bet_serial => $bet->serial}, {order_by => { 
         -asc => 'created_at' } });
-      ##
-      
-      $c->stash->{cur_user_bets} = $c->model("PokerNetwork::User2bet")->search({ 
-     bet_serial => $bet->serial,
-     user_serial => $c->user->serial,}, {order_by => { 
-        -desc => 'created_at' } });
-      
-      
-     $c->stash->{has_bet} = $c->model("PokerNetwork::User2bet")->search({
-     bet_serial => $bet->serial,
-     user_serial => $c->user->serial,
-     status => [1,2,3],
-     });
-     ##
+
 
      $c->stash->{userbets_s_one} = $c->model("PokerNetwork::User2bet")->search({ 
      bet_serial => $bet->serial,

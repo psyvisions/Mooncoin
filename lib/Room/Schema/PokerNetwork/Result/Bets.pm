@@ -121,11 +121,6 @@ __PACKAGE__->has_many(
   'comments' => 'Room::Schema::PokerNetwork::Result::Comments',
   { 'foreign.bet_serial' => 'self.serial' }, { cascade_delete => 0 },
 );
-
-__PACKAGE__->has_many(
-  'participants' => 'Room::Schema::PokerNetwork::Result::User2bet',
-  { 'foreign.user_serial' => 'self.user_serial' }, { cascade_delete => 0 },
-);
 __PACKAGE__->has_many(
   'userbets' => 'Room::Schema::PokerNetwork::Result::User2bet',
   { 'foreign.bet_serial' => 'self.serial' }, { cascade_delete => 0 },
@@ -149,19 +144,14 @@ sub get_total {
 sub get_ratio {
   my ($self) = @_;
   
-     ## Total side one amount
      my $userbets_s_one_total = $self->userbets->search({ 
-     bet_serial => $self->serial, side => 1}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
+     bet_serial => $self->serial, side => 1}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });   
      my $row_one = $userbets_s_one_total->first;
-
      my $total_side_one = $row_one->get_column('total_amount');
-     ## Total side two amount
+
      my $userbets_s_two_total = $self->userbets->search({ 
      bet_serial => $self->serial, side => 2}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
      my $row_two = $userbets_s_two_total->first;
-
      my $total_side_two = $row_two->get_column('total_amount');  
      ## RATIO
      my $ratio;
@@ -182,30 +172,22 @@ sub get_ratio {
 
 sub get_h_side {
   my ($self) = @_;
-  
-       ## Total side one amount
+
      my $userbets_s_one_total = $self->userbets->search({ 
-     bet_serial => $self->serial, side => 1}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
+     bet_serial => $self->serial, side => 1}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });   
      my $row_one = $userbets_s_one_total->first;
-
      my $total_side_one = $row_one->get_column('total_amount');
-     ## Total side two amount
-     my $userbets_s_two_total = $self->userbets->search({ 
-     bet_serial => $self->serial, side => 2}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
-     my $row_two = $userbets_s_two_total->first;
 
+     my $userbets_s_two_total = $self->userbets->search({ 
+     bet_serial => $self->serial, side => 2}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });    
+     my $row_two = $userbets_s_two_total->first;
      my $total_side_two = $row_two->get_column('total_amount');  
-     ## RATIO
-     my $ratio;
+
 	 my $h_side;
      if( $total_side_one > $total_side_two and $total_side_two != undef ){
-      $ratio = $total_side_one / $total_side_two;
       $h_side = 1;
       }
      elsif( $total_side_one < $total_side_two and $total_side_one != undef ){
-      $ratio = $total_side_two / $total_side_one; 
       $h_side = 2;
     }
     else{$h_side = 0;}
@@ -222,26 +204,23 @@ sub get_timeleft{
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
 
-   
-  my $diff1 = DateTime::Duration->new( $dt2 - $dt1 );
-  
+  my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
   
   my $bet_stop = DateTime::Duration->new(minutes => 30,);
-  
-  my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
-  
-  if( $diff1->minutes < $bet_stop->minutes and $diff1->hours == 0 and $diff1->days == 0 and $diff1->months == 0 and $diff1->years ==$bet_stop->years ){
- 
+   my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+  if( $diff1->in_units('seconds') < $bet_stop->in_units('seconds') ){
+  $diff = $diff1;
   }else{
-  $diff = $diff1 + $bet_stop; 
+  $diff = $diff1 - $bet_stop; 
   }
-  if ($diff->is_negative == 0 ){
+
+   
+   
+   
+  if ($diff->is_negative == 1 ){
   $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
   }
   return $diff;
-
-
-
 }
 
 sub deadline_passed{
@@ -254,21 +233,19 @@ sub deadline_passed{
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
 
-   
-  my $diff1 = DateTime::Duration->new( $dt2 - $dt1 );
-  
+  my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
   
   my $bet_stop = DateTime::Duration->new(minutes => 30,);
   
   my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
     my $passed;
-  if( $diff1->minutes < $bet_stop->minutes and $diff1->hours == 0 and $diff1->days == 0 and $diff1->months == 0 and $diff1->years ==$bet_stop->years ){
-
+  if( $diff1->in_units('seconds') < $bet_stop->in_units('seconds') ){
+  $diff = $diff1;
   }else{
-  $diff = $diff1 + $bet_stop; 
+  $diff = $diff1 - $bet_stop; 
   }
   
-  if ($diff->is_negative == 0 ){
+  if ($diff->is_negative == 1 ){
   $passed = 1;
   }else{
   $passed = 0;
@@ -284,7 +261,6 @@ sub deadline_passed{
   }elsif($self->user_status == undef and $self->challenger_status != undef ){
   $timehold = $self->c_status_at;
   }
-  
   
   my $fmt = '%Y-%m-%dT%H:%M:%S';
   my $parser = DateTime::Format::Strptime->new(pattern => $fmt);
@@ -304,22 +280,19 @@ sub deadline_passed{
   $passed = 0;
   }
   return $passed;}
-
 }
 }
 
 sub get_timeleft_update{
   my ($self) = @_;
   
-  
-   if( $self->challenger_serial != undef){
+  if( $self->challenger_serial != undef){
   my $timehold = $self->challenged_at;
   if ( $self->challenger_status == undef and $self->user_status != undef ){
   $timehold = $self->u_status_at;
   }elsif($self->user_status == undef and $self->challenger_status != undef ){
   $timehold = $self->c_status_at;
   }
-  
   
   my $fmt = '%Y-%m-%dT%H:%M:%S';
   my $parser = DateTime::Format::Strptime->new(pattern => $fmt);

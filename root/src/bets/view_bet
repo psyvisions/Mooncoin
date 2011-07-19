@@ -22,9 +22,6 @@
 [% IF bet.deadline_passed == 1 and bet.type == 1 %]
 		<p>Betting has closed.</p>
 		
-		[% IF cur_user_bets.first != undef %]
-		         [% END %]
-		
  [% ELSIF bet.deadline_passed == 0 and bet.type == 1 %]
 		<p>[% form %]</p>
 		<p>Betting closes 30 minutes before the event starts.</p>
@@ -108,7 +105,7 @@
 <div style="float:left; width: 700px;">
 <h2>Description</h2>
 [% bet.description %]
-<br />Created by [% bet.user.name %] on [% bet.created_time_readable %].
+<br /><span style="font-size: x-small; color: gray;">Created by [% bet.user.name %] on [% bet.created_time_readable %].</span>
 </div>
 
 

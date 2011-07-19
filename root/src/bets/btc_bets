@@ -30,26 +30,26 @@
 <div style="height: auto; width: 825px; margin:5px;">    
 [% IF game == undef %]
 [% IF bets.pager.next_page %]
-<span style="float: right"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+<span style="float: right; font-size: large;"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
 [% END %]
 [% IF bets.pager.previous_page %]
-<span style="float: left"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+<span style="float: left; font-size: large;"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]
 [% ELSIF game != undef and category == undef %]
 [% IF bets.pager.next_page %]
-<span style="float: right"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+<span style="float: right; font-size: large;"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
 [% END %]
 
 [% IF bets.pager.previous_page %]
-<span style="float: left"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+<span style="float: left; font-size: large;"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]
 [% ELSE %]
 [% IF bets.pager.next_page %]
-<span style="float: right"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+<span style="float: right; font-size: large;"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
 [% END %]
 
 [% IF bets.pager.previous_page %]
-<span style="float: left"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+<span style="float: left; font-size: large;"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]
 [% END %]
 </div>
@@ -64,26 +64,26 @@
 <div style="height: auto; width: 825px; margin:5px;">    
 [% IF game == undef %]
 [% IF bets.pager.next_page %]
-<span style="float: right"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+<span style="float: right; font-size: large;"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
 [% END %]
 [% IF bets.pager.previous_page %]
-<span style="float: left"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+<span style="float: left; font-size: large;"><a href="[% c.uri_for('bitcoin', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]
 [% ELSIF game != undef and category == undef %]
 [% IF bets.pager.next_page %]
-<span style="float: right"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+<span style="float: right; font-size: large;"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
 [% END %]
 
 [% IF bets.pager.previous_page %]
-<span style="float: left"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+<span style="float: left; font-size: large;"><a href="[% c.uri_for('bitcoin', game, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]
 [% ELSE %]
 [% IF bets.pager.next_page %]
-<span style="float: right"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+<span style="float: right; font-size: large;"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
 [% END %]
 
 [% IF bets.pager.previous_page %]
-<span style="float: left"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+<span style="float: left; font-size: large;"><a href="[% c.uri_for('bitcoin', game, category, undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]
 [% END %]
 </div>
