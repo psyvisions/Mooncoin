@@ -4,7 +4,7 @@
 
 <div style='width: auto; min-height: 500px;'>
 <h2>My Bets</h2>
-<p>The following is a list of game of skill bets that you have become associated with, all bets are in mooncoins. (Soon will show game of foresight as well).</p> 
+<p>The following is a list of game of skill bets that you have become associated with.</p> 
 <div style="height: auto; width: 825px; margin:5px;">    
 [% IF game == undef %]
 [% IF bets.pager.next_page %]

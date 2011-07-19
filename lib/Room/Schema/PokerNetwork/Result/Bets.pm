@@ -213,15 +213,22 @@ sub get_timeleft{
   }else{
   $diff = $diff1 - $bet_stop; 
   }
-
-   
-   
    
   if ($diff->is_negative == 1 ){
   $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
   }
-  return $diff;
+  
+  my $string = '<span style="color: green; font-size: large;">';
+  if($diff->years > 0){$string = $string . $diff->years . " <span style='color: black; font-size: small;'>Years</span> ";}
+  if($diff->months > 0){$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Months</span> ";}  
+  if($diff->days > 0){$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Days</span> ";}
+  if($diff->hours > 0){$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hours</span> ";} 
+  if($diff->minutes > 0){$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minutes</span> ";}
+  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}     
+  return $string;  
 }
+
+
 
 sub deadline_passed{
   my ($self) = @_;
@@ -304,14 +311,23 @@ sub get_timeleft_update{
   my $seven = DateTime::Duration->new(days => 7,);
 
   my $u_deadline =  $dt1 + $seven ;
-  $diff = $dt2 - $u_deadline;
+  $diff = $u_deadline - $dt2;
   
-  if ($diff->is_negative == 0 ){
+  if ($diff->is_negative == 1 ){
   $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
   }
   
-  return $diff;
-   }else{ my $diff = 0; return $diff;}
+my $string = '<span style="color: green; font-size: large;">';
+  if($diff->years > 0){$string = $string . $diff->years . " <span style='color: black; font-size: small;'>Years</span> ";}
+  if($diff->months > 0){$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Months</span> ";}  
+  if($diff->days > 0){$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Days</span> ";}
+  if($diff->hours > 0){$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hours</span> ";} 
+  if($diff->minutes > 0){$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minutes</span> ";}
+  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}     
+  return $string;  
+
+  
+  }else{ my $diff = 0; return $diff;}
 }
 
 sub event_time_readable{

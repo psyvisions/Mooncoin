@@ -4,14 +4,11 @@
 <h3><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %] @ [% bet.event_time_readable %]</a></h3>
 <p>[% bet.description %]</p>
 <div style="float:right;">
+
 [% IF bet.deadline_passed == 0 %]<span style="color: gray;">Time left</span>[% END %] 
-<span style="color: green; font-size: large;">
-  [% IF bet.get_timeleft.years > 0 %][% bet.get_timeleft.years %] <span style="color: black; font-size: small;">Years</span> [% END %]
-  [% IF bet.get_timeleft.months > 0 %][% bet.get_timeleft.months %] <span style="color: black; font-size: small;">Months</span> [% END %]
-  [% IF bet.get_timeleft.days > 0 %][% bet.get_timeleft.days %] <span style="color: black; font-size: small;">Days</span> [% END %]
-  [% IF bet.get_timeleft.hours > 0 %][% bet.get_timeleft.hours %] <span style="color: black; font-size: small;">Hours</span> [% END %]
-  [% IF bet.get_timeleft.minutes > 0 %][% bet.get_timeleft.minutes %] <span style="color: black; font-size: small;">Minutes</span>[% END %]</span>
+[% bet.get_timeleft %]
 [% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]
+
 </div>
 [% ELSE %]
 <div style="float: left; margin-right: 10px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]"><img src="[% c.uri_for("/AVATAR/" _ bet.user_serial) %]" alt="[% c.user.name %] picture" /></a></div>

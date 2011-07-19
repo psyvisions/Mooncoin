@@ -10,7 +10,6 @@
 [% ELSIF bet.active == 2 %]<br /><b style="color: red;">Side 1 Won!</b>
 [% ELSIF bet.active == 3 %]<br /><b style="color: blue;">Side 2 Won!</b>
 [% ELSIF bet.active == 4 %]<br /><b style="color: red;">Draw!</b>
-
 [% END 
 %]
 	<h2>Bet Options</h2>
@@ -33,10 +32,8 @@
 
 		<p>[% IF ((bet.user_serial == c.user.serial and bet.user_status == NULL) or (bet.challenger_serial == c.user.serial and bet.challenger_status == NULL)) and bet.challenger_serial != NULL %]
 	
-      [% IF bet.type == 1 and bet.deadline_passed == 1%]
-      
+      [% IF bet.type == 2 and bet.challenger_serial != undef and (bet.challenger_status == undef or bet.user_status == undef) %]
       <a href="/bet/[% bet.id %]/status">Update Status</a>
-      
       [% END %]
       
 		[% END %]</p>
@@ -76,32 +73,22 @@
   </div>
 
   <div style="float:left;margin-left: 30px;">
-  <h3>Betting time left</h3><span style="color: green; font-size: large;">
-  [% IF bet.get_timeleft.years > 0 %][% bet.get_timeleft.years %] <span style="color: black; font-size: small; vertical-align: middle;">Years</span> [% END %]
-  [% IF bet.get_timeleft.months > 0 %][% bet.get_timeleft.months %] <span style="color: black; font-size: small; vertical-align: middle;">Months</span> [% END %]
-  [% IF bet.get_timeleft.days > 0 %][% bet.get_timeleft.days %] <span style="color: black; font-size: small; vertical-align: middle;">Days</span> [% END %]
-  [% IF bet.get_timeleft.hours > 0 %][% bet.get_timeleft.hours %] <span style="color: black; font-size: small; vertical-align: middle;">Hours</span> [% END %]
-  [% IF bet.get_timeleft.minutes > 0 %][% bet.get_timeleft.minutes %] <span style="color: black; font-size: small; vertical-align: middle;">Minutes</span>[% END %]</span>
+  <h3>Betting time left</h3>
+  [% bet.get_timeleft %]
     [% IF bet.get_timeleft.seconds > 0 %][% bet.get_timeleft.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</span>
   </div>
   
-  [% ELSIF bet.type == '2' and bet.challenger_serial != undef and ( bet.c_status != undef or bet.u_status != undef ) %]
-  <div style="float:left;margin-left: 50px;">
-  <h3>Amount</h3><p>[% bet.amount | format('%.2f') %] [% bet.currency.symbol %]-MC</p>
-  </div>
-  
+  [% ELSIF bet.type == '2' and bet.challenger_serial != undef and ( bet.challenger_status != undef or bet.user_status != undef ) %]
    <div style="float:left;margin-left: 30px;">
-  <h3>Time left to update results</h3><span style="color: green; font-size: large;">
-  [% IF bet.get_timeleft_update.years > 0 %][% bet.get_timeleft_update.years %] <span style="color: black; font-size: small; vertical-align: middle;">Years</span> [% END %]
-  [% IF bet.get_timeleft_update.months > 0 %][% bet.get_timeleft_update.months %] <span style="color: black; font-size: small; vertical-align: middle;">Months</span> [% END %]
-  [% IF bet.get_timeleft_update.days > 0 %][% bet.get_timeleft_update.days %] <span style="color: black; font-size: small; vertical-align: middle;">Days</span> [% END %]
-  [% IF bet.get_timeleft_update.hours > 0 %][% bet.get_timeleft_update.hours %] <span style="color: black; font-size: small; vertical-align: middle;">Hours</span> [% END %]
-  [% IF bet.get_timeleft_update.minutes > 0 %][% bet.get_timeleft_update.minutes %] <span style="color: black; font-size: small; vertical-align: middle;">Minutes</span>[% END %]</span>
-    [% IF bet.get_timeleft_update.seconds > 0 %][% bet.get_timeleft_update.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>A participant has failed to update their status.</i></span>[% END %]</span>
+  <h3>Time left to update results</h3>
+  
+  [% bet.get_timeleft_update %]
+  
+  [% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>A participant has failed to update their status.</i></span>[% END %]</span>
   </div>
 
-  [% END %]
 
+[% END %]
 <div style="float:left; width: 700px;">
 <h2>Description</h2>
 [% bet.description %]

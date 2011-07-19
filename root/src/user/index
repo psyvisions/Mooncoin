@@ -1,6 +1,6 @@
 [% META title = 'User account' %]
 [% PROCESS user/myaccount_submenu %]
-<div style="width: 100%; height: 250px; float: none;">
+<div style="width: 100%; height: auto; float: none;">
 <div style="float:left;">
 <h2 class="account-info">Account <span><sup><a href="[% c.uri_for('/user/edit') %]">Edit</a></sup></span></h2>
 
@@ -37,23 +37,22 @@
 To change your avatar, make sure you have valid email set in your account
   and change your picture on <a href="http://gravatar.com/emails/" target="_blank">gravatar.com</a>
 </div>
-test
 </div>
 </div> 
-
+<div style="clear:both;"></div>
 <div id='user-deposits'>
-  <h2 class="account-info">Deposits:</h2>
+  <h2 class="account-info">Deposits</h2>
 
   <table>
     <tr><th>ID</th><th>Currency</th><th>Date</th><th>Amount</th></tr>
     [% FOR deposit IN c.user.deposits %]
-      <tr><td>[% deposit.deposit_id %]</td><td>[% withdrawal.currency.name %]</td><td>[% deposit.created_at %]</td><td>[% deposit.amount | format('%.2f') %]</td></tr>
+      <tr><td>[% deposit.deposit_id %]</td><td>[% deposit.currency.name %]</td><td>[% deposit.created_at %]</td><td>[% deposit.amount | format('%.2f') %]</td></tr>
     [% END %]
   </table>
 </div>
 
 <div id='user-withdrawal'>
-  <h2 class="account-info">Withdrawals:</h2>
+  <h2 class="account-info">Withdrawals</h2>
 
   <table class='withdrawals'>
     <thead>
