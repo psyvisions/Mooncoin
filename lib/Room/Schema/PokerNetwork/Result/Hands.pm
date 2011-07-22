@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use base 'DBIx::Class';
+use Data::Dumper;
 
 __PACKAGE__->load_components(
   "InflateColumn::DateTime",
@@ -76,26 +77,66 @@ sub get_amounts {
 }
 
 sub get_parsed_history {
-  my $self = shift;
-  my $parsed_history;
-  my @players;
-  my %players_by_id;
 
-  my $h = $self->__parse_hands();
-  $parsed_history->{game_history} = $h;
-  $parsed_history->{self} = $self;
+    my $self = shift;
+    my ($parsed_history, @players, %players_by_id);
 
-  foreach my $uid (@{$h->[0]->[7]}) {
-    my $player = $self->result_source->schema->resultset("Users")->find($uid);
-    push @players, $player;
-    $players_by_id{$player->serial} = $player;
-  }
-  $parsed_history->{players} = \@players;
-  $parsed_history->{players_by_id} = \%players_by_id;
+    my $h = $self->__parse_hands();
 
+    my ($handstate, @flop, @turn, @river, $showdown, $rakeindex);
+    my %rounds = ( 'pre-flop' => 0, 'flop' => 1, 'turn' => 2, 'river' => 3 ); 
 
-  return $parsed_history;
+    for(my $y = 0; $y < @{$h}; $y = $y + 1) {
+        my $x = $h->[$y];
+
+        if($x->[0] eq "round") {
+          $handstate = $x->[1];
+        }
+
+        # Save the showdown.  This only exists if state ne 'river'
+        if($x->[0] eq "showdown") {
+          $showdown = $x->[1];
+
+          @flop = @{$showdown}[0..2];
+          @turn = @{$showdown}[0..3];
+          @river = @{$showdown}[0..4];
+        }
+
+        if($x->[0] eq "rake") {
+            $rakeindex = $y;
+        }
+    }
+
+    my @flopblob = ('round','flop',\@flop);
+    my @turnblob = ('round','turn',\@turn);
+    my @riverblob = ('round','river',\@river);
+
+    splice(@{$h}, $rakeindex, 0, \@riverblob) unless $rounds{ $handstate } > 2;
+    splice(@{$h}, $rakeindex, 0, \@turnblob) unless $rounds{ $handstate } > 1;
+    splice(@{$h}, $rakeindex, 0, \@flopblob) unless $rounds{ $handstate } > 0;
+
+    $parsed_history->{game_history} = $h;
+    $parsed_history->{self} = $self;
+
+    foreach my $uid (@{$h->[0]->[7]}) {
+        my $player = $self->result_source->schema->resultset("Users")->find($uid);
+        push @players, $player;
+
+        if (! $player) {
+            $player = $self->result_source->schema->resultset("Users")->new({
+                serial => $uid,
+                name => 'Anonymous',
+            });
+        }
+
+        $players_by_id{$player->serial} = $player;
+    }
+
+    $parsed_history->{players} = \@players;
+    $parsed_history->{players_by_id} = \%players_by_id;
+    return $parsed_history;
 }
+
 
 sub __parse_hands {
   my $self = shift;
