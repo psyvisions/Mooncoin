@@ -111,7 +111,7 @@ __PACKAGE__->belongs_to(
   'challenger' => 'Room::Schema::PokerNetwork::Result::Users',
   { 'foreign.serial' => 'self.challenger_serial' }, { cascade_delete => 0 },
 );
-#reports is kinda messed up but wont fix it right now until I can fix everything
+
 __PACKAGE__->has_many(
   'report' => 'Room::Schema::PokerNetwork::Result::Reports',
   { 'foreign.serial' => 'self.report_serial' }, { cascade_delete => 0 },
@@ -207,17 +207,21 @@ sub get_timeleft{
   my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
   
   my $bet_stop = DateTime::Duration->new(minutes => 30,);
-   my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
-  if( $diff1->in_units('seconds') < $bet_stop->in_units('seconds') ){
+  my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+   
+  if( $diff1->in_units('seconds') < $bet_stop->in_units('seconds')){
   $diff = $diff1;
   }else{
   $diff = $diff1 - $bet_stop; 
   }
-   
   if ($diff->is_negative == 1 ){
   $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+  } 
+  if ($diff->is_negative == 1 ){
+  $diff = $diff - $diff;
   }
-  
+
+  if($diff->is_positive == 1){
   my $string = '<span style="color: green; font-size: large;">';
   if($diff->years > 0){$string = $string . $diff->years . " <span style='color: black; font-size: small;'>Years</span> ";}
   if($diff->months > 0){$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Months</span> ";}  
@@ -225,7 +229,9 @@ sub get_timeleft{
   if($diff->hours > 0){$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hours</span> ";} 
   if($diff->minutes > 0){$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minutes</span> ";}
   if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}     
-  return $string;  
+  return $string;}
+  
+    
 }
 
 
@@ -246,17 +252,32 @@ sub deadline_passed{
   
   my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
     my $passed;
+    
+    
   if( $diff1->in_units('seconds') < $bet_stop->in_units('seconds') ){
   $diff = $diff1;
   }else{
   $diff = $diff1 - $bet_stop; 
   }
   
+   if ($diff->is_negative == 1 ){
+  $diff = $diff - $diff;
+  }
+    if ($diff->is_negative == 1 ){
+  $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
+  } 
+  
+  
+  
   if ($diff->is_negative == 1 ){
   $passed = 1;
+  }elsif ($diff->is_positive == 1 ){ 
+  $passed = 0;  
   }else{
-  $passed = 0;
+  $passed = 1;
   }
+  
+  
   return $passed;
 }elsif ( $self->type == 2){ 
 

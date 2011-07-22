@@ -13,6 +13,7 @@
 %]
 
 	<h2>Admin Options</h2>
+	<p><a href="/admin/bet/[% bet.id %]/edit">Edit bet details</a></p>
 [% IF bet.active == 0 %]	
 DEV: <p><a href="/admin/bet/[% bet.id %]/determine">Determine Winner</a></p>
 Change "Active" Status
@@ -57,12 +58,8 @@ Change "Active" Status
   </div>
 
   <div style="float:left;margin-left: 30px;">
-  <h3>Betting time left</h3><span style="color: green; font-size: large;">
-  [% IF bet.get_timeleft.years > 0 %][% bet.get_timeleft.years %] <span style="color: black; font-size: small; vertical-align: middle;">Years</span> [% END %]
-  [% IF bet.get_timeleft.months > 0 %][% bet.get_timeleft.months %] <span style="color: black; font-size: small; vertical-align: middle;">Months</span> [% END %]
-  [% IF bet.get_timeleft.days > 0 %][% bet.get_timeleft.days %] <span style="color: black; font-size: small; vertical-align: middle;">Days</span> [% END %]
-  [% IF bet.get_timeleft.hours > 0 %][% bet.get_timeleft.hours %] <span style="color: black; font-size: small; vertical-align: middle;">Hours</span> [% END %]
-  [% IF bet.get_timeleft.minutes > 0 %][% bet.get_timeleft.minutes %] <span style="color: black; font-size: small; vertical-align: middle;">Minutes</span>[% END %]</span>
+  <h3>Betting time left</h3>
+  [% bet.get_timeleft %]
     [% IF bet.get_timeleft.seconds > 0 %][% bet.get_timeleft.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</span>
   </div>
   

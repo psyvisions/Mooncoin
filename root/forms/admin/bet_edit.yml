@@ -1,0 +1,26 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+
+  - type: Text
+    name: title
+    size: 60
+    label: Title
+    
+  - type: Textarea
+    name: description
+    label: Description
+    comment: Give details about what you wish to bet on.
+
+  - type: Submit
+    value: Save
+    name: submit
+
+  - type: Submit
+    value: Cancel
+    name: cancel
+
+constraints:
+  - SingleValue

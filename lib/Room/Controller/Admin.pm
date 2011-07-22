@@ -449,7 +449,7 @@ sub bets :Chained('base') :Args(0) {
       rows => 50,
       page => $page,
       order_by => { 
-        -desc => 'title' 
+        -asc => 'created_at' 
       } 
   });
 }
@@ -1074,6 +1074,51 @@ sub bet_freeze :Chained('bet_base') :PathPart('freeze') :Args(0) {
   $c->res->redirect(
       $c->uri_for('/admin/bet/' . $bet->serial . '/view')
     );
+}
+
+
+sub bet_edit :Chained('bet_base') :PathPart('edit') :Args(0) :FormConfig {
+  my ( $self, $c ) = @_;
+
+  my $form = $c->stash->{form};
+  
+  $form->get_field({name => 'title'})->default(
+    $c->stash->{bet}->title
+  );
+  
+  $form->get_field({name => 'description'})->default(
+    $c->stash->{bet}->description
+  );
+  
+  # If 'Cancel' button pressed - redirect to /user page
+  if ($c->req->param('cancel')) {
+    $c->res->redirect(
+      $c->uri_for('/user')
+    );
+  }
+
+  if ($form->submitted_and_valid) {
+  
+    $c->stash->{bet}->title(
+      $form->params->{title}
+    );
+    
+    $c->stash->{bet}->description(
+      $form->params->{description}
+    );
+    
+   $c->stash->{bet}->update();
+  
+    push @{$c->flash->{messages}}, "This bet has been edited.";
+  
+  $c->res->redirect(
+      $c->uri_for('/admin/bet/' . $c->stash->{bet}->serial . '/view')
+    );
+  
+  }
+
+  
+  
 }
 
 
