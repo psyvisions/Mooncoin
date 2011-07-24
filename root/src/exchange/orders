@@ -1,0 +1,31 @@
+[% META title = 'Exchange' %]
+[% PROCESS exchange/exchange_submenu %]
+<div style="clear:both;"></div>
+<h2>Current Orders</h2>
+<p>Here you can view your current active trades.</p>
+<div>
+<div style="float:center;">
+<table id="hor-minimalist-b" style="width:960; margin-left: auto; margin-right: auto;">
+<thead>
+<tr style="text-align:center;"><th scope="col">Trading</th><th scope="col">For price each</th><th scope="col">Amount to be purchased</th><th scope="col">Created on</th><th scope="col">Action</th></tr>
+</thead>
+<tbody>
+[% WHILE (order = orders.next) %]
+<tr>
+<td>[% order.amount %] [% SWITCH order.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% END %]</td>
+<td>[% order.price %] [% SWITCH order.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% END %]<br />
+( [% ( 1 / order.price ) | format('%.4f') %] [% SWITCH order.buy_currency %][% CASE 2 %]BTC[% CASE 1 %]NMC[% END %] )
+</td>
+<td>[% order.amount * order.price %] [% SWITCH order.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% END %]</td>
+<td>[% order.created_at %]</td>
+<td><a href="/exchange/order/[% order.serial %]/cancel">Cancel</a></td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+
+
+</div>
+<div style="clear:both;"></div>

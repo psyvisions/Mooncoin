@@ -1,0 +1,8 @@
+<ul class='bets_submenu'>
+  [% IF c.user %]
+  <li><a href='[% c.uri_for('/exchange') %]'>Statistics</a></li>
+  <li><a href='[% c.uri_for('/exchange/orders') %]'>Orders</a></li>
+  <li><a href='[% c.uri_for('/exchange/trade') %]'>Trade</a></li>
+   <li><a href='[% c.uri_for('/exchange/history') %]'>History</a></li>
+  [% END %]
+</ul>

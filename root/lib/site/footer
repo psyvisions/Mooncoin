@@ -3,7 +3,7 @@
   <ul class='menu'>
       <li class='first'><a href='[% c.uri_for('/') %]'>Home</a></li>
       <li><a href='[% c.uri_for('/credits') %]'>Credits</a></li>
-      <li><a href='[% c.uri_for('/rake') %]'>About Rake</a></li>
+      <li><a href='[% c.uri_for('/rake') %]'>About Fees</a></li>
       <li><a href='https://github.com/MrMoon/Mooncoin/archives/master'>Download sources</a></li>
       <li><a href='https://github.com/MrMoon/Mooncoin/issues'>Report bugs</a></li>
       <li><a href='[% c.uri_for('/contactus') %]'>Contact/FAQ</a></li>

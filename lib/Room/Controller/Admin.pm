@@ -812,6 +812,7 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
       $balance->amount() + ( $amount_due / 100 )
     );
     $balance->update();
+
     }
    
    #update status for winner  

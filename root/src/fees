@@ -1,9 +1,10 @@
-[% META title = 'Rake' %]
+[% META title = 'Fees' %]
 
-<p>Mooncoin does collect rake in order to maintain our hosting, improve our code and add new features. 
+<p>Mooncoin does collect fees in order to maintain our hosting, improve our code and add new features.</p> 
 
-<p><b>We do our best to offer the best rates.</b></p>
-<p><b>Our current rake is 1 percent. This is the same for both poker and other betting.</b></p>
+
+<p><b>Our current fee is 1 percent. This is the same for both poker and other betting.</b></p>
+<p><b>Our current exchange fee is 0.02 percent.</b></p>
 
 <p>We do not charge rake if the hand ends on the first betting round - before the flop.</p>
 

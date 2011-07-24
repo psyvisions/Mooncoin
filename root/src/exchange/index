@@ -1,0 +1,70 @@
+[% META title = 'Exchange' %]
+[% PROCESS exchange/exchange_submenu %]
+<div style="clear:both;"></div>
+<h2>Bitcoin/Namecoin Exchange</h2>
+<p>Hello, this was designed to make more efficient use of mooncoin. This allows you to trade namecoins for bitcoins or bitcoins for namecoins. The exchange simply facilitates the trades for a very small fee ( 0.02 % ) from each half of the transaction. </p>
+<div>
+<div style="float:left;">
+<table id="hor-minimalist-b">
+<thead>
+<tr><th colspan="4"><h2>Trading BTC for NMC</h2></th></tr>
+<tr style="text-align:center;"><th scope="col">Trading</th><th scope="col">Amount</th><th scope="col">Price Each</th></tr>
+</thead>
+<tbody>
+[% WHILE (bnmc = buy_nmc.next) %]
+<tr>
+<td>BTC</td>
+<td>[% bnmc.amount %] BTC</td>
+<td>[% bnmc.price %] NMC
+<br><span style="font-size: 8px; color: gray;">[% ( 1 / bnmc.price ) | format('%.6f') %] BTC</span>
+</td>
+
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+<div style="float:left;">
+<table id="hor-minimalist-b">
+<thead>
+<tr><th colspan="3"><h2>Trading NMC for BTC</h2></th></tr>
+<tr style="text-align:center;"><th scope="col">Trading</th><th scope="col">Amount</th><th scope="col">Price Each</th></tr>
+</thead>
+<tbody>
+[% WHILE (snmc = sell_nmc.next) %]
+<tr>
+<td>NMC</td>
+<td>[% snmc.amount %] NMC</td>
+<td>[% snmc.price %] BTC
+<br><span style="font-size: 8px; color: gray;">[% ( 1 / snmc.price ) | format('%.6f') %] NMC</span>
+</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+<div style="float:left; width: 330px;">
+<table id="hor-minimalist-b">
+<thead>
+<tr><th colspan="4"><h2>Recent Transactions</h2></th></tr>
+<tr style="text-align:center;"><th scope="col">Date</th><th>Bought</th><th scope="col">Amount</th><th scope="col">Price Each</th></tr>
+</thead>
+<tbody>
+[% WHILE (rt = recent_trades.next) %]
+<tr>
+<td>[% rt.processed_at %]</td>
+<td>[% SWITCH rt.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% END %]</td>
+<td>[% rt.amount %]</td>
+<td>[% rt.price %][% SWITCH rt.buy_currency %][% CASE 2 %] BTC[% CASE 1 %] NMC[% END %]
+<br><span style="font-size: 8px; color: gray;">[% ( 1 / rt.price ) | format('%.6f') %][% SWITCH rt.buy_currency %][% CASE 1 %] BTC[% CASE 2 %] NMC[% END %]</span>
+</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+</div>
+<div style="clear:both;"></div>

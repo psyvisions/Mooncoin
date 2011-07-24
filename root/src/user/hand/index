@@ -1,7 +1,8 @@
 [% META title = 'Games history' %]
 [% PROCESS user/myaccount_submenu %]
-<table style="margin-top: 10px;">
-  <tr><th>Hand #</th><th>Players</th><th>Date</th><th>Result</th><th>Action</th></tr>
+        <table id="hor-minimalist-b" style="width: 960px;">
+          <thead>
+  <tr><th>Hand #</th><th>Players</th><th>Date</th><th>Result</th><th>Action</th></tr></thead><tbody>
   [% WHILE (hand = hands.next) %]
     [% money = hand.get_amounts(user.serial) -%]
     [% result = money.share - money.total -%]
@@ -14,6 +15,7 @@
       <td><a href='[% c.uri_for('/user/hands/' _ hand.serial) %]'>View</a></td>
     </tr>
   [% END %]
+  </tbody>
 </table>
 
 [% IF hands.pager.next_page %]

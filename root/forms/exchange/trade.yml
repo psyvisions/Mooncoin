@@ -1,0 +1,56 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Select
+    name: trade_sell
+    label: Sell
+    comment: The currency you have and would like to trade with.
+    empty_first: Sell
+    constraints:
+      - Required
+    options:
+      - [ '1', 'Bitcoins' ]
+      - [ '2', 'Namecoins' ]
+
+  - type: Select
+    name: trade_buy
+    label: Buy
+    comment: The currency you would like to obtain.
+    empty_first: Buy
+    constraints:
+      - Required
+    options:
+      - [ '1', 'Bitcoins' ]
+      - [ '2', 'Namecoins' ]
+
+  - type: Text
+    name: trade_amount
+    label: Amount
+    value: 0.00
+    comment: This is the amount you are selling, the amount you are buying will be automatically calculated on the right. Enter amount in BTC/NMC (not Mooncoins/Chips).
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+
+  - type: Text
+    name: trade_price
+    label: Price
+    value: 0.00
+    comment: This is the price for each of the coins you are selling in the currency you are buying. Enter amount in BTC/NMC (not Mooncoins/Chips). 
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+
+
+  - type: Submit
+    value: Submit Order
+    name: submit
+
+constraints:
+  - SingleValue

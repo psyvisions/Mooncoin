@@ -1,0 +1,139 @@
+[% META title = 'Bets' %]
+[% PROCESS exchange/exchange_submenu %]
+<script type="text/javascript">
+
+$(document).ready(function(){
+  $("select[name=trade_sell]").change(function(){
+  var sCurr =parseInt($(this).val());
+  if(sCurr == 1){
+  $("#sell_currency").html('&nbsp;'+'BTC');
+  $("select[name=trade_buy]").val(2)
+  $("#buy_currency").html('&nbsp;'+'NMC');
+  $("#buy_currency_total").html('&nbsp;'+'NMC');
+  $("#fee_currency").html('&nbsp;'+'NMC');
+  $("#buy_currency_other").html('&nbsp;'+'BTC');
+  }
+  if(sCurr == 2){
+  $("#sell_currency").html('&nbsp;'+'NMC');
+  $("select[name=trade_buy]").val(1)
+  $("#buy_currency").html('&nbsp;'+'BTC');
+  $("#buy_currency_total").html('&nbsp;'+'BTC');
+  $("#fee_currency").html('&nbsp;'+'BTC');
+  $("#buy_currency_other").html('&nbsp;'+'NMC');
+  }
+
+});
+}); 
+
+$(document).ready(function(){
+  $("select[name=trade_buy]").change(function(){
+  var sCurr =parseInt($(this).val());
+  if(sCurr == 1){
+  $("#buy_currency").html('&nbsp;'+'BTC');
+  $("#buy_currency_total").html('&nbsp;'+'BTC');
+  $("#fee_currency").html('&nbsp;'+'BTC');
+  $("select[name=trade_sell]").val(2)
+  $("#sell_currency").html('&nbsp;'+'NMC');
+  $("#buy_currency_other").html('&nbsp;'+'NMC');
+  }
+  if(sCurr == 2){
+  $("#buy_currency").html('&nbsp;'+'NMC');
+  $("#buy_currency_total").html('&nbsp;'+'NMC');
+  $("#fee_currency").html('&nbsp;'+'NMC');
+  $("select[name=trade_sell]").val(1)
+  $("#sell_currency").html('&nbsp;'+'BTC');
+  $("#buy_currency_other").html('&nbsp;'+'BTC');
+  }
+});
+}); 
+
+
+updateTotals();
+
+$(document).ready(function(){
+  $("input").keyup(function(){
+  updateTotals();
+});
+}); 
+
+function updateTotals(){
+    var total = 0;
+    var valOne = 0;
+    $('input[name=trade_amount]').each(function(){
+        var valOneHolder =parseFloat($(this).val());
+        valOne = valOneHolder;
+    });    
+    $("#amount").html(valOne); 
+    var valTwo = 0;
+    $('input[name=trade_price]').each(function(){
+        var valTwoHolder =parseFloat($(this).val());
+        valTwo = valTwoHolder;
+    });  
+    if( isNaN(valOne) ){
+    valOne = 0;
+    }   
+    $("#amount").html(valOne);
+    if( isNaN(valTwo) ){
+    valTwo = 0;
+    }     
+    $("#price").html(valTwo);   
+    var price_other = ( 1 / valTwo ); 
+    price_other = price_other.toFixed(4);
+    $("#price_other").html(price_other);  
+    total = valOne * valTwo;
+    if( isNaN(total) ){
+    val = 0;
+    }   
+   
+    
+    var fee = total * 0.002;
+    $("#fee").html(fee); 
+    
+    total = total - fee;
+    $("#results").html(total); 
+}
+
+</script>
+
+<div style="margin-top:25px;">
+
+<div style="width: 350px; float: left;">
+[% form %]
+</div>
+
+
+<div style="width: 550px ; float: left; margin-left: 55px; ">
+
+<h2>Transaction Details</h2>
+<div style=" width: 550px;"><p>This is an estimate, if there is a better deal available then you will receive the improved price. Otherwise your trade will be held until an adequate match is found. You may cancel your trade before it has been completed but any portion of that trade that has succeeded will not be reversed.</p></div>
+<div style="float:left; margin-left: 45px; align: center;">
+<h3>Trading</h3>
+<div id="amount" style="float:left; color: green;font-size: large;">0.00</div>
+<div id="sell_currency" style="float:left;  font-size: large; color: gray;">&nbsp;&nbsp;&nbsp;</div>
+</div>
+<div style="float:left; margin-left: 45px; align: center;">
+<h3>Price Each</h3>
+<div id="price"style="float:left; color: green; font-size: large;">0.00</div>
+<div id="buy_currency" style="float:left; font-size: large; color: gray;">&nbsp;&nbsp;&nbsp;</div><br />
+<div id="price_other"style="float:left; color: gray; font-size: x-small;">0.00</div>
+<div id="buy_currency_other" style="float:left; color: gray; font-size: x-small;">&nbsp;&nbsp;&nbsp;</div>
+</div>
+
+<div style="float:left; margin-left: 45px; align: center;">
+<h3>Fee<span style="font-size: x-small; color: gray;"> (0.2%)</span></h3>
+<div id="fee"style="float:left; color: red; font-size: large;">0.00</div>
+<div id="fee_currency" style="float:left; font-size: large; color: gray;">&nbsp;&nbsp;&nbsp;</div>
+</div>
+
+<div style="float:left; margin-left: 45px; align: center;">
+<h3>Total</h3>
+<div id="results" style="float:left; color: green; font-size: large;">0.00</div>
+<div id="buy_currency_total" style="float:left; font-size: large; color: gray;">&nbsp;&nbsp;&nbsp;</div>
+</div>
+
+
+</div>
+
+</div>
+<div style="clear:both;"></div>
+
