@@ -1,5 +1,5 @@
 [% META title = 'Tables list' %]
-
+[% PROCESS tables/tables_submenu %]
 <div class="tables-list-wrapper">
   <div class="tables-categories">
     <div class="active popular-tables">
@@ -39,7 +39,7 @@
   <div class="tables">
     <div class="tables-notice">
       <p>
-      <strong>Please note:</strong> All bets are in Chips. I.e. 1/2 table have 0.01 BTC small blind and 0.02 BTC big blind.
+      <h3>Please note</h3> <p>All bets are in Chips. I.e. 1/2 table have 0.01 BTC small blind and 0.02 BTC big blind.</p>
       </p>
     </div>
     <div class="tables-list-wrapper">

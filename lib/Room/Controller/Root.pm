@@ -120,7 +120,7 @@ sub AVATAR :Global :Args(1) {
 
 sub credits :Local {}
 sub contactus :Local {}
-sub rake :Local {}
+sub fees :Local {}
 
 =head2 default
 

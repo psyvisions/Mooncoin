@@ -24,7 +24,6 @@ Catalyst Controller.
 
 =cut
 
-
 sub index :Path {
   my ( $self, $c) = @_;
 
@@ -52,9 +51,11 @@ sub index :Path {
   status => 0,
   }, { 
       order_by => { 
-        -asc => 'processed_at' 
+        -desc => 'processed_at' 
       } 
   });
+
+  $c->stash->{last_trade} = $c->stash->{recent_trades}->first;
 
 }
 
@@ -114,7 +115,6 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
    $c->stash->{balance} = $balance;
    $c->stash->{current_balance} = $balance->amount;
   
-  
     if ($balance->amount < $amount || $amount < 0.01 )  {
       $form->get_field("trade_amount")->get_constraint({ type => "Callback" })->force_errors(1);
       $form->process();
@@ -126,8 +126,7 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
     );
     $balance->update();
 
-  
-  # Create report
+   # Create report
    my $create = $c->model('PokerNetwork::Trades')->create({
       created_at => DateTime->now( time_zone => 'local' ),
       user_serial => $c->user->serial,
@@ -150,7 +149,6 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
       price => { '<=', => $invert_price},
       }, {  order_by => {  -asc => 'price' } });
 	
-	
 	  if( $orders->first != undef){
 
 	  my $creator_balance;
@@ -158,8 +156,8 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
 	  my $fee;
 	  my $reward;
 	  my $order; 
+	  my $compare_price;
 	 while( $orders->first != undef and $create->balance != 0 ){
-	   #my $compare_price = ( 1 / $order->price ); dont need this yet
 	  $order = $c->model('PokerNetwork::Trades')->search({
       status => 1,
       user_serial => { '!=', $create->user->serial},
@@ -199,6 +197,8 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
     	   );
     	   $creator_balance->update();
     	 #Since this new trade got entirely filled we set the status of the transaction update balance
+    	   $compare_price = ( 1 / $order->price );
+    	   $create->price($compare_price);
     	   $create->balance(0);
     	   $create->status(0);
     	   $create->processed_at(DateTime->now( time_zone => 'local' ));
@@ -241,6 +241,8 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
     	   );
     	   $update_balance->update();
     	 #Since this looked up trade got entirely filled we set the status of the transaction update balance
+    	   $compare_price = ( 1 / $create->price );
+    	   $order->price($compare_price);
     	   $order->balance(0);
     	   $order->status(0);
     	   $order->processed_at(DateTime->now( time_zone => 'local' ));
@@ -286,7 +288,6 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
 	  }
 	  
 	}
-	  
 	
 	## End processing ##
 

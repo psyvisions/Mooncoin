@@ -9,6 +9,7 @@ $(document).ready(function(){
   $("#sell_currency").html('&nbsp;'+'BTC');
   $("select[name=trade_buy]").val(2)
   $("#buy_currency").html('&nbsp;'+'NMC');
+  $("#buy_currency2").html('&nbsp;'+'per' + '&nbsp;'+'NMC');  
   $("#buy_currency_total").html('&nbsp;'+'NMC');
   $("#fee_currency").html('&nbsp;'+'NMC');
   $("#buy_currency_other").html('&nbsp;'+'BTC');
@@ -17,6 +18,7 @@ $(document).ready(function(){
   $("#sell_currency").html('&nbsp;'+'NMC');
   $("select[name=trade_buy]").val(1)
   $("#buy_currency").html('&nbsp;'+'BTC');
+  $("#buy_currency2").html('&nbsp;'+'per' + '&nbsp;'+'BTC');
   $("#buy_currency_total").html('&nbsp;'+'BTC');
   $("#fee_currency").html('&nbsp;'+'BTC');
   $("#buy_currency_other").html('&nbsp;'+'NMC');
@@ -30,6 +32,7 @@ $(document).ready(function(){
   var sCurr =parseInt($(this).val());
   if(sCurr == 1){
   $("#buy_currency").html('&nbsp;'+'BTC');
+  $("#buy_currency2").html('&nbsp;'+'per' + '&nbsp;'+'BTC');
   $("#buy_currency_total").html('&nbsp;'+'BTC');
   $("#fee_currency").html('&nbsp;'+'BTC');
   $("select[name=trade_sell]").val(2)
@@ -38,6 +41,7 @@ $(document).ready(function(){
   }
   if(sCurr == 2){
   $("#buy_currency").html('&nbsp;'+'NMC');
+  $("#buy_currency2").html('&nbsp;'+'per' + '&nbsp;'+'NMC');
   $("#buy_currency_total").html('&nbsp;'+'NMC');
   $("#fee_currency").html('&nbsp;'+'NMC');
   $("select[name=trade_sell]").val(1)
@@ -117,6 +121,8 @@ function updateTotals(){
 <div id="buy_currency" style="float:left; font-size: large; color: gray;">&nbsp;&nbsp;&nbsp;</div><br />
 <div id="price_other"style="float:left; color: gray; font-size: x-small;">0.00</div>
 <div id="buy_currency_other" style="float:left; color: gray; font-size: x-small;">&nbsp;&nbsp;&nbsp;</div>
+ 
+<div id="buy_currency2" style="float:left; font-size: x-small; color: gray;">&nbsp;&nbsp;&nbsp;</div><br />
 </div>
 
 <div style="float:left; margin-left: 45px; align: center;">
@@ -128,6 +134,7 @@ function updateTotals(){
 <div style="float:left; margin-left: 45px; align: center;">
 <h3>Total</h3>
 <div id="results" style="float:left; color: green; font-size: large;">0.00</div>
+<div id="buy_currency_total" style="float:left; font-size: large; color: gray;">&nbsp;&nbsp;&nbsp;</div>
 <div id="buy_currency_total" style="float:left; font-size: large; color: gray;">&nbsp;&nbsp;&nbsp;</div>
 </div>
 

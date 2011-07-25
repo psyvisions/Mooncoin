@@ -3,15 +3,14 @@
 
 <div style="clear:both;"></div>
 
-
 <div class='right_column' style="float:right; width: auto; padding-right: 5px;">
-<h2>Skill</h2>
+<h2><a href="/bets/bitcoin/skill">Skill</a></h2>
 <p><a href="/bets/bitcoin/skill/1">Starcraft</a></p>
 <p><a href="/bets/bitcoin/skill/2">Counter-Strike</a></p>
 <p><a href="/bets/bitcoin/skill/3">League of Legends</a></p>
 <p><a href="/bets/bitcoin/skill/5">Team Fortress</a></p>
 <p><a href="/bets/bitcoin/skill/4">Other</a></p>
-<h2>Foresight</h2>
+<h2><a href="/bets/bitcoin/foresight">Foresight</a></h2>
 <p><a href="/bets/bitcoin/foresight/1">Starcraft</a></p>
 <p><a href="/bets/bitcoin/foresight/2">Street Fighter</a></p>
 <p><a href="/bets/bitcoin/foresight/3">Basketball</a></p>
@@ -22,7 +21,6 @@
 <p><a href="/bets/bitcoin/foresight/8">Politics</a></p>
 <p><a href="/bets/bitcoin/foresight/9">Other</a></p>
 </div>
-
 
 <div style='width: auto; min-height: 500px;'>
 <h2>Bitcoin Bets</h2>
@@ -53,7 +51,6 @@
 [% END %]
 [% END %]
 </div>
-
 
 [% WHILE (bet = bets.next) %]
 <div style="height: auto; width: 825px; margin:5px; border-bottom: solid 1px; padding: 10px 0 10px 0;">
@@ -87,6 +84,5 @@
 [% END %]
 [% END %]
 </div>
-
 
 </div>

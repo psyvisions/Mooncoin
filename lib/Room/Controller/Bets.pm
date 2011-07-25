@@ -182,6 +182,8 @@ sub complete  :Path('complete') :Args(0) {
  
   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
   active => [1..4],
+  user_serial => $c->user->serial,
+  
   }, { 
       rows => 5,
       page => $page,

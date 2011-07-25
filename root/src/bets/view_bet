@@ -5,7 +5,14 @@
 <div class='right_column' style='min-height: 250px;'>
 <h2>Current Time</h2>
 <p>[% bet.time_now_readable %]</p>
-[% PROCESS user/balance %]
+[% IF c.user.balances %]
+<h2>Your balance</h2>
+  [% FOR balance IN c.user.balances %]
+    [% IF balance.currency_serial == bet.currency_serial %]
+     <p>[% balance.amount * 100 | format('%.2f') %] mc ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])</p>
+	[% END %]
+  [% END %]
+[% END %]
 [% IF bet.active != undef %]<b style="color: green;">Bet Completed</b>[% END %][% IF bet.active == 1 %]<br /><b style="color: red;">Funds Frozen</b>
 [% ELSIF bet.active == 2 %]<br /><b style="color: red;">Side 1 Won!</b>
 [% ELSIF bet.active == 3 %]<br /><b style="color: blue;">Side 2 Won!</b>
@@ -23,7 +30,7 @@
 		
  [% ELSIF bet.deadline_passed == 0 and bet.type == 1 %]
 		<p>[% form %]</p>
-		<p>Betting closes 30 minutes before the event starts.</p>
+		<p>Betting closes when the event starts.</p>
  [% END %]	
 
 		<p>[% IF bet.user_serial != c.user.serial and bet.challenger_serial == NULL and bet.type == 2 %]

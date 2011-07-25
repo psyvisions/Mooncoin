@@ -167,7 +167,6 @@ sub get_ratio {
      else{ $ratio = 1;}
  
      return $ratio;
-  
 }
 
 sub get_h_side {
@@ -204,22 +203,11 @@ sub get_timeleft{
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
 
-  my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
-  
-  my $bet_stop = DateTime::Duration->new(minutes => 30,);
-  my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
-   
-  if( $diff1->in_units('seconds') < $bet_stop->in_units('seconds')){
-  $diff = $diff1;
-  }else{
-  $diff = $diff1 - $bet_stop; 
-  }
+  my $diff = DateTime::Duration->new( $dt1 - $dt2 );
+
   if ($diff->is_negative == 1 ){
   $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
   } 
-  if ($diff->is_negative == 1 ){
-  $diff = $diff - $diff;
-  }
 
   if($diff->is_positive == 1){
   my $string = '<span style="color: green; font-size: large;">';
@@ -230,15 +218,11 @@ sub get_timeleft{
   if($diff->minutes > 0){$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minutes</span> ";}
   if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}     
   return $string;}
-  
-    
 }
-
-
 
 sub deadline_passed{
   my ($self) = @_;
-  
+  my $passed;
   if( $self->type == 1){
   my $fmt = '%Y-%m-%dT%H:%M:%S';
   my $parser = DateTime::Format::Strptime->new(pattern => $fmt);
@@ -246,29 +230,8 @@ sub deadline_passed{
   my $dt1 = $parser->parse_datetime($self->deadline);
   my $dt2 = $parser->parse_datetime(DateTime->now( time_zone => 'local' ));
 
-  my $diff1 = DateTime::Duration->new( $dt1 - $dt2 );
-  
-  my $bet_stop = DateTime::Duration->new(minutes => 30,);
-  
-  my $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
-    my $passed;
-    
-    
-  if( $diff1->in_units('seconds') < $bet_stop->in_units('seconds') ){
-  $diff = $diff1;
-  }else{
-  $diff = $diff1 - $bet_stop; 
-  }
-  
-   if ($diff->is_negative == 1 ){
-  $diff = $diff - $diff;
-  }
-    if ($diff->is_negative == 1 ){
-  $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
-  } 
-  
-  
-  
+  my $diff = DateTime::Duration->new( $dt1 - $dt2 );
+
   if ($diff->is_negative == 1 ){
   $passed = 1;
   }elsif ($diff->is_positive == 1 ){ 
@@ -276,7 +239,6 @@ sub deadline_passed{
   }else{
   $passed = 1;
   }
-  
   
   return $passed;
 }elsif ( $self->type == 2){ 

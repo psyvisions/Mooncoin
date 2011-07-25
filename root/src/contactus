@@ -14,13 +14,17 @@
 <p><b>Q. What is the conversion rate to mooncoins?</b></p>
 <p>A. 100 mooncoins = 1 BTC/NMC</p>
 <h2>Games of Foresight</h2>
+<p><b>Q, What is a game of foresight bet?</b></p>
+<p>A game of foresight is a bet that is placed on the predicated outcome of an event. So for example the World Series is coming, you can place a bet on which team is going to win the game. The bets are not 1:1 though, they are with other users and the odds are automatically recalculated when new bets are added. This system is multi-user, an unlimited number of users can participate in the bet.</p>
 <p><b>Q. How are games of foresight resolved?</b></p>
 <p>A. It is a two layer system. Users have the ability to report the result once the event starts, this allows our users to verify outcomes but also allows us to track honesty. On top of that each game of foresight bet is resolved by an actual person who googles the result and verifies what the users claim. It is then processed.</p>
 <p><b>Q. How many people can participate in games of foresight?</b></p>
 <p>A. Unlimited number of users can create an unlimited number of bets (well, limited by your funds). Odds are automatically generated from the bets placed. You are betting against other users, not the house.</p>
 <p><b>Q. How are draws resolved?</b></p>
 <p>A. In case of a draw, coins are returned.</p>
-<h2>Games of Foresight</h2>
+<h2>Games of Skill</h2>
+<p><b>Q, What is a game of skill bet?</b></p>
+<p>A game of skill bet is a bet placed on a game that you are participating in. The outcome of the bet depends upon your skill as a player of a given game. A user is able to create a bet, and await a challenger. If someone agrees to the terms of the bet they can accept the challenge and the comment system (which is private for games of skill) can be used to arrange the match. After the match is played out each user will be required to submit the results of the match. Once one participant submits a result the other participant has 7 days to submit their response or else the bet is forfeited. These bets are reviewed by humans which should avoid any shenanigans.</p>
 <p><b>Q. What happens in case of dispute?</b></p>
 <p>A. All users are encouraged to save replays, screenshots, video or whatever other evidence to present in the case of a dispute. A person will review them and determine the winner. If a winner cannot be determined the funds will be frozen until a winner can be determined.</p>
 <p><b>Q. What happens in cases where no match took place?</b></p>
@@ -28,3 +32,5 @@
 <h2>Poker</h2>
 <p><b>Q. I can't see the cards/buttons, what do I do?</b></p>
 <p>A. Try reloading the page, this appears to be a lingering problem in Jpoker that the community is trying to work out. You can reload the page at any time during the game without affecting the play, it will simply catch you up when you return.</p>
+<p><b>Q. The table says I don't have enough funds but I do, what is going on?</b></p>
+<p>A. There are several possible reasons for this. First make sure you are trying to join the right tables, if you deposited BTC you won't be able to play on the NMC tables unless you convert in the exchange. Another possibility is you are not allowed to buy in on tables which you cannot play more then a few games on, the solution for this is playing on a smaller stakes table. Lastly your funds might be tied up on another table. For this issue, just wait a few minutes and try again.</p>
