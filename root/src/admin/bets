@@ -47,7 +47,9 @@ Index of all bets.
           <td>[% bet.challenger.name %]</td>
           <td>[% bet.currency.symbol %]</td>
           <td>[% bet.title %]</td>
-          <td>[% bet.deadline %]</td>
+          <td>
+[% bet.get_timeleft %]
+[% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</td>
 
           [% IF bet.user_status == 1 %]
           <td class="positive-result">
@@ -60,6 +62,9 @@ Index of all bets.
           Draw
           [% ELSE %]
           <td>
+           [% IF bet.type == '1'%]
+          foresight
+          [% END %]
           [% END %]
           </td>
                    
@@ -78,7 +83,13 @@ Index of all bets.
           </td>
 
           
-          <td>[% bet.amount | format('%.2f') %]</td>
+          <td>
+          [% IF bet.type == '2' %]
+          [% bet.amount | format('%.2f') %]
+          [% ELSIF bet.type == '1' %]
+          [% bet.get_total | format('%.2f')  %]
+          [% END %]
+          </td>
           <td>
             <ul class='actions-list'>
               <a href="[% c.uri_for('/admin/bet/' _ bet.id'view') %]">View</a>

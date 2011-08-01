@@ -44,6 +44,25 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
     $c->forward('deposit_bitcoin_refresh');
+    $c->forward('deposit_namecoin_refresh');
+   
+   ##Initialize bitcoins  
+  my $btc_balance = $c->user->balances->search({currency_serial => 1})->first;
+
+  if (! $btc_balance) {
+    $btc_balance = $c->user->balances->find_or_create({ currency_serial => 1 });
+    $btc_balance->amount(0);
+    $btc_balance->update();
+  }
+  ##Initialize namecoins
+    my $nmc_balance = $c->user->balances->search({currency_serial => 2})->first;
+
+  if (! $nmc_balance) {
+    $nmc_balance = $c->user->balances->find_or_create({ currency_serial => 2 });
+    $nmc_balance->amount(0);
+    $nmc_balance->update();
+  }
+  
 }
 
 sub profile :Local :CaptureArgs(1) {

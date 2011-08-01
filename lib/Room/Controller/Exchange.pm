@@ -1,10 +1,10 @@
 package Room::Controller::Exchange;
 use Moose;
 use namespace::autoclean;
-use DateTime;
 use Data::Dumper;
 use String::Random;
 use POSIX;
+use DateTime;
 
 BEGIN {extends 'Catalyst::Controller::HTML::FormFu'; }
 
@@ -28,36 +28,113 @@ sub index :Path {
   my ( $self, $c) = @_;
 
   $c->stash->{buy_nmc} = $c->model("PokerNetwork::Trades")->search({
-  status => 1,
-  buy_currency => 2,
-  sell_currency => 1,
-  }, { 
-      order_by => { 
-        -asc => 'price' 
-      } 
-  });
+  status => 1, buy_currency => 2, sell_currency => 1,
+  }, { order_by => { -asc => 'price' } });
   
   $c->stash->{sell_nmc} = $c->model("PokerNetwork::Trades")->search({
-  status => 1,
-  buy_currency => 1,
-  sell_currency => 2,
-  }, { 
-      order_by => { 
-        -asc => 'price' 
-      } 
-  });
+  status => 1, buy_currency => 1, sell_currency => 2,
+  }, {  order_by => { -asc => 'price' } });
   
   $c->stash->{recent_trades} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
-  }, { 
-      order_by => { 
-        -desc => 'processed_at' 
-      } 
-  });
+  }, {  order_by => { -desc => 'processed_at' }});
+  
+  $c->stash->{last_trade} = $c->model("PokerNetwork::Trades")->search({
+  status => 0,
+  }, { order_by => { -desc => 'processed_at' }})->first;  
+  
+  $c->stash->{rt_graph} = $c->model("PokerNetwork::Trades")->search({
+  status => 0,
+  }, { order_by => { -desc => 'processed_at'}});
 
-  $c->stash->{last_trade} = $c->stash->{recent_trades}->first;
+  $c->stash->{ask_buy} = $c->model("PokerNetwork::Trades")->search({
+  status => 1, sell_currency =>  1,
+  }, { order_by => { -asc => 'price' }})->first;   
+  
+  $c->stash->{ask_sell} = $c->model("PokerNetwork::Trades")->search({
+  status => 1,
+  sell_currency =>  2,
+  }, { order_by => { -asc => 'price' }})->first;  
+  
+  # Get the value of everything bought in the last 24 hours in btc
+  $c->stash->{btc_hold} = $c->model("PokerNetwork::Trades")->search({ 
+  processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 24 DAY)' },
+  status => 0,
+  sell_currency =>  1,
+  }, {'+select' => [{ SUM => ('amount') }],'+as' => [qw/total_amount/], });
+  my $row_one = $c->stash->{btc_hold}->first;
+  $c->stash->{btc_total} = $row_one->get_column('total_amount');
 
+  $c->stash->{btc_nmc_hold} = $c->model("PokerNetwork::Trades")->search({ 
+  created_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
+  status => 0,
+  sell_currency =>  2,
+  }, {'+select' => [{ SUM => 'amount * price' }],'+as' => [qw/total_amount/], });
+  my $row_two = $c->stash->{btc_nmc_hold}->first;
+  $c->stash->{btc_nmc_total} = $row_two->get_column('total_amount');
+
+  $c->stash->{btc_7dvolume} = $c->stash->{btc_nmc_total} + $c->stash->{btc_total};
+  my $btc7d = $c->stash->{btc_7dvolume};
+  # Get the value of everything bought in the last 24 hours in nmc
+  $c->stash->{nmc_btc_hold} = $c->model("PokerNetwork::Trades")->search({ 
+  processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 24 DAY)' },
+  status => 0,
+  sell_currency =>  1,
+  }, {'+select' => [{ SUM => ('amount * price') }],'+as' => [qw/total_amount/], });
+  my $row_three = $c->stash->{nmc_btc_hold}->first;
+  $c->stash->{nmc_btc_total} = $row_three->get_column('total_amount');
+
+  $c->stash->{nmc_hold} = $c->model("PokerNetwork::Trades")->search({ 
+  created_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
+  status => 0,
+  sell_currency =>  2,
+  }, {'+select' => [{ SUM => 'amount * price' }],'+as' => [qw/total_amount/], });
+  my $row_four = $c->stash->{nmc_hold}->first;
+  $c->stash->{nmc_total} = $row_four->get_column('total_amount');
+
+  $c->stash->{nmc_7dvolume} = $c->stash->{nmc_total} + $c->stash->{nmc_btc_total};
+  my $nmc7d = $c->stash->{nmc_7dvolume};  
+  ##high low avg
+  $c->stash->{btc_last24} = $c->model("PokerNetwork::Trades")->search({
+  status => 0, sell_currency =>  1,
+  processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
+  }, { order_by => { -desc => 'processed_at'} })->get_column(' 1 / price');
+  
+  $c->stash->{nmc_last24} = $c->model("PokerNetwork::Trades")->search({
+  status => 0, sell_currency =>  2,
+  processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
+  }, { order_by => { -desc => 'processed_at' } })->get_column('price');
+
+  my $nmc7dmax = $c->stash->{nmc_last24}->max;
+  my $btc7dmax = $c->stash->{btc_last24}->max;
+
+  if( $btc7dmax > $nmc7dmax ){
+  $c->stash->{high} = $btc7dmax;
+  }else{$c->stash->{high} = $nmc7dmax;}
+  
+  my $nmc7dmin = $c->stash->{nmc_last24}->min;
+  my $btc7dmin = $c->stash->{btc_last24}->min;
+  
+  if( $btc7dmin < $nmc7dmin ){
+  $c->stash->{low} = $btc7dmin;
+  }else{$c->stash->{low} = $nmc7dmin;}
+   
+   my $nmc7davg = $c->model("PokerNetwork::Trades")->search({
+  status => 0, sell_currency =>  2,
+  processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
+  }, { order_by => { -desc => 'processed_at' } })->count;
+  my $btc7davg = $c->model("PokerNetwork::Trades")->search({
+  status => 0, sell_currency =>  1,
+  processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
+  }, { order_by => { -desc => 'processed_at' } })->count;  
+  
+  if( $nmc7davg != 0 and $btc7davg != 0 ){ 
+  $c->stash->{avg} = (( $c->stash->{nmc_last24}->sum + $c->stash->{btc_last24}->sum) / ($nmc7davg + $btc7davg));
+  }
 }
+
+
+
 
 sub history :Path('history') {
   my ( $self, $c) = @_;
@@ -90,11 +167,25 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
   my $trade = $c->model('PokerNetwork::Trades')->find($id);
   my $form = $c->stash->{form};
  
+  $c->stash->{recent_trades} = $c->model("PokerNetwork::Trades")->search({
+  status => 0,
+  }, { 
+      order_by => { 
+        -desc => 'processed_at' 
+      } 
+  });
+
+  $c->stash->{last_trade} = $c->stash->{recent_trades}->first;
+ 
   #form values
   my $sell_currency = $form->params->{trade_sell};
   my $buy_currency = $form->params->{trade_buy};  
   my $amount = $form->params->{trade_amount};
   my $price = $form->params->{trade_price};
+    if($sell_currency == 1 and $price != undef){
+  $price = ( 1 / $price);
+  }
+
  
   if ( $trade == undef ) {
    $c->stash( error_msg => "This item does not exist" );
@@ -102,7 +193,7 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
    $c->stash( trade => $trade );
   }
 
-  if ($form->submitted_and_valid and $sell_currency != $buy_currency) {
+  if ($form->submitted_and_valid and $sell_currency != $buy_currency and $price != 0) {
   
   my $balance = $c->user->balances->search({currency_serial => $sell_currency})->first;
 
@@ -114,6 +205,8 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
   
    $c->stash->{balance} = $balance;
    $c->stash->{current_balance} = $balance->amount;
+  
+  
   
     if ($balance->amount < $amount || $amount < 0.01 )  {
       $form->get_field("trade_amount")->get_constraint({ type => "Callback" })->force_errors(1);
@@ -144,7 +237,6 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
   
       my $orders = $c->model('PokerNetwork::Trades')->search({
       status => 1,
-      user_serial => { '!=', $create->user->serial},
       buy_currency => $create->sell_currency,
       price => { '<=', => $invert_price},
       }, {  order_by => {  -asc => 'price' } });
@@ -160,7 +252,6 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
 	 while( $orders->first != undef and $create->balance != 0 ){
 	  $order = $c->model('PokerNetwork::Trades')->search({
       status => 1,
-      user_serial => { '!=', $create->user->serial},
       buy_currency => $create->sell_currency,
       price => { '<=', => $invert_price},
       }, {  order_by => {  -asc => 'price' } })->first;

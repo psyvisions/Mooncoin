@@ -6,13 +6,13 @@
 <table id="hor-minimalist-b" style="width:960; margin-left: auto; margin-right: auto;">
 <thead>
 <tr><th colspan="5"><h2>Personal Transaction History</h2></th></tr>
-<tr style="text-align:center;"><th scope="col">Traded</th><th scope="col">For price each</th><th scope="col">To obtain a total of</th><th scope="col">Completed on</th></tr>
+<tr style="text-align:center;"><th scope="col">Traded</th><th scope="col">For price each<br /><span style="font-size: 10px;">(BTC per NMC)</div></th><th scope="col">To obtain a total of</th><th scope="col">Completed on</th></tr>
 </thead>
 <tbody>
 [% WHILE (order = history.next) %]
 <tr>
 <td>[% order.amount %] [% SWITCH order.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% END %]</td>
-<td>[% order.price %] [% SWITCH order.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% END %]</td>
+<td>[% SWITCH order.sell_currency %][% CASE 1 %][% 1 / order.price | format('%.8f') %][% CASE 2 %][% order.price | format('%.8f') %][% END %]</td>
 <td>[% order.amount * order.price %] [% SWITCH order.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% END %]</td>
 <td>[% order.processed_at %]</td>
 </tr>

@@ -5,6 +5,7 @@ auto_fieldset: 1
 elements:
   - type: Select
     name: trade_sell
+    id: sell_form
     label: Sell
     comment: The currency you have and would like to trade with.
     empty_first: Sell
@@ -38,9 +39,10 @@ elements:
 
   - type: Text
     name: trade_price
-    label: Price
+    label: Price in BTC
+    id: price_form
     value: 0.00
-    comment: This is the price for each of the coins you are selling in the currency you are buying. Enter amount in BTC/NMC (not Mooncoins/Chips). 
+    comment: Price should only be entered as BTC per NMC .
     constraints:
       - Required
       - Number

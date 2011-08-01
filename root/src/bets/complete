@@ -4,7 +4,7 @@ Index of all bets.
 
 <div style='width: auto; min-height: auto;'>
 <h2>Completed Bets</h2>
-<p>This is a history of all bets which have been completed.</p> 
+<p>This is a history of all bets which you have become associated with that have been completed.</p> 
 <div style="height: auto; auto; margin:5px;">    
 [% IF bets.pager.next_page %]
 <span style="float: right"><a href="[% c.uri_for('/bets/complete', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
@@ -14,8 +14,7 @@ Index of all bets.
 <span style="float: left"><a href="[% c.uri_for('/bets/complete', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]
 </div>
-
-    [% WHILE (bet = bets.next) %]
+[% WHILE (bet = bets.next) %]
     
  <div style="height: auto; width: auto; margin:5px; border-bottom: solid 1px; padding: 10px 0 10px 0;">
 [% PROCESS bets/index_items %]

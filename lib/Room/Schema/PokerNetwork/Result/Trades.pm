@@ -1,4 +1,9 @@
 package Room::Schema::PokerNetwork::Result::Trades;
+use DateTime;
+use Date::Manip;
+use DateTime::Duration;
+use Date::Parse;
+use DateTime::Format::Strptime;
 
 use strict;
 use warnings;
@@ -57,6 +62,15 @@ __PACKAGE__->has_many(
   { 'foreign.serial' => 'self.serial' }, { cascade_delete => 0 },
 );
 
+sub chart_time{
+  my ($self) = @_;
+  my $timehold = $self->processed_at;
+  my $fmt = '%Y-%m-%dT%H:%M:%S';
+  my $parser = DateTime::Format::Strptime->new(pattern => $fmt);
+  my $pass = $parser->parse_datetime($timehold);
+  
+  return $pass;
+}
 
 # Created by DBIx::Class::Schema::Loader v0.04006 @ 2010-09-27 11:47:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:yoOcj0wl6dbSxMO3lcWsow

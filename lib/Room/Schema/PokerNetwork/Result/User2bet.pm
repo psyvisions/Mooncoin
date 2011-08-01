@@ -47,7 +47,7 @@ __PACKAGE__->belongs_to(
   { 'foreign.serial' => 'self.user_serial' },
 );
 
-__PACKAGE__->has_one(
+__PACKAGE__->belongs_to(
   'bet' => 'Room::Schema::PokerNetwork::Result::Bets',
   { 'foreign.serial' => 'self.bet_serial' },
 );

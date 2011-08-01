@@ -2,28 +2,42 @@
 [% PROCESS exchange/exchange_submenu %]
 <script type="text/javascript">
 
+
+    
+    
 $(document).ready(function(){
+
+  [% IF last_trade != undef %]
+  var price = [% 1 / last_trade.price %].toFixed(6);
+  [% SWITCH last_trade.sell_currency %]
+  [% CASE 1 %]
+  $("#price_form").val(price);
+  $("#price").html(price);
+  $("#price_other").html(price);
+  [% CASE 2 %]
+  $("#price_form").val([% last_trade.price %]);
+  $("#price").html([% last_trade.price %]);
+  $("#price_other").html([% last_trade.price %]);  
+  [% END %]
+  
+  [% END %]
+  $("#buy_currency").html('&nbsp;'+'BTC');
+  $("#buy_currency_other").html('&nbsp;'+'NMC'+'&nbsp;'+'ea.'+'&nbsp;'+'BTC');
   $("select[name=trade_sell]").change(function(){
   var sCurr =parseInt($(this).val());
   if(sCurr == 1){
   $("#sell_currency").html('&nbsp;'+'BTC');
-  $("select[name=trade_buy]").val(2)
-  $("#buy_currency").html('&nbsp;'+'NMC');
-  $("#buy_currency2").html('&nbsp;'+'per' + '&nbsp;'+'NMC');  
+  $("select[name=trade_buy]").val(2) 
   $("#buy_currency_total").html('&nbsp;'+'NMC');
   $("#fee_currency").html('&nbsp;'+'NMC');
-  $("#buy_currency_other").html('&nbsp;'+'BTC');
   }
   if(sCurr == 2){
   $("#sell_currency").html('&nbsp;'+'NMC');
   $("select[name=trade_buy]").val(1)
-  $("#buy_currency").html('&nbsp;'+'BTC');
-  $("#buy_currency2").html('&nbsp;'+'per' + '&nbsp;'+'BTC');
   $("#buy_currency_total").html('&nbsp;'+'BTC');
   $("#fee_currency").html('&nbsp;'+'BTC');
-  $("#buy_currency_other").html('&nbsp;'+'NMC');
   }
-
+  updateTotals();
 });
 }); 
 
@@ -31,23 +45,18 @@ $(document).ready(function(){
   $("select[name=trade_buy]").change(function(){
   var sCurr =parseInt($(this).val());
   if(sCurr == 1){
-  $("#buy_currency").html('&nbsp;'+'BTC');
-  $("#buy_currency2").html('&nbsp;'+'per' + '&nbsp;'+'BTC');
   $("#buy_currency_total").html('&nbsp;'+'BTC');
   $("#fee_currency").html('&nbsp;'+'BTC');
   $("select[name=trade_sell]").val(2)
   $("#sell_currency").html('&nbsp;'+'NMC');
-  $("#buy_currency_other").html('&nbsp;'+'NMC');
   }
   if(sCurr == 2){
-  $("#buy_currency").html('&nbsp;'+'NMC');
-  $("#buy_currency2").html('&nbsp;'+'per' + '&nbsp;'+'NMC');
   $("#buy_currency_total").html('&nbsp;'+'NMC');
   $("#fee_currency").html('&nbsp;'+'NMC');
   $("select[name=trade_sell]").val(1)
   $("#sell_currency").html('&nbsp;'+'BTC');
-  $("#buy_currency_other").html('&nbsp;'+'BTC');
   }
+  updateTotals();
 });
 }); 
 
@@ -55,7 +64,9 @@ $(document).ready(function(){
 updateTotals();
 
 $(document).ready(function(){
+
   $("input").keyup(function(){
+  
   updateTotals();
 });
 }); 
@@ -84,16 +95,24 @@ function updateTotals(){
     var price_other = ( 1 / valTwo ); 
     price_other = price_other.toFixed(4);
     $("#price_other").html(price_other);  
-    total = valOne * valTwo;
+   
+    var hold = $("#sell_form").val();
+    if(hold == 1 && valTwo != 0){
+      total = valOne * ( 1 / valTwo );
+    }
+    else if(hold == 2){
+      total = valOne * valTwo;
+    }else{total = 0;}
+
     if( isNaN(total) ){
     val = 0;
     }   
-   
-    
+
     var fee = total * 0.002;
-    $("#fee").html(fee); 
-    
+
     total = total - fee;
+    fee = fee.toFixed(8); 
+    $("#fee").html(fee); 
     $("#results").html(total); 
 }
 
@@ -105,13 +124,37 @@ function updateTotals(){
 [% form %]
 </div>
 
-
 <div style="width: 550px ; float: left; margin-left: 55px; ">
+
+[% IF last_trade != undef %]
+<div style="float:left; width:200;">
+<h3>Last Trade</h3> <p>
+
+[% SWITCH last_trade.sell_currency %]
+[% CASE 1 %]
+[% 1 / last_trade.price  | format('%.6f') %] <span style="font-size:12px;color:#1B587B;">BTC</span> ea. <span style="font-size:12px;color:#1B587B;">NMC</span>
+[% CASE 2 %]
+[% last_trade.price  | format('%.6f') %] <span style="font-size:12px;color:#1B587B;">BTC</span> ea. <span style="font-size:12px;color:#1B587B;">NMC</span>
+[% END %] 
+</p></div></span>
+[% END %]
+
+<div style="float:left; width:350;">
+[% IF c.user.balances %]
+
+<h3>Your balance</h3>
+  [% FOR balance IN c.user.balances %]
+     <p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
+       <span><a href="/user/deposit/[% balance.currency.name %]">(Deposit)</a></span></p>
+  [% END %]
+[% END %]
+</div>
+<div style="clear:both;"></div>
 
 <h2>Transaction Details</h2>
 <div style=" width: 550px;"><p>This is an estimate, if there is a better deal available then you will receive the improved price. Otherwise your trade will be held until an adequate match is found. You may cancel your trade before it has been completed but any portion of that trade that has succeeded will not be reversed.</p></div>
 <div style="float:left; margin-left: 45px; align: center;">
-<h3>Trading</h3>
+<h3>Selling</h3>
 <div id="amount" style="float:left; color: green;font-size: large;">0.00</div>
 <div id="sell_currency" style="float:left;  font-size: large; color: gray;">&nbsp;&nbsp;&nbsp;</div>
 </div>

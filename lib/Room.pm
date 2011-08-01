@@ -43,7 +43,10 @@ $VERSION = eval $VERSION;
 
 __PACKAGE__->config(
     name => 'Room',
-    
+    'Plugin::Session' => {
+    cookie_secure => 1,
+    cookie_httponly => 1,
+    },
     # Disable deprecated behavior needed by old applications
     disable_component_resolution_regex_fallback => 1,
     
@@ -69,7 +72,7 @@ __PACKAGE__->config(
 );
 
 __PACKAGE__->config->{email} = [qw/Sendmail/];
-
+  
 # Hide config variables from debug screen
 sub dump_these {
     my $c = shift;

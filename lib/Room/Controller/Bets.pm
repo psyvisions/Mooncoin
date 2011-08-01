@@ -46,6 +46,16 @@ sub auto :Private {
 sub index :Path :CaptureArgs(2) {
   my ( $self, $c, $game, $category) = @_;
   
+   my @userbets = ();
+  $c->stash->{user_bets} = $c->model("PokerNetwork::User2bet")->search({
+  user_serial => $c->user->serial,
+  });
+ 
+  while ( my $holder = $c->stash->{user_bets}->next ){
+  push(@userbets, $holder->bet_serial );
+  }  
+
+  
   my $page = $c->req->params->{'page'};
   $page = 1 if $page < 1;
     $c->stash->{game} = $game;
@@ -60,7 +70,7 @@ sub index :Path :CaptureArgs(2) {
   }
   
   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
-   -or => [ { challenger_serial => $c->user->serial }, { user_serial => $c->user->serial } ],
+  -or => [{-or => [{user_serial => $c->user->serial},{challenger_serial => $c->user->serial}]},{serial => \@userbets }],
   active => undef,
   type => $game,
   category => $category,
@@ -179,12 +189,21 @@ sub complete  :Path('complete') :Args(0) {
   my ( $self, $c ) = @_;
   my $page = $c->req->params->{'page'};
   $page = 1 if $page < 1;
+  
+  my @userbets = ();
+  $c->stash->{user_bets} = $c->model("PokerNetwork::User2bet")->search({
+  user_serial => $c->user->serial,
+  });
  
+  while ( my $holder = $c->stash->{user_bets}->next ){
+  push(@userbets, $holder->bet_serial );
+  }  
+
   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
   active => [1..4],
-  user_serial => $c->user->serial,
-  
-  }, { 
+  -or => [{-or => [{user_serial => $c->user->serial},{challenger_serial => $c->user->serial}]},{serial => \@userbets }],
+  }, 
+  { 
       rows => 5,
       page => $page,
       order_by => { 
@@ -232,6 +251,12 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
   my $category = $form->params->{bet_category};
   my $side_one = $form->params->{bet_side_one};
   my $side_two = $form->params->{bet_side_two};
+  my $othercurrency;
+  if ($currency == 1){
+  $othercurrency = 2;
+  }else{
+  $othercurrency = 1;
+  }
 
     # Create bet
     my $bet = $c->user->bets->create({
@@ -245,6 +270,20 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
       side_two => $side_two,
       created_at => DateTime->now( time_zone => 'local' ),
     });
+    
+    # Create bet for the other currency
+    my $betother = $c->user->bets->create({
+      type => 1,
+      currency_serial => $othercurrency,
+      title => $title,
+      description => $description,
+      deadline => $deadline,
+      category => $category,
+      side_one => $side_one,
+      side_two => $side_two,
+      created_at => DateTime->now( time_zone => 'local' ),
+    });
+    
     
   if($currency == 1){ 
   push @{$c->flash->{messages}}, "Your bitcoin game of foresight event has been started.";
@@ -608,36 +647,6 @@ sub status :Chained('base') :PathPart('status') :FormConfig{
   else{push @{$c->flash->{messages}}, "Your status was NOT updated.";};  
   $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
   };
-  }elsif($c->stash->{bet}->type == 1){
-  
-   my $user_ubs = $bet->userbets->search({ 
-   user_serial => $c->user->serial,
-   });  
-  
-  my $form = $c->stash->{form};
-  
-  if ($user_ubs->first == undef){
-  $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
-  }
-  
-
-  if ($form->submitted_and_valid) {
-  my $status = $form->params->{bet_status_update};
-  my $ub;
-  
-  foreach $ub($user_ubs){
-    $ub->status($status);
-    $ub->status_at(DateTime->now( time_zone => 'local' ));
-    $ub->update();
- 
-  }
-  
-
-  
-  
-  	push @{$c->flash->{messages}}, "You have updated your status in this game.";
- $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
-  }
   }
   }
 }

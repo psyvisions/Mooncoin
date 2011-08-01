@@ -7,7 +7,7 @@
 <div style="float:center;">
 <table id="hor-minimalist-b" style="width:960; margin-left: auto; margin-right: auto;">
 <thead>
-<tr style="text-align:center;"><th scope="col">Trading</th><th scope="col">For price each</th><th scope="col">Amount to be purchased</th><th scope="col">Created on</th><th scope="col">Action</th></tr>
+<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">For price each</th><th scope="col">Amount to be purchased</th><th scope="col">Created on</th><th scope="col">Action</th></tr>
 </thead>
 <tbody>
 [% WHILE (order = orders.next) %]

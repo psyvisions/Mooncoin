@@ -5,7 +5,7 @@
 [% PROCESS user/balance %]
 </div>
 <h2>Game of Foresight</h2>
-<p>This form allows you to create an event with possible conditions for victory. After the event is posted you can bet on either side.</p><p> After the first bet has been placed it can no longer be deleted, so please verify the event information before you submit this form and before you place your bet. </p>
+<p>This form allows you to create an event with possible conditions for victory. After the event is posted you can bet on either side.</p><p> After the first bet has been placed it can no longer be deleted, so please verify the event information before you submit this form and before you place your bet. <b>When foresight bets are placed two bets are generated, one namecoin bet and one bitcoin bet.</b></p>
 <p>Until user profiles and timezone support are fully implemented, all time on the site is based on PST.</p>
 
 <p>Pacific Standard Time does observe daylight savings time so it is currently GMT-7. When summer is over it will be GMT-8. If you find this confusing you can use a  <a href="http://www.timeanddate.com/worldclock/converter.html">time zone conversion tool</a>.</p>
