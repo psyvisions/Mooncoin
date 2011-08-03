@@ -23,7 +23,8 @@
   <script language="JavaScript" type="text/javascript" src="/static/js/jquery.jpoker.js?d"></script>
   <script language="JavaScript" type="text/javascript" src="/static/js/mockup.js"></script>
   <script language="JavaScript" type="text/javascript" src="/static/js/bproom.js"></script>
-
+<link rel="stylesheet" type="text/css" href="/static/css/anytimec.css" />
+<script type="text/javascript" src="/static/js/anytimec.js"></script>
  </head>
  <body>
   <div id="wrapper">

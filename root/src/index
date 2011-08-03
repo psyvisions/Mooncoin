@@ -3,8 +3,8 @@
 
 <div class='right_column'>
 <h2>News</h2>
-7/19/2010 - <b>BTC/NMC Exchange!</b></br>
-<p>Along with our many updates to style and other updates rolled out recently we have finished work on our finest piece of code yet: The exchange. You can now exchange your virtual coins for others.</p>
+8/2/2011 - <b>Site Updates</b></br>
+<p>Many things updated, and now we support poker tournaments!</p>
 <p><a href="/archives">See Archives</a></p>
 <h2>Feedback</h2>
 
@@ -21,7 +21,7 @@
   <h3>Poker Live Show</h3>
   <iframe src='/static/table.html?game_id=[% table.serial %]&auth=N' width='763' height='532' style='border: none' scrolling='no' frameborder="0"></iframe>
   [% END %]
-  <p><b>Now with a fully implemented BTC/NMC Exchange!</b></p> 
+  <p><b>Poker tournaments! Scheduling coming soon.</b></p> 
   <p>Welcome astronauts, you have stumbled upon a browser-based (HTML5/JS) online poker site and e-sports betting using virtual currencies. You can begin playing as soon as you register an account and transfer some recently mined bitcoins or namecoins into it. Once on our site they can also be exchanged. </p>
 
   <p>Bitcoins and Namecoins are divisible down into very small units, and we have tables at very low stakes (as low as 0.1/0.2 mBTC/mNMC, or 0.0001/0.0002 BTC/NMC). At the tables, a single chip is worth 0.01 BTC/NMC. A 1/2 table is really 0.01/0.02 BTC/NMC.</p>

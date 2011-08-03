@@ -248,6 +248,7 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
   my $title = $form->params->{bet_title};
   my $description = $form->params->{bet_description};
   my $deadline = $form->params->{bet_deadline};
+  my $eventdate = $form->params->{bet_decisive};  
   my $category = $form->params->{bet_category};
   my $side_one = $form->params->{bet_side_one};
   my $side_two = $form->params->{bet_side_two};
@@ -265,6 +266,7 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
       title => $title,
       description => $description,
       deadline => $deadline,
+      challenged_at => $eventdate,
       category => $category,
       side_one => $side_one,
       side_two => $side_two,
@@ -596,8 +598,8 @@ sub comment :Chained('base') :PathPart('comment') :FormConfig{
   my $comment = $form->params->{comment};
   
   if ($form->submitted_and_valid) {
-  # Create report
-  my $report = $c->stash->{bet}->comments->create({
+  # Create comment
+  my $comment = $c->stash->{bet}->comments->create({
       created_at => DateTime->now( time_zone => 'local' ),
       bet_serial => $c->stash->{bet}->serial,
       user_serial => $c->user->serial,
@@ -608,6 +610,8 @@ sub comment :Chained('base') :PathPart('comment') :FormConfig{
   };   
   }
 }
+
+
 
 sub status :Chained('base') :PathPart('status') :FormConfig{
   my ($self, $c) = @_;

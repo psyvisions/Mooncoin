@@ -4,6 +4,10 @@
 <div class='right_column' style="height: 350px;">
 [% PROCESS user/balance %]
 </div>
+
+<link rel="stylesheet" type="text/css" href="/static/css/anytimec.css" />
+<script type="text/javascript" src="/static/js/anytimec.js"></script>
+
 <h2>Game of Foresight</h2>
 <p>This form allows you to create an event with possible conditions for victory. After the event is posted you can bet on either side.</p><p> After the first bet has been placed it can no longer be deleted, so please verify the event information before you submit this form and before you place your bet. <b>When foresight bets are placed two bets are generated, one namecoin bet and one bitcoin bet.</b></p>
 <p>Until user profiles and timezone support are fully implemented, all time on the site is based on PST.</p>
@@ -15,3 +19,34 @@
 <p>Note: If your bet ends at midnight, please use 12:01am and 11:59pm to prevent confusion.</p>
 
 [% form %]
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#betcal2").val("").attr("disabled","disabled");
+});
+
+  var oneDay = 24*60*60*1000;
+  var rangeDemoFormat = "%Y-%m-%d %H:%i:%s";
+  var rangeDemoConv = new AnyTime.Converter({format:rangeDemoFormat});
+      
+  $("#betcal1").AnyTime_picker({
+  earliest: new Date(),
+  format:rangeDemoFormat,
+  });
+  
+  $("#betcal1").change( function(e) { try {
+      var fromDay = rangeDemoConv.parse($("#betcal1").val()).getTime();
+      var dayLater = new Date(fromDay);
+      var ninetyDaysLater = new Date(fromDay+(90*oneDay));
+      ninetyDaysLater.setHours(23,59,59,999);
+      $("#betcal2").
+          AnyTime_noPicker().
+          removeAttr("disabled").
+          val(rangeDemoConv.format(dayLater)).
+          AnyTime_picker(
+              { earliest: dayLater,
+                format: rangeDemoFormat,
+                latest: ninetyDaysLater
+              } );
+      } catch(e){ $("#betcal2").val("").attr("disabled","disabled"); } } );
+</script>

@@ -20,6 +20,8 @@ __PACKAGE__->load_components(
 );
 __PACKAGE__->table("comments");
 __PACKAGE__->add_columns(
+  "serial",
+  { data_type => "INT", default_value => undef, is_nullable => 0, size => 10 },
   "user_serial",
   { data_type => "INT", default_value => undef, is_nullable => 0, size => 10 },
   "bet_serial",
@@ -34,17 +36,17 @@ __PACKAGE__->add_columns(
     size => 19,
   },
 );
-__PACKAGE__->set_primary_key("user_serial", "bet_serial");
+__PACKAGE__->set_primary_key("serial", "user_serial", "bet_serial");
 
 
 __PACKAGE__->belongs_to(
   'user' => 'Room::Schema::PokerNetwork::Result::Users',
-  { 'foreign.serial' => 'self.user_serial' },
+  { 'foreign.serial' => 'self.user_serial' }, { cascade_delete => 0 },
 );
 
 __PACKAGE__->has_one(
   'bet' => 'Room::Schema::PokerNetwork::Result::Bets',
-  { 'foreign.serial' => 'self.bet_serial' },
+  { 'foreign.serial' => 'self.bet_serial' }, { cascade_delete => 0 },
 );
 
 sub created_time_readable{

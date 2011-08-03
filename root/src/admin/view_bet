@@ -153,7 +153,6 @@ No result reported
       <a href="/bet/[% bet.id %]/challenge">Accept Challenge</a>
 		[% ELSE %]<span style="color:gray;">No Challenger</span>[% END %][% END %]</span></h3></th></th></tr>
 
-
 [% IF bet.challenger_status != undef %]
 <tr><td  colspan='3'><h3>Reported Result</h3>
 <p style="margin-top: -15px;"><span style="font-size: small;">on [% bet.c_status_time_readable %]</span></p>
@@ -177,4 +176,14 @@ No result reported
 <!-- OO -->
 </div>
 </div>
+<div style="clear:both;"></div>
+<h2>Comments</h2>
+[% WHILE (comment = bet_comments.next) %]
+
+<div style="min-height: 70px; height: auto; width: 775px; margin:5px; border-bottom: solid 1px; padding: 10px 0 10px 0;">
+<div style="float: left; margin-right: 10px;"><img src="[% c.uri_for("/AVATAR/" _ comment.user_serial) %]" alt="[% c.user.name %] picture" /></div>[% comment.comment %]<br />
+<span style="font-size: x-small; color:gray;">[% comment.user.name %] posted on [% comment.created_time_readable %]</span>
+<p style="font-size: x-small; color:gray;"><a href="delcom/[% comment.serial %]">Delete Comment</a></p>
+</div>
+[% END %]
 <div style="clear:both;"></div>

@@ -28,17 +28,19 @@ elements:
       - [ '8', 'Politics' ]
       - [ '9', 'Other' ]
       
-  - type: DateTime
+  - type: Text
     name: bet_deadline
-    label: Ending Date/Time
-    comment: The date and time the event starts. It is best for this to be set before the event rather then after it ends.
-    default_natural: 'today'
-    year:
-      less: 0
-      plus: 2
-    auto_inflate: 1
+    id: betcal1
+    label: Betting Closing Time
+    comment: The date and time the betting closes. For certain kind of betting you may want to close betting days before the event.
     constraints:
       - Required
+      
+  - type: Text
+    name: bet_decisive
+    id: betcal2
+    label: Event Date & Time
+    comment: The date and time the event starts, or the decisive time which concludes the bet.
       
   - type: Text
     name: bet_side_one

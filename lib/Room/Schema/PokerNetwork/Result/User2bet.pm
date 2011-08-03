@@ -52,12 +52,12 @@ __PACKAGE__->set_primary_key("serial", "user_serial", "bet_serial");
 
 __PACKAGE__->belongs_to(
   'user' => 'Room::Schema::PokerNetwork::Result::Users',
-  { 'foreign.serial' => 'self.user_serial' },
+  { 'foreign.serial' => 'self.user_serial' }, { cascade_delete => 0 },
 );
 
 __PACKAGE__->belongs_to(
   'bet' => 'Room::Schema::PokerNetwork::Result::Bets',
-  { 'foreign.serial' => 'self.bet_serial' },
+  { 'foreign.serial' => 'self.bet_serial' }, { cascade_delete => 0 },
 );
 
 sub created_time_readable{

@@ -1,8 +1,8 @@
 [% META title = 'Withdrawals' %]
 [% PROCESS admin/admin_submenu %]
 
-<table class='withdrawals'>
-  <thead>
+<table id="hor-minimalist-b" style="width: 960px;">
+<thead>
     <tr>
       <th>ID</th>
       <th>User</th>
