@@ -34,7 +34,15 @@ __PACKAGE__->has_relationship(
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Qax8lygssf9jjVXTrdjbZw
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+__PACKAGE__->belongs_to(
+  user => 'Room::Schema::PokerNetwork::Result::Users',
+  { serial => 'user_serial' }
+);
+
+__PACKAGE__->belongs_to(
+  pokertable => 'Room::Schema::PokerNetwork::Result::Pokertables',
+  { serial => 'table_serial' }
+);
 
 =head1 AUTHOR
 

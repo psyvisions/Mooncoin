@@ -3,4 +3,5 @@
   <li><a href='[% c.uri_for('/admin/withdrawals') %]'>Withdrawals</a></li>
   <li><a href='[% c.uri_for('/admin/users') %]'>Users</a></li>
   <li><a href='[% c.uri_for('/admin/bets') %]'>Bets</a></li>
+  <li><a href='[% c.uri_for('/admin/tourneys/schedule') %]'>Tourneys Schedule</a></li>
 </ul>

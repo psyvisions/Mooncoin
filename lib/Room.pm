@@ -64,8 +64,12 @@ __PACKAGE__->config(
           },
           render_method => "tt",
       },
+
+      model_stash => {
+          schema => 'PokerNetwork',
+      },
     },
-    
+
     'View::TT' => {
         ENCODING => 'UTF-8',
     },

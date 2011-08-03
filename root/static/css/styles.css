@@ -267,7 +267,6 @@ th {
   background: #FFCCCC;
 }
 
-
 #hor-minimalist-b
 {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -296,3 +295,8 @@ th {
 {
     color: #009;
 }
+
+.schedule-status-y {
+  background: #CFC;
+}
+

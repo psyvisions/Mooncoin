@@ -81,7 +81,13 @@ __PACKAGE__->has_many(
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0zRzp3wUR4KVXGCdR92Wjg
 
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+__PACKAGE__->has_many(
+  'usertables' => 'Room::Schema::PokerNetwork::Result::User2table',
+  { 'foreign.table_serial' => 'self.serial' },
+);
+__PACKAGE__->many_to_many(
+  users => 'usertables', 'user'
+);
 
 =head1 AUTHOR
 

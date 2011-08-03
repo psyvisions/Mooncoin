@@ -6,6 +6,7 @@ room.conf
 *~
 dump_schema.sh
 log/room.log
-
 /.DS_Store
 /lib/ppn/.DS_Store
+_trial*
+

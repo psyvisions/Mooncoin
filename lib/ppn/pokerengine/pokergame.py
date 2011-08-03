@@ -745,6 +745,8 @@ class PokerGame:
 
     def sit(self, serial):
         player = self.serial2player[serial]
+        if player.isSit():
+            return False
         if not player.isBuyInPayed() or self.isBroke(serial):
             if self.verbose > 0: self.error("sit: refuse to sit player %d because buy in == %s instead of True or broke == %s instead of False" % ( serial, player.buy_in_payed, self.isBroke(serial) ))
             return False
@@ -2441,7 +2443,7 @@ class PokerGame:
         self.betting_structure = betting_structure
         self.betting_structure_name = self.getParam("/bet/description")
         self.buy_in = int(self.getParam('/bet/@buy-in') or "0")
-        self.max_buy_in = int(self.getParam('/bet/@max-buy-in') or sys.maxint)
+        self.max_buy_in = int(self.getParam('/bet/@max-buy-in') or 4294967295) 
         self.best_buy_in = int(self.getParam('/bet/@best-buy-in') or "0")
         self.unit = int(self.getParam('/bet/@unit'))
 
@@ -3643,12 +3645,15 @@ class PokerGame:
 
     def maxBuyIn(self, serial = -1):
         if serial not in self.ratholes:
+            if self.verbose >= 6: self.message("maxBuyIn: serial not in ratholes - %d" % ( self.max_buy_in )) 
             return self.max_buy_in
 
         (amount, time) = self.ratholes[serial]
         if (datetime.now() - time).seconds > 15*60 or amount < self.max_buy_in:
+            if self.verbose >= 6: self.message("maxBuyIn: from self.max_buy_in - %d" % ( amount )) 
             return self.max_buy_in
 
+        if self.verbose >= 6: self.message("maxBuyIn: from ratholes - %d" % ( amount )) 
         return amount
 
     def bestBuyIn(self, serial = -1):

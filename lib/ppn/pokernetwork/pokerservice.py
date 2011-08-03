@@ -96,6 +96,7 @@ from pokernetwork import pokeravatar
 from pokernetwork.user import User
 from pokernetwork import pokercashier
 from pokernetwork import pokernetworkconfig
+from pokernetwork import tableconfigutils
 from pokerauth import get_auth_instance
 from datetime import date
 
@@ -148,7 +149,7 @@ class PokerService(service.Service):
 
     implements(IPokerService)
 
-    def __init__(self, settings, db):
+    def __init__(self, settings):
         if type(settings) is StringType:
             settings_object = pokernetworkconfig.Config(['.'])
             settings_object.doc = libxml2.parseMemory(settings, len(settings))
@@ -200,7 +201,7 @@ class PokerService(service.Service):
             self.refill = refill[0]
         else:
             self.refill = None
-        self.db = db
+        self.db = None
         self.cashier = None
         self.poker_auth = None
         self.timer = {}
@@ -265,8 +266,12 @@ class PokerService(service.Service):
             self.tourney_select_info = module.Handle(self, s)
             getattr(self.tourney_select_info, '__call__')
 
+    def get_table_descriptions(self):
+        return tableconfigutils.get_table_descriptions(self.settings)
+
     def startService(self):
         self.monitors = []
+        self.db = PokerDatabase(self.settings)
         self.setupTourneySelectInfo()
         self.setupLadder()
         self.setupResthost()
@@ -314,8 +319,10 @@ class PokerService(service.Service):
             except locale.Error, le:
                 self.error('Unable to restore original locale: %s' % le)
 
-        for description in self.settings.headerGetProperties("/server/table"):
-            self.createTable(0, description)
+        table_descriptions = self.get_table_descriptions()
+        for table_description in table_descriptions:
+            self.createTable(0, table_description)
+
         self.cleanupTourneys()
         self.updateTourneysSchedule()
         self.messageCheck()
@@ -613,10 +620,8 @@ class PokerService(service.Service):
 
         sql = ( " SELECT * FROM tourneys_schedule WHERE " +
                 "          active = 'y' AND " +
-                "          resthost_serial = %s AND " +
-                "          ( respawn = 'y' OR " +
-                "            register_time < %s )" ) % self.db.literal((self.resthost_serial, int(seconds()) )
-                )
+                "          resthost_serial = %s") % self.db.literal(self.resthost_serial)
+                
         cursor.execute(sql)
         result = cursor.fetchall()
         self.tourneys_schedule = dict(zip(map(lambda schedule: schedule['serial'], result), result))
@@ -646,14 +651,8 @@ class PokerService(service.Service):
         #
         # One time tournaments
         #
-        one_time = []
-        for serial in self.tourneys_schedule.keys():
-            schedule = self.tourneys_schedule[serial]
-            if ( schedule['respawn'] == 'n' and
-                 int(schedule['register_time']) < now ):
-                one_time.append(schedule)
-                del self.tourneys_schedule[serial]
-        for schedule in one_time:
+        for schedule in filter(lambda schedule: schedule['respawn'] == 'n', self.tourneys_schedule.values()):
+            del self.tourneys_schedule[ schedule['serial'] ]
             self.spawnTourney(schedule)
 
         #
@@ -772,6 +771,10 @@ class PokerService(service.Service):
             self.schedule2tourneys[schedule_serial] = []
         self.schedule2tourneys[schedule_serial].append(tourney)
         self.tourneys[tourney.serial] = tourney
+
+        # Allow PokerTournament finalize init procedure.
+        tourney.finalize()
+
         return tourney
 
     def deleteTourney(self, tourney):
@@ -2667,7 +2670,7 @@ class PokerService(service.Service):
         return table
 
     def cleanupCrashedTables(self):
-        for description in self.settings.headerGetProperties("/server/table"):
+        for description in self.get_table_descriptions():
             self.cleanupCrashedTable("pokertables.name = %s" % self.db.literal((description['name'],)))
         self.cleanupCrashedTable("pokertables.resthost_serial = %d" % self.resthost_serial)
 
@@ -2699,12 +2702,25 @@ class PokerService(service.Service):
             self.error("deleted %d rows (expected 1): %s " % ( cursor.rowcount, sql ))
         cursor.close()
 
-    def broadcast(self, packet):
+    def broadcast_to_all(self, packet):
+        """
+        Broadcasts a packet to all clients.
+        """
         for avatar in self.avatars:
-            if hasattr(avatar, "protocol") and avatar.protocol:
+            avatar.sendPacketVerbose(packet)
+
+    def broadcast_to_player(self, packet, player_serial):
+        """
+        Broadcasts a packet to a specific player.
+
+        Returns True if the message was sent successfully (i.e. a player with
+        serial `player_serial` is currently logged in).
+        """
+        for avatar in self.avatars:
+            if avatar.getSerial() == player_serial:
                 avatar.sendPacketVerbose(packet)
-            else:
-                self.message("broadcast: avatar %s excluded" % str(avatar))
+                return True
+        return False
 
     def messageCheck(self):
         cursor = self.db.cursor()
@@ -2712,7 +2728,7 @@ class PokerService(service.Service):
                        "       sent = 'n' AND send_date < FROM_UNIXTIME(" + str(int(seconds())) + ")")
         rows = cursor.fetchall()
         for (serial, message) in rows:
-            self.broadcast(PacketMessage(string = message))
+            self.broadcast_to_all(PacketMessage(string = message))
             cursor.execute("UPDATE messages SET sent = 'y' WHERE serial = %d" % serial)
         cursor.close()
         self.cancelTimer('messages')

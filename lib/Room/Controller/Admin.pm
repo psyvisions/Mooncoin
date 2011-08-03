@@ -111,8 +111,7 @@ sub users :Chained('base') :Args(0) {
   my ($self, $c) = @_;
   my $name = $c->req->params->{'name'} || '';
   my $email = $c->req->params->{'email'} || '';
-  my $page = $c->req->params->{'page'} || 0;
-  $page = 1 if $page < 1;
+  my $page = $c->req->params->{'page'} || 1;
 
   $c->stash->{users} = $c->model('PokerNetwork::Users')->search(undef, {
     rows => 50,
