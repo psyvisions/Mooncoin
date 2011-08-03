@@ -189,6 +189,8 @@ sub get_h_side {
      elsif( $total_side_one < $total_side_two and $total_side_one != undef ){
       $h_side = 2;
     }
+    #9 means that only one side has a bet, this is used to determine when the ratio should be displayed
+    elsif ( $total_side_one == 0 or $total_side_two == 0 ){$h_side = 9;}
     else{$h_side = 0;}
     
     return $h_side;    

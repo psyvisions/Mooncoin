@@ -674,13 +674,26 @@ sub report :Chained('base') :PathPart('report') :FormConfig{
       title => $title,
       description => $description,
     });
+    
+        # This is ugly. Need to refactor somehow later
+    my $message = "Report Message: ". $description;
+
+    $c->log->debug($message);
+
+    $c->email(
+        header => [
+            From    => $c->config->{site_email},
+            To      => $c->config->{site_email},
+            Subject => 'Bet Report: ' . $title,
+        ],
+        body => $message,
+    );  
+        
     push @{$c->flash->{messages}}, "You have reported an issue regarding this bet.";
     $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
   };
 }
- 
 }
-
 
 =head1 AUTHOR
 

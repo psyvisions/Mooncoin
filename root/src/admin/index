@@ -1,18 +1,48 @@
 [% META title = 'Admin dashboard' %]
 [% PROCESS admin/admin_submenu %]
 
-<dl>
-  <dt>Current Bitcoin balance:</dt>
-  <dd>[% bitcoin_balance %]</dd>
-  
-  <dt>Current In Game Bitcoin accounts total balance:</dt>
-  <dd>[% total_ingame_balance_btc %]</dd>
-</dl>
-
-<dl>
-  <dt>Current Namecoin balance:</dt>
-  <dd>[% namecoin_balance %]</dd>
-  
-  <dt>Current In Game Namecoin accounts total balance:</dt>
-  <dd>[% total_ingame_balance_nmc %]</dd>
-</dl>
+<table id="hor-minimalist-b" style="width: 650px;">
+<thead>
+<tr><th colspan="4"><h2>Coins</h2></th></tr>
+<tr style="text-align:center;"><th scope="col">Distribution</th><th scope="col">Bitcoins</th><th scope="col">Namecoins<br /></th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Wallet</td>
+<td>[% bitcoin_balance %]</td>
+<td>[% namecoin_balance %]</td>
+</tr>
+<tr>
+<td>Exchange</td>
+<td>[% total_exchange_btc %]</td>
+<td>[% total_exchange_nmc %]</td>
+</tr>
+<tr>
+<td>Accounts</td>
+<td>[% total_accounts_balance_btc %]</td>
+<td>[% total_accounts_balance_nmc %]</td>
+</tr>
+<tr>
+<td>Poker</td>
+<td>[% total_ingame_on_btctables %]</td>
+<td>[% total_ingame_on_nmctables %]</td>
+</tr>
+<tr>
+<td>Skill Bets</td>
+<td>[% total_btc_skill %]</td>
+<td>[% total_nmc_skill %]</td>
+</tr>
+<tr>
+<td>Foresight Bets</td>
+<td>[% total_btc_foresight %]</td>
+<td>[% total_nmc_foresight %]</td>
+</tr>
+<tr>
+<td><b>Return</b></td>
+<td>[% bitcoin_balance - (total_exchange_btc + total_accounts_balance_btc + total_ingame_on_btctables + total_btc_skill + total_btc_foresight) %]</td>
+<td>[% namecoin_balance - (total_exchange_nmc + total_accounts_balance_nmc + total_ingame_on_nmctables + total_nmc_skill + total_nmc_foresight) %]</td>
+</tr>
+</tbody>
+</table>
+<p>
+<span style="color: gray; font-size:x-small">*There still may be balances uninitialized that are lingering.</span></p>

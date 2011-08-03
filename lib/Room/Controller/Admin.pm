@@ -32,40 +32,80 @@ sub base :Chained :PathPart('admin') :CaptureArgs(0) {
   }
 }
 
-
 sub index :Chained('base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
-
+  #total in btc wallet
   $c->stash->{bitcoin_balance} = $c->model("BitcoinServer")->get_balance();
-
+  #total in accounts
   my $rs = $c->model("PokerNetwork::User2Money")->search(
             { currency_serial => 1 },
+            { '+select' => [{ SUM => 'amount' }],'+as'     => [qw/total_amount/], });
+  my $hold = $rs->first;
+  $c->stash->{total_accounts_balance_btc} = $hold->get_column('total_amount') / 10000;
+  #total in btc exchange
+  my $btcexchange = $c->model("PokerNetwork::Trades")->search(
+  { sell_currency => 1 },{ '+select' => [{ SUM => 'balance' }],'+as'=> [qw/total_amount/], });           
+  $hold = $btcexchange->first;
+  $c->stash->{total_exchange_btc} = $hold->get_column('total_amount');
+  #total in nmc exchange
+  my $nmcexchange = $c->model("PokerNetwork::Trades")->search(
+  { sell_currency => 2 },{ '+select' => [{ SUM => 'balance' }],'+as'=> [qw/total_amount/], });           
+  $hold = $nmcexchange->first;
+  $c->stash->{total_exchange_nmc} = $hold->get_column('total_amount');
+ #total in btc poker 
+ my $btcpoker = $c->model("PokerNetwork::Pokertables")->search({ currency_serial => 1, },
             {
-              '+select' => [{ SUM => 'amount' }],
-              '+as'     => [qw/total_amount/],
+             '+select' => [{ SUM => 'money + bet' }],
+             '+as'     => [qw/total_on_tables/],
+             prefetch => 'users2table'
            });
-
-  my $row = $rs->first;
-
-  $c->stash->{total_ingame_balance_btc} = $row->get_column('total_amount') / 10000;
-  
-  ##
-  
+  $hold = $btcpoker->first;
+  $c->stash->{total_ingame_on_btctables} = $hold->get_column('total_on_tables') / 10000;
+  #total in nmc poker
+ my $nmcpoker = $c->model("PokerNetwork::Pokertables")->search({ currency_serial => 2, },
+            {
+             '+select' => [{ SUM => 'money + bet' }],
+             '+as'     => [qw/total_on_tables/],
+             prefetch => 'users2table'
+           });
+  $hold = $nmcpoker->first;
+  $c->stash->{total_ingame_on_nmctables} = $hold->get_column('total_on_tables') / 10000;  
+  #total in nmc wallet
   $c->stash->{namecoin_balance} = $c->model("NamecoinServer")->get_balance();
-
+  #total in accounts nmc
   my $rs1 = $c->model("PokerNetwork::User2Money")->search(
             { currency_serial => 2 },
-            {
-              '+select' => [{ SUM => 'amount' }],
-              '+as'     => [qw/total_amount/],
-           });
+            {'+select' => [{ SUM => 'amount' }],'+as'     => [qw/total_amount/], });
 
-  my $row1 = $rs1->first;
-
-  $c->stash->{total_ingame_balance_nmc} = $row1->get_column('total_amount') / 10000;
-  
+  $hold = $rs1->first;
+  $c->stash->{total_accounts_balance_nmc} = $hold->get_column('total_amount') / 10000;
+  #total in foresight bets btc
+  my $btcf = $c->model("PokerNetwork::Bets")->search({ currency_serial => 1, type => 1,},
+  { '+select' => [{ SUM => 'userbets.amount' }],'+as' => [qw/total_amount/], prefetch => 'userbets' });
+  $hold = $btcf->first;
+  $c->stash->{total_btc_foresight} = $hold->get_column('total_amount') / 100;
+  #total in foresight bets nmc
+  my $nmcf = $c->model("PokerNetwork::Bets")->search({ currency_serial => 2, type => 1,},
+  { '+select' => [{ SUM => 'userbets.amount' }],'+as' => [qw/total_amount/], prefetch => 'userbets' });
+  $hold = $nmcf->first;
+  $c->stash->{total_nmc_foresight} = $hold->get_column('total_amount') / 100;
+  #total in skill bets btc
+  my $btcsk1 = $c->model("PokerNetwork::Bets")->search({ currency_serial => 1, type => 2, challenger_serial => undef,},
+  { '+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
+  my $hold1 = $btcsk1->first;
+  my $btcsk2 = $c->model("PokerNetwork::Bets")->search({ currency_serial => 1, type => 2, challenger_serial =>{'!=' => 'undef'}},
+  { '+select' => [{ SUM => 'amount * 2' }],'+as' => [qw/total_amount/], });
+  my $hold2 = $btcsk2->first;
+  $c->stash->{total_btc_skill} = $hold1->get_column('total_amount') + $hold2->get_column('total_amount');
+  #total in skill bets btc
+  my $nmcsk1 = $c->model("PokerNetwork::Bets")->search({ currency_serial => 2, type => 2, challenger_serial => undef,},
+  { '+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
+  $hold1 = $nmcsk1->first;
+  my $nmcsk2 = $c->model("PokerNetwork::Bets")->search({ currency_serial => 2, type => 2, challenger_serial =>{'!=' => 'undef'}},
+  { '+select' => [{ SUM => 'amount * 2' }],'+as' => [qw/total_amount/], });
+  $hold2 = $nmcsk2->first;
+  $c->stash->{total_nmc_skill} = $hold1->get_column('total_amount') + $hold2->get_column('total_amount');
 }
-
 
 sub users :Chained('base') :Args(0) {
   my ($self, $c) = @_;
@@ -84,8 +124,6 @@ sub users :Chained('base') :Args(0) {
   $c->stash->{users} = $c->stash->{users}->search({ 'email' => { 'LIKE' => '%'. $email .'%' } }) unless $email eq '';
 }
 
-
-
 sub user :Chained('base') :CaptureArgs(1) {
   my ($self, $c, $user_id) = @_;
   
@@ -98,7 +136,6 @@ sub kick :Chained('user') :Args(0) {
 }
 
 sub profile :Chained('user') :PathPart('') :Args(0) {}
-
 
 sub hands :Chained('user') :Args(0) {
   my ($self, $c) = @_;
@@ -116,7 +153,6 @@ sub hands :Chained('user') :Args(0) {
   $c->stash->{template} = 'user/hand/index';
 }
 
-
 sub view_hand :Chained('user') :PathPart('hands') :Args(1) {
   my ($self, $c, $id) = @_;
 
@@ -130,7 +166,6 @@ sub view_hand :Chained('user') :PathPart('hands') :Args(1) {
   
   $c->stash->{template} = 'user/hand/view_hand';
 }
-
 
 sub withdrawals :Chained('base') :Args(0) {
   my ($self, $c) = @_;
@@ -147,7 +182,6 @@ sub withdrawals :Chained('base') :Args(0) {
   });
 }
 
-
 sub withdrawal_base :Chained('base') :PathPart('withdrawal') :CaptureArgs(1) {
   my ($self, $c, $id) = @_;
 
@@ -159,7 +193,6 @@ sub withdrawal_base :Chained('base') :PathPart('withdrawal') :CaptureArgs(1) {
 
   $c->stash->{withdrawal} = $withdrawal;
 }
-
 
 sub withdrawal :Chained('withdrawal_base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
@@ -179,7 +212,6 @@ sub withdrawal_info :Chained('withdrawal_base') :PathPart('info') :Args(0) {
     $c->uri_for('/admin/withdrawal/' . $c->stash->{withdrawal}->id)
   );
 }
-
 
 sub withdrawal_reprocess :Chained('withdrawal_base') :PathPart('reprocess') :Args(0) {
   my ($self, $c) = @_;
@@ -224,9 +256,7 @@ sub withdrawal_reprocess :Chained('withdrawal_base') :PathPart('reprocess') :Arg
   else {
     push @{$c->flash->{errors}}, "Currently, only one currency supported. Currency serial should be equal 1.";
   }
-
-  
-  
+ 
   $c->res->redirect(
     $c->uri_for('/admin/withdrawal/' . $withdrawal->id)
   );
@@ -236,7 +266,6 @@ sub withdrawal_reprocess :Chained('withdrawal_base') :PathPart('reprocess') :Arg
 sub mark :Chained('withdrawal_base') :CaptureArgs(0) {
   my ($self, $c) = @_;
 }
-
 
 sub mark_processed :Chained('mark') :PathPart('processed') {
   my ($self, $c) = @_;
@@ -479,11 +508,8 @@ sub conflict :Chained('base') :Path('bets/conflict') :Args(0) {
   $page = 1 if $page < 1;
 
   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
-  
   -or => [{-or => [{ -or => [{-and => [ { challenger_status => '1' }, { user_status => '1' } ]},{-and => [ { challenger_status => '2' }, { user_status => '2' } ]}]},{ -or => [{-and => [ { challenger_status => '3' }, { user_status => '1' } ]},{-and => [ { challenger_status => '1' }, { user_status => '3' } ]}]}]},{-or => [{ -or => [{-and => [ { challenger_status => '2' }, { user_status => '3' } ]},{-and => [ { challenger_status => '3' }, { user_status => '2' } ]}]}]}],
   active => undef
-  
- 
   }, { 
       rows => 50,
       page => $page,
@@ -532,7 +558,7 @@ sub view_bet :Chained('bet_base') :PathPart('view') :Args(0) {
   my ($self, $c) = @_;
   my $bet = $c->stash->{bet};  
 
-           ## Total side one amount
+    ## Total side one amount
      $c->stash->{userbets_s_one_total} = $c->model("PokerNetwork::User2bet")->search({ 
      bet_serial => $bet->serial, side => 1}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
            
@@ -661,12 +687,10 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
   else{
   push @{$c->flash->{messages}}, "Can't determine conclusion.";
   }
-
   $c->res->redirect(
       $c->uri_for('/admin/bets')
     );
     }elsif($bet->type = 1){  
-    
     }
 }
 
@@ -716,7 +740,6 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
    
    if($userbet->side == 1){
 
-   
     if (! $balance) {
       $balance = $userbet->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
       $balance->amount(0);
@@ -766,7 +789,6 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
     $c->res->redirect(
       $c->uri_for('/admin/bet/' . $bet->serial . '/view')
     );
-
 
   }elsif($result == 2){
   
@@ -974,8 +996,6 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   push @{$c->flash->{messages}}, "Can't determine conclusion.";
   }
   
-
-  
   $c->res->redirect(
       $c->uri_for('/admin/bet/' . $bet->serial . '/view')
     );
@@ -986,7 +1006,6 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
     );
   }
  }
-
 
 sub bet_cancel :Chained('bet_base') :PathPart('cancel') :Args(0) {
   my ($self, $c) = @_;
@@ -1062,7 +1081,6 @@ sub bet_cancel :Chained('bet_base') :PathPart('cancel') :Args(0) {
     );     
 }
 
-
 sub bet_freeze :Chained('bet_base') :PathPart('freeze') :Args(0) {
   my ($self, $c) = @_;
   my $bet = $c->stash->{bet};
@@ -1076,7 +1094,6 @@ sub bet_freeze :Chained('bet_base') :PathPart('freeze') :Args(0) {
       $c->uri_for('/admin/bet/' . $bet->serial . '/view')
     );
 }
-
 
 sub bet_edit :Chained('bet_base') :PathPart('edit') :Args(0) :FormConfig {
   my ( $self, $c ) = @_;
@@ -1115,14 +1132,35 @@ sub bet_edit :Chained('bet_base') :PathPart('edit') :Args(0) :FormConfig {
   $c->res->redirect(
       $c->uri_for('/admin/bet/' . $c->stash->{bet}->serial . '/view')
     );
-  
   }
-
-  
-  
 }
 
+##Userbet stuff for games of foresight
+sub userbet_cancel :Chained('bet_base') :PathPart('del') :Args(1) {
+  my ($self, $c, $id) = @_;  
+  my $bet = $c->stash->{bet};
+    
+  $c->stash->{userbet} = $c->model("PokerNetwork::User2bet")->search({serial => $id})->first;
 
+  my $amount = $c->stash->{userbet}->amount;
+  my $balance = $c->stash->{userbet}->user->balances->search({currency_serial => $bet->currency_serial})->first;
+  
+    $balance->amount(
+      $balance->amount() + ( $amount / 100 )
+    );
+    
+    $balance->update(); 
+    $c->stash->{userbet}->delete;
+    
+    
+     push @{$c->flash->{messages}}, "This userbet has been deleted.";
+  
+  $c->res->redirect(
+      $c->uri_for('/admin/bet/' . $c->stash->{bet}->serial . '/view')
+    );
+
+     
+}
 =head1 AUTHOR
 
 Pavel Karoukin

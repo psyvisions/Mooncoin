@@ -2,8 +2,6 @@ package Room::Controller::Tables;
 use Moose;
 use namespace::autoclean;
 
-use Net::Twitter::Lite;
-
 BEGIN {extends 'Catalyst::Controller'; }
 
 =head1 NAME

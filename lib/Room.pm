@@ -44,7 +44,7 @@ $VERSION = eval $VERSION;
 __PACKAGE__->config(
     name => 'Room',
     'Plugin::Session' => {
-    cookie_secure => 1,
+
     cookie_httponly => 1,
     },
     # Disable deprecated behavior needed by old applications

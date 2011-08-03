@@ -72,6 +72,10 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("serial");
 __PACKAGE__->add_unique_constraint("name", ["name"]);
 
+__PACKAGE__->has_many(
+  'users2table' => 'Room::Schema::PokerNetwork::Result::User2table',
+  { 'foreign.table_serial' => 'self.serial' }, { cascade_delete => 0 },
+);
 
 # Created by DBIx::Class::Schema::Loader v0.04006 @ 2010-09-27 11:47:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0zRzp3wUR4KVXGCdR92Wjg

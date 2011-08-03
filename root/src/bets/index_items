@@ -1,6 +1,6 @@
 <div>
 [% IF bet.type == '1' %]
-<h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Foresight</a> <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => Total <span style="color: green;">[% bet.get_total | format('%.2f')  %]</span> mc[% IF bet.get_total != 0 %] => Odds <span style="color: green;"> <span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1</span>[% END %]</span></h2>
+<h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Foresight</a> <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => Total <span style="color: green;">[% bet.get_total | format('%.2f')  %]</span> mc[% IF bet.get_h_side != 9 %] => Odds <span style="color: green;"> <span style="color: green;">[% bet.get_ratio | format('%.2f') %]<span style="color:black;"> : </span>1.00</span>[% END %]</span></h2>
 <h3><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %] @ [% bet.event_time_readable %]</a></h3>
 <p>[% bet.description %]</p>
 <div style="float:right;">

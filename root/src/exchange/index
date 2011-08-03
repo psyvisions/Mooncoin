@@ -35,7 +35,7 @@
 <table id="hor-minimalist-b">
 <thead>
 <tr><th colspan="4"><h2>Selling BTC (Buying NMC)</h2></th></tr>
-<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">Amount</th><th scope="col">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</div></th></tr>
+<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">Amount</th><th scope="col">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</span></th></tr>
 </thead>
 <tbody>
 [% WHILE (bnmc = buy_nmc.next) %]
@@ -55,7 +55,7 @@
 <table id="hor-minimalist-b">
 <thead>
 <tr><th colspan="3"><h2>Selling NMC (Buying BTC)</h2></th></tr>
-<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">Amount</th><th scope="col">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</div></th></tr>
+<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">Amount</th><th scope="col">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</span></th></tr>
 </thead>
 <tbody>
 [% WHILE (snmc = sell_nmc.next) %]
@@ -74,7 +74,7 @@
 <table id="hor-minimalist-b">
 <thead>
 <tr><th colspan="3"><h2>Recent Transactions</h2></th></tr>
-<tr style="text-align:center;"><th scope="col">Date</th><th scope="col">Amount Bought</th><th scope="col" width="65%">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</div></th></tr>
+<tr style="text-align:center;"><th scope="col">Date</th><th scope="col">Amount Bought</th><th scope="col" width="65%">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</span></th></tr>
 </thead>
 <tbody>
 [% WHILE (rt = recent_trades.next) %]

@@ -1,5 +1,11 @@
 package Room::Schema::PokerNetwork::Result::User2bet;
 
+use DateTime;
+use Date::Manip;
+use DateTime::Duration;
+use Date::Parse;
+use DateTime::Format::Strptime;
+
 use strict;
 use warnings;
 
@@ -14,6 +20,8 @@ __PACKAGE__->load_components(
 );
 __PACKAGE__->table("user2bet");
 __PACKAGE__->add_columns(
+  "serial",
+  { data_type => "INT", default_value => undef, is_nullable => 0, size => 10 },
   "user_serial",
   { data_type => "INT", default_value => undef, is_nullable => 0, size => 10 },
   "bet_serial",
@@ -39,7 +47,7 @@ __PACKAGE__->add_columns(
     size => 19,
   },
 );
-__PACKAGE__->set_primary_key("user_serial", "bet_serial");
+__PACKAGE__->set_primary_key("serial", "user_serial", "bet_serial");
 
 
 __PACKAGE__->belongs_to(
@@ -52,6 +60,12 @@ __PACKAGE__->belongs_to(
   { 'foreign.serial' => 'self.bet_serial' },
 );
 
+sub created_time_readable{
+  my ($self) = @_;
+  my $crstr = str2time($self->created_at);
+  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T');
+  return $created;
+}
 
 =head1 AUTHOR
 

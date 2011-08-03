@@ -23,8 +23,12 @@ __PACKAGE__->add_columns(
   "bet",
   { data_type => "INT", default_value => 0, is_nullable => 0, size => 11 },
 );
+
 __PACKAGE__->set_primary_key("user_serial", "table_serial");
 
+__PACKAGE__->has_relationship(
+  'table' => 'Room::Schema::PokerNetwork::Result::pokertables', {'foreign.serial' => 'self.table_serial', "foreign.currency" => 2,},
+);
 
 # Created by DBIx::Class::Schema::Loader v0.04006 @ 2010-09-27 11:47:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Qax8lygssf9jjVXTrdjbZw
