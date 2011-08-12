@@ -2,7 +2,7 @@
 
 <div style="height:15px;">
 <div style="float:left; margin-top: 5px;"><img src="/static/img/moon-xsmall.png" ></div>
-<div style="float:left;margin-top:15px;"><h1 class="title">Mooncoin</h1></div>
+<div style="float:left;margin-top:15px;"><h1 class="title"><span style="color:#1B587B;">Moon</span><span style="color:#4080B0;">coin</span></h1></div>
 </div>
 
 <ul class='menu'>

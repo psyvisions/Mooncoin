@@ -280,6 +280,7 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
       title => $title,
       description => $description,
       deadline => $deadline,
+      challenged_at => $eventdate,
       category => $category,
       side_one => $side_one,
       side_two => $side_two,

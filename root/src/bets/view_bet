@@ -72,14 +72,16 @@
 
   [% IF bet.type == '1' %] 	   
   <div style="float:left; margin-left: 30px;">
-  <h3>Event Date and Time</h3>  <p>[% bet.event_time_readable %]</p><p>[% bet.get_timeleft_event %]</p>    [% IF bet.get_timeleft_event.seconds > 0 %][% bet.get_timeleft_event.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF bet.event_passed == 1 %]<span style="color: red;"><i>The event has concluded</i></span>[% END %]
+  <h3>Event Date and Time</h3>  <p>[% bet.event_time_readable %]</p>
+  <p>[% bet.get_timeleft_event %]</p>
+  [% IF bet.event_passed == 1 %]<span style="color: red;"><i>The event has concluded</i></span>[% END %]
   </div>
 
   <div style="float:left;margin-left: 30px;">
   <h3>Betting time left</h3>
   <p>[% bet.bet_time_readable %]</p>
   <p>[% bet.get_timeleft %]</p>
-    [% IF bet.get_timeleft.seconds > 0 %][% bet.get_timeleft.seconds %] <span style="color: black; font-size: small; vertical-align: middle;">Secs</span>[% END %][% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]
+  [% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]
   </div>
   
   [% ELSIF bet.type == '2' and bet.challenger_serial != undef and ( bet.challenger_status != undef or bet.user_status != undef ) %]

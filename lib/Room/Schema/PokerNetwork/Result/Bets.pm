@@ -115,7 +115,7 @@ __PACKAGE__->belongs_to(
 
 __PACKAGE__->has_many(
   'report' => 'Room::Schema::PokerNetwork::Result::Reports',
-  { 'foreign.serial' => 'self.report_serial' }, { cascade_delete => 0 },
+  { 'foreign.serial' => 'self.report_serial' }, { cascade_delete => 1 },
 );
 
 __PACKAGE__->has_many(
@@ -211,14 +211,14 @@ sub get_timeleft{
   if ($diff->is_negative == 1 ){
   $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
   } 
-
+  my $hold;
   if($diff->is_positive == 1){
   my $string = '<span style="color: green; font-size: large;">';
-  if($diff->years > 0){$string = $string . $diff->years . " <span style='color: black; font-size: small;'>Years</span> ";}
-  if($diff->months > 0){$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Months</span> ";}  
-  if($diff->days > 0){$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Days</span> ";}
-  if($diff->hours > 0){$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hours</span> ";} 
-  if($diff->minutes > 0){$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minutes</span> ";}
+  if($diff->years > 0){if($diff->years != 1){$hold = 's'} $string = $string . $diff->years . " <span style='color: black; font-size: small;'>Year".$hold."</span> ";}
+  if($diff->months > 0){if($diff->months != 1){$hold = 's'}$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Month".$hold."</span> ";}  if($diff->weeks > 0){ if($diff->weeks != 1){$hold = 's'} $string = $string . $diff->weeks . " <span style='color: black; font-size: small;'>Week".$hold."</span> ";}
+  if($diff->days > 0){if($diff->days != 1){$hold = 's'}$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Day".$hold."</span> ";}
+  if($diff->hours > 0){if($diff->hours != 1){$hold = 's'}$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hour".$hold."</span> ";} 
+  if($diff->minutes > 0){if($diff->minutes != 1){$hold = 's'}$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minute".$hold."</span> ";}
   if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}     
   return $string;}
 }
@@ -245,12 +245,13 @@ sub get_timeleft_event{
   } 
 
   if($diff->is_positive == 1){
+  my $hold;
   my $string = '<span style="color: green; font-size: large;">';
-  if($diff->years > 0){$string = $string . $diff->years . " <span style='color: black; font-size: small;'>Years</span> ";}
-  if($diff->months > 0){$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Months</span> ";}  
-  if($diff->days > 0){$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Days</span> ";}
-  if($diff->hours > 0){$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hours</span> ";} 
-  if($diff->minutes > 0){$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minutes</span> ";}
+  if($diff->years > 0){if($diff->years != 1){$hold = 's'} $string = $string . $diff->years . " <span style='color: black; font-size: small;'>Year".$hold."</span> ";}
+  if($diff->months > 0){if($diff->months != 1){$hold = 's'}$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Month".$hold."</span> ";}  if($diff->weeks > 0){ if($diff->weeks != 1){$hold = 's'} $string = $string . $diff->weeks . " <span style='color: black; font-size: small;'>Week".$hold."</span> ";}
+  if($diff->days > 0){if($diff->days != 1){$hold = 's'}$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Day".$hold."</span> ";}
+  if($diff->hours > 0){if($diff->hours != 1){$hold = 's'}$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hour".$hold."</span> ";} 
+  if($diff->minutes > 0){if($diff->minutes != 1){$hold = 's'}$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minute".$hold."</span> ";}
   if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}     
   return $string;}
 }
@@ -367,14 +368,15 @@ sub get_timeleft_update{
   }
   
 my $string = '<span style="color: green; font-size: large;">';
-  if($diff->years > 0){$string = $string . $diff->years . " <span style='color: black; font-size: small;'>Years</span> ";}
-  if($diff->months > 0){$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Months</span> ";}  
-  if($diff->days > 0){$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Days</span> ";}
-  if($diff->hours > 0){$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hours</span> ";} 
-  if($diff->minutes > 0){$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minutes</span> ";}
+  my $hold;
+  my $string = '<span style="color: green; font-size: large;">';
+  if($diff->years > 0){if($diff->years != 1){$hold = 's'} $string = $string . $diff->years . " <span style='color: black; font-size: small;'>Year".$hold."</span> ";}
+  if($diff->months > 0){if($diff->months != 1){$hold = 's'}$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Month".$hold."</span> ";}  if($diff->weeks > 0){ if($diff->weeks != 1){$hold = 's'} $string = $string . $diff->weeks . " <span style='color: black; font-size: small;'>Week".$hold."</span> ";}
+  if($diff->days > 0){if($diff->days != 1){$hold = 's'}$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Day".$hold."</span> ";}
+  if($diff->hours > 0){if($diff->hours != 1){$hold = 's'}$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hour".$hold."</span> ";} 
+  if($diff->minutes > 0){if($diff->minutes != 1){$hold = 's'}$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minute".$hold."</span> ";}
   if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}     
-  return $string;  
-
+  return $string;
   
   }else{ my $diff = 0; return $diff;}
 }
@@ -388,7 +390,7 @@ sub bet_time_readable{
 
 sub event_time_readable{
   my ($self) = @_;
-  my $strdate1 = str2time($self->created_at);
+  my $strdate1 = str2time($self->challenged_at);
   my $time1 = UnixDate(ParseDate("epoch $strdate1"), '%F %T');
   return $time1;
 }
