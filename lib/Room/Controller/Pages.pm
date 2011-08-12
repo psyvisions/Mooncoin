@@ -1,4 +1,4 @@
-package Room::Controller::Tourneys;
+package Room::Controller::Pages;
 use Moose;
 use namespace::autoclean;
 
@@ -6,11 +6,18 @@ BEGIN {extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-Room::Controller::Tourneys - Catalyst Controller
+Room::Controller::Pages - Custom pages controller.
 
 =head1 DESCRIPTION
 
-Catalyst Controller.
+Allows you to create pages inside View::HTML include path and 
+access these pages via /pages/[template_file_name] URLs. 
+
+Useful when you need to create simple static page and do not 
+want to create separate controller/action for it.
+
+Page templates should be saved to /pages/ folder inside 
+one of View::HTML include_path. 
 
 =head1 METHODS
 
@@ -19,37 +26,23 @@ Catalyst Controller.
 
 =head2 index
 
-Show list of all tourneys
-
 =cut
-sub index :Path :Args(0) {
-    my ( $self, $c ) = @_;
 
-    $c->stash->{tourneys} = $c->model('PokerNetwork::Tourneys')->search(undef, {
-        page => $c->req->params->{page} || 1,
-        rows => 50,
-        order_by => {
-            -desc => 'serial',
-        },
-    });
+sub index :Path {
+    my ( $self, $c, @page ) = @_;
+    my $template = join '/', @page;
+
+    $c->res->redirect( '/404-not-found' ) unless $template ne "";
+
+    if ( $c->view('HTML')->template_exists('pages', $template) ) {
+        $c->stash->{template} = 'pages/' . $template;
+        $c->forward( $c->view('HTML') ); 
+    }
+    else {
+        $c->res->redirect( '/404-not-found' ); 
+    }
 }
 
-
-=head2 details 
-
-Tourney details page. Here player can check tourney stats and register for tourney.
-
-=cut
-sub details :Path('') :Args(1) {
-    my ($self, $c, $serial) = @_;
-    $c->stash->{tourney} = $c->model('PokerNetwork::Tourneys')->find($serial);
-
-    $c->stash->{url} = $c->config->{rest_url} || '/POKER_REST';
-    $c->stash->{uid} = ($c->user) ? $c->user->serial : 0;
-    $c->stash->{auth} = $c->session->{pokernetwork_auth} || 'N';
-
-    $c->res->redirect('/404-not-found') unless $c->stash->{tourney};
-}
 
 =head1 AUTHOR
 
@@ -71,6 +64,7 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 =cut
 

@@ -40,7 +40,7 @@
 
     [% IF not c.user %]
       <div class="non-logged-in-notice">
-        <p>You will need to <a href="[% c.uri_for('/user/login') %]">login</a> in order to sit at any of these tables.</p>
+        <p>You will need to <a href="[% c.uri_for('/user/login', undef, { destination => '/tables' }) %]">login</a> in order to sit at any of these tables.</p>
       </div>
     [% END %]
 
@@ -101,7 +101,7 @@
 		<tbody>
           [% FOREACH table = tables_list.value.tables %]
           <tr>
-            <td><a class="popup-window" rel="table" href="/static/table.html?game_id=[% table.serial %]&auth=[% c.session.pokernetwork_auth %]&uid=[% c.user.serial %]">[% table.name %]</a></td>
+            <td><a class="popup-window" rel="table" target="table_[% table.serial %]" href="/static/table.html?game_id=[% table.serial %]&auth=[% c.session.pokernetwork_auth %]&uid=[% c.user.serial %]">[% table.name %]</a></td>
             <td>[% table.variant %]</td>
             <td>btc</td>
             <td>[% table.betting_structure %]</td>
