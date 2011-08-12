@@ -6,9 +6,7 @@ BEGIN {extends 'Catalyst::Controller'; }
 
 sub base :Chained :PathPart('admin') :CaptureArgs(0) {
   my ($self, $c) = @_;
-
 }
-
 
 =head1 NAME
 
@@ -32,8 +30,6 @@ sub index :Path :Args(0) {
 
     $c->response->body('Matched Room::Controller::Admin::Tourneys in Admin::Tourneys.');
 }
-
-
 
 =head1 AUTHOR
 
