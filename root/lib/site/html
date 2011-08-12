@@ -14,7 +14,8 @@
   <script src="/static/script.js"></script>
 
   <link rel="stylesheet" type="text/css" href="/static/jquery/ui.1.8/themes/smoothness/jquery.ui.all.css">
-
+<link rel="stylesheet" type="text/css" href="/static/css/anytimec.css" />
+<script type="text/javascript" src="/static/js/anytimec.js"></script>
   <script language="JavaScript" type="text/javascript" src="/static/jquery/ui.1.8/ui/jquery-ui-1.8.4.custom.js"></script>
   
   <script language="JavaScript" type="text/javascript" src="/static/js/jquery.ajaxretry.js?a"></script>
