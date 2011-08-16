@@ -1,0 +1,40 @@
+[% META title = 'Withdrawals' %]
+[% PROCESS admin/admin_submenu %]
+[% PROCESS admin/staff/staff_submenu %]
+<div style="clear:both;"></div>
+<table id="hor-minimalist-b" style="width: 960px;">
+<thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Currency</th>
+      <th>Amount</th>
+      <th>Created</th>
+      <th>Processed</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% WHILE (withdrawal = withdrawals.next) %]
+        <tr>
+          <td>[% withdrawal.id %]</td>
+          <td><a href="[% c.uri_for("/admin/user/" _ withdrawal.user.serial) %]">[% withdrawal.user.name  | html %]</a></td>
+          <td>[% withdrawal.currency.name %]</td>
+          <td>[% withdrawal.amount %]</td>
+          <td>[% withdrawal.created_at %]</td>
+          <td>[% withdrawal.processed_at %]</td>
+          <td>
+              <a href="[% c.uri_for('/admin/withdrawal/' _ withdrawal.id) %]">View</a>
+          </td>
+        </tr>
+    [% END %]
+  </tbody>
+</table>
+
+[% IF withdrawals.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('/admin/withdrawals', undef, { page => withdrawals.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF withdrawals.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('/admin/withdrawals', undef, { page => withdrawals.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]

@@ -49,8 +49,7 @@ __PACKAGE__->apply_request_class_roles(qw/
 __PACKAGE__->config(
     name => 'Room',
     'Plugin::Session' => {
-	cookie_secure => 1,
-    cookie_httponly => 1,
+
     },
     # Disable deprecated behavior needed by old applications
     disable_component_resolution_regex_fallback => 1,

@@ -1,0 +1,41 @@
+[% META title = 'Arbirtrator' %]
+[% PROCESS arbitration/arbitration_submenu %]
+<div style="clear:both;"></div>
+<p>Welcome, as a arbirtrator you are considered a part of mooncoin staff and this means you have a shared stake in the success of mooncoin. You will be responsible for the movement of digital currencies between users and our site and a simple mistake can be detrimental to the success of the entire site.</p>
+<p> Due to the nature of the currencies we must take precautions, as a arbitrator you will no longer be able to withdraw from your account without administrator approval. You will also be expected to make a deposit with mooncoin so that mistakes or multi-user theft is both insured and not practical.</p>
+<p>Arbitrators will be responsible for specific parts of the site which they have requested to maintain. The arbitrator is expected to have above average knowledge of the subject they are moderating and at least some involvement in the community. They are responsible for finding new bets, maintaining good rapport with users, and closing out bets in a timely manner.</p> <p>In exchange for these tasks they will be rewarded with a percentage of mooncoins fees which is determined by seniority, success of section, and other factiors. There may be more then one arbitrator assigned to a section and an arbitrator may ask to take responsibility for more then one section. However they will be receive independent percentages and expected to pay independent deposits for each section which they take responsibility for.</p>
+
+<div style="float:left; width:960px; height: 50px;">
+<h2>Assignments</h2>
+<p>Below is a list of your requested assignments, your current percentage and the status of your deposit.</p>
+</div>
+<div style="clear:both;"></div>
+<table id="hor-minimalist-b" style="width: 960px; margin-top: 35px;">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Category</th>
+      <th>Deposit</th>
+      <th>Percentage</th>
+      <th>Action</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    [% WHILE (bet = arbs.next) %]
+        <tr>
+          <td>[% IF bet.type == '2' %]Skill[% ELSIF bet.type == '1' %]Foresight[% END %]</td>
+          <td>[% PROCESS bets/categories_switch %]</td>
+
+          <td>[% IF bet.deposit == undef or bet.deposit == 0 %]<span style="color:red;">[% ELSIF bet.deposit == 1 %]<span style="color:green;">[% ELSE %]<span>[% END %][% bet.deposit_amount %]</span></td>          
+          <td>[% bet.percentage %]</td>
+          <td>
+              [% IF bet.deposit == undef or bet.deposit == 0 %]<a class="confirm" href="[% c.uri_for('/user/arbitrator/assignment/' _ bet.serial'deposit') %]">Deposit</a>
+              [% ELSIF bet.deposit == 1 %]Deposit Accepted[% END %]
+
+          </td>
+        </tr>
+    [% END %]
+  </tbody>
+</table>
+<div style="clear:both;"></div>

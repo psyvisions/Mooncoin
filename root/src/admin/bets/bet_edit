@@ -1,3 +1,48 @@
 [% META title = 'Bets' %]
 
+<link rel="stylesheet" type="text/css" href="/static/css/anytimec.css" />
+<script type="text/javascript" src="/static/js/anytimec.js"></script>
+
 [% form %]
+
+[% IF bet.type == 1 %]
+<script type="text/javascript">
+$(document).ready(function(){
+
+});
+
+  var oneDay = 24*60*60*1000;
+  var rangeDemoFormat = "%Y-%m-%d %H:%i:%s";
+  var rangeDemoConv = new AnyTime.Converter({format:rangeDemoFormat});
+      
+  $("#betcal1").AnyTime_picker({
+  earliest: new Date(),
+  format:rangeDemoFormat,
+  });
+  
+  $("#betcal1").change( function(e) { try {
+      var fromDay = rangeDemoConv.parse($("#betcal1").val()).getTime();
+      var dayLater = new Date(fromDay);
+      var ninetyDaysLater = new Date(fromDay+(90*oneDay));
+      ninetyDaysLater.setHours(23,59,59,999);
+      $("#betcal2").
+          AnyTime_noPicker().
+          removeAttr("disabled").
+          val(rangeDemoConv.format(dayLater)).
+          AnyTime_picker(
+              { earliest: dayLater,
+                format: rangeDemoFormat,
+                latest: ninetyDaysLater
+              } );
+      } catch(e){ $("#betcal2").val("").attr("disabled","disabled"); } } );
+</script>
+[% ELSIF bet.type == 2 %]
+<script type="text/javascript">
+$(document).ready(function(){
+$("#betcal1").val("").attr("disabled","disabled");
+$("#betcal2").val("").attr("disabled","disabled");
+$("#bet_side_one").val("").attr("disabled","disabled");
+$("#bet_side_two").val("").attr("disabled","disabled");
+});
+</script>
+[% END %]

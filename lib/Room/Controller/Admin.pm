@@ -131,7 +131,31 @@ sub user :Chained('base') :CaptureArgs(1) {
 
 sub kick :Chained('user') :Args(0) {
   my ($self, $c) = @_;
+  my $user = $c->stash->{user};
+  $user->delete;
+  $c->res->redirect(
+    $c->uri_for('/admin/users' )
+  );
+}
 
+sub promote :Chained('user') :Args(0) {
+  my ($self, $c) = @_;
+  my $user = $c->stash->{user};  
+  $user->privilege(3);
+  $user->update();
+  $c->res->redirect(
+    $c->uri_for('/admin/user/' . $user->serial )
+  );
+}
+
+sub demote :Chained('user') :Args(0) {
+  my ($self, $c) = @_;
+  my $user = $c->stash->{user};  
+  $user->privilege(1);
+  $user->update();
+  $c->res->redirect(
+    $c->uri_for('/admin/user/' . $user->serial )
+  );
 }
 
 sub profile :Chained('user') :PathPart('') :Args(0) {}

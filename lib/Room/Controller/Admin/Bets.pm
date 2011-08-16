@@ -12,7 +12,6 @@ sub base :Chained :PathPart('admin') :CaptureArgs(0) {
   }
 }
 
-
 =head1 NAME
 
 Room::Controller::Admin::Bets - Catalyst Controller
@@ -25,11 +24,9 @@ Catalyst Controller.
 
 =cut
 
-
 =head2 index
 
 =cut
-
 
 ## bet backend for processing and conflict resolution ##
 
@@ -62,7 +59,7 @@ sub bets :Chained('base') :Args(0) {
   });
 }
 
-sub ready :Chained('base') :Path('bets/ready') :Args(0) {
+sub ready :Chained('base') :Path('/admin/bets/ready') :Args(0) {
   my ($self, $c) = @_;
 
   my $page = $c->req->params->{'page'};
@@ -80,7 +77,7 @@ sub ready :Chained('base') :Path('bets/ready') :Args(0) {
   });
 }
 
-sub conflict :Chained('base') :Path('bets/conflict') :Args(0) {
+sub conflict :Chained('base') :Path('/admin/bets/conflict') :Args(0) {
   my ($self, $c) = @_;
 
   my $page = $c->req->params->{'page'};
@@ -98,7 +95,7 @@ sub conflict :Chained('base') :Path('bets/conflict') :Args(0) {
   });
 }
 
-sub finished :Chained('base') :Path('bets/finished') :Args(0) {
+sub finished :Chained('base') :Path('/admin/bets/finished') :Args(0) {
   my ($self, $c) = @_;
 
   my $page = $c->req->params->{'page'};
@@ -116,7 +113,7 @@ sub finished :Chained('base') :Path('bets/finished') :Args(0) {
   });
 }
 
-sub timedout :Chained('base') :Path('bets/timedout') :Args(0) {
+sub timedout :Chained('base') :Path('/admin/bets/timedout') :Args(0) {
   my ($self, $c) = @_;
 
   my $page = $c->req->params->{'page'};
@@ -165,14 +162,12 @@ sub view_bet :Chained('bet_base') :PathPart('view') :Args(0) {
       } 
   });
       
-
      ##
 
      $c->stash->{userbets_s_one} = $c->model("PokerNetwork::User2bet")->search({ 
      bet_serial => $bet->serial,
      side => 1,}, {order_by => { 
         -desc => 'created_at' } });
-  
 }
 
 sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
@@ -679,7 +674,7 @@ sub bet_freeze :Chained('bet_base') :PathPart('freeze') :Args(0) {
 
 sub bet_edit :Chained('bet_base') :PathPart('edit') :Args(0) :FormConfig {
   my ( $self, $c ) = @_;
-
+  my $bet = $c->stash->{bet};
   my $form = $c->stash->{form};
   
   $form->get_field({name => 'title'})->default(
@@ -689,6 +684,25 @@ sub bet_edit :Chained('bet_base') :PathPart('edit') :Args(0) :FormConfig {
   $form->get_field({name => 'description'})->default(
     $c->stash->{bet}->description
   );
+  
+  if($bet->type == 2){
+  $form->get_field({name => 'conditions'})->default(
+    $c->stash->{bet}->conditions
+  );
+  }elsif($bet->type == 1){
+  $form->get_field({name => 'bet_decisive'})->default(
+    $c->stash->{bet}->challenged_at
+  );
+  $form->get_field({name => 'bet_deadline'})->default(
+    $c->stash->{bet}->deadline
+  );
+  $form->get_field({name => 'bet_side_one'})->default(
+    $c->stash->{bet}->side_one
+  );
+  $form->get_field({name => 'bet_side_two'})->default(
+    $c->stash->{bet}->side_two
+  );
+  }
   
   # If 'Cancel' button pressed - redirect to /user page
   if ($c->req->param('cancel')) {
@@ -715,7 +729,7 @@ sub bet_edit :Chained('bet_base') :PathPart('edit') :Args(0) :FormConfig {
       $c->uri_for('/admin/bet/' . $c->stash->{bet}->serial . '/view')
     );
   }
-}
+}  
 
 ##Userbet stuff for games of foresight
 sub userbet_cancel :Chained('bet_base') :PathPart('del') :Args(1) {
@@ -742,7 +756,7 @@ sub userbet_cancel :Chained('bet_base') :PathPart('del') :Args(1) {
     );
 }
 
-##Userbet stuff for games of foresight
+##Delete Comment
 sub comment_delete :Chained('bet_base') :PathPart('delcom') :Args(1) {
   my ($self, $c, $id) = @_;  
   my $bet = $c->stash->{bet};

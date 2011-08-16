@@ -4,6 +4,9 @@
 <div style="clear:both;"></div>
 
 <div class='right_column' style="height: 350px;">
+<h2>Current Time</h2>
+<p>[% bet.time_now_readable %]</p>
+
 [% IF bet.active != undef %]<b style="color: green;">Bet Completed</b>[% END %][% IF bet.active == 1 %]<br /><b style="color: red;">Funds Frozen</b>
 [% ELSIF bet.active == 2 %]<br /><b style="color: red;">Side 1 Won!</b>
 [% ELSIF bet.active == 3 %]<br /><b style="color: blue;">Side 2 Won!</b>
@@ -19,30 +22,29 @@ DEV: <p><a href="/admin/bet/[% bet.id %]/determine">Determine Winner</a></p>
 Change "Active" Status
 [% ELSIF bet.active == 1 or bet.active == undef %]	
 [% IF bet.type == 2 %]
-<p><a href="/admin/bet/[% bet.id %]/process">Process (Parties Agree)</a></p>
+<p><a class="confirm" href="/admin/bet/[% bet.id %]/process">Process (Parties Agree)</a></p>
 <p><a href="/admin/bet/[% bet.id %]/choose">Choose Winner (Parties Disagree)</a></p>
 
 [% ELSIF bet.type == 1 %]
 <p><a href="/admin/bet/[% bet.id %]/determine">Determine Winner</a></p>
 [% END %]
-<p><a href="/admin/bet/[% bet.id %]/cancel">Cancel (Coins Returned)</a></p>
-<p><a href="/admin/bet/[% bet.id %]/freeze">Cancel and Feeze (Coins Held)</a></p>
+<p><a class="confirm" href="[% c.uri_for('/admin/bet/' _ bet.serial'cancel') %]">Cancel (Coins Returned)</a></p>
+<p><a class="confirm" href="/admin/bet/[% bet.id %]/freeze">Cancel and Feeze (Coins Held)</a></p>
 
 
 [% END %]
 </div>
 
 <div>
-<div style="float: left; margin-right: 10px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]"><img src="[% c.uri_for("/AVATAR/" _ bet.user_serial) %]" alt="[% bet.user.name %] picture" /></a></div>
-[% IF bet.type == '1' %]
-<h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Foresight</a></h2>
-<h3><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %]</a></h3>
+[% IF bet.type == '2' %]
+<div style="float: left; margin-right: 10px;"><img src="[% c.uri_for("/AVATAR/" _ bet.user_serial) %]" alt="[% c.user.name %] picture" /></div>
+<h2>Game of Skill</h2>
+<h3>[% bet.title %]</h3>
 [% ELSE %]
-<h2><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Skill</a></h2>
-<h3><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %]</a></h3>
+<h2><a href="/bet/[% bet.id %]/view">Game of Foresight</a></h2>
+<h3><a href="/bet/[% bet.id %]/view">[% bet.title %]</a></h3>
 [% END %]
 </div>
-
 
 <div style="width: 100%; min-height:350px; float: none;">
 
@@ -51,23 +53,21 @@ Change "Active" Status
 [% PROCESS bets/categories_switch %]
 </div>
 
-
   [% IF bet.type == '1' %] 	   
   <div style="float:left; margin-left: 30px;">
-  <h3>Event Date and Time</h3>  [% bet.event_time_readable %]
+  <h3>Event Date and Time</h3>  <p>[% bet.event_time_readable %]</p>
+  <p>[% bet.get_timeleft_event %]</p>
+  [% IF bet.event_passed == 1 %]<span style="color: red;"><i>The event has concluded</i></span>[% END %]
   </div>
 
   <div style="float:left;margin-left: 30px;">
   <h3>Betting time left</h3>
-  [% bet.get_timeleft %]
-  [% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</span>
+  <p>[% bet.bet_time_readable %]</p>
+  <p>[% bet.get_timeleft %]</p>
+  [% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]
   </div>
   
-  [% ELSIF bet.type == '2' and bet.challenger_serial != undef and ( bet.c_status != undef or bet.u_status != undef ) %]
-  <div style="float:left;margin-left: 50px;">
-  <h3>Amount</h3><p>[% bet.amount | format('%.2f') %] [% bet.currency.symbol %]-MC</p>
-  </div>
-  
+  [% ELSIF bet.type == '2' and bet.challenger_serial != undef and ( bet.challenger_status != undef or bet.user_status != undef ) %]
    <div style="float:left;margin-left: 30px;">
   <h3>Time left to update results</h3>
   
@@ -76,10 +76,8 @@ Change "Active" Status
   [% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>A participant has failed to update their status.</i></span>[% END %]</span>
   </div>
 
-  
-  [% END %]
 
-
+[% END %]
 <div style="float:left; width: 700px;">
 <h2>Description</h2>
 [% bet.description %]

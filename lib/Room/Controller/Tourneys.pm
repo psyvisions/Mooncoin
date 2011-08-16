@@ -16,7 +16,6 @@ Catalyst Controller.
 
 =cut
 
-
 =head2 index
 
 Show list of all tourneys
@@ -33,7 +32,6 @@ sub index :Path :Args(0) {
         },
     });
 }
-
 
 =head2 details 
 

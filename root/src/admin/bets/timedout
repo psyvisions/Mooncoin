@@ -3,7 +3,7 @@
 [% PROCESS admin/admin_bet_submenu %]
 Index of all bets. 
 
-<table class='withdrawals'>
+<table id="hor-minimalist-b" style="width: 960px;">
   <thead>
     <tr>
       <th>Category</th>
@@ -24,28 +24,7 @@ Index of all bets.
     [% IF bet.type == 2 and ( bet.user_status != undef or bet.challenger_status != undef ) and bet.get_timeleft_update.seconds == 0 and bet.get_timeleft_update.minutes == 0 and bet.get_timeleft_update.hours == 0 and bet.get_timeleft_update.days == 0 and bet.get_timeleft_update.months == 0  and bet.get_timeleft_update.years == 0 %]
 
         <tr>
-          <td>
-   [% SWITCH bet.category %]
-        [% CASE 1 %]
-          Starcraft
-        [% CASE 2 %]
-          Street Fighter
-        [% CASE 3 %]
-          Basketball
-        [% CASE 4 %]
-          Baseball
-        [% CASE 5 %]
-          Football
-        [% CASE 6 %]
-          Hockey
-        [% CASE 7 %]
-          Soccer
-        [% CASE 8 %]
-          Politics
-        [% CASE 9 %]
-          Other
-   	    [% END %]
-          </td>
+          <td>[% PROCESS bets/categories_switch %]</td>
           <td>[% bet.user.name %]</a></td>
           <td>[% bet.challenger.name %]</td>
           <td>[% bet.currency.symbol %]</td>

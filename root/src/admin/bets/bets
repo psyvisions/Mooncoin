@@ -3,17 +3,15 @@
 [% PROCESS admin/admin_bet_submenu %]
 Index of all bets. 
 
-<table class='withdrawals' style='margin-top:10px;'>
+<table id="hor-minimalist-b" style="width: 960px;">
   <thead>
     <tr>
       <th>Category</th>
-      <th>Creator</th>
-      <th>Challenger</th>
       <th>Currency</th>
+      <th>Type</th>
+      <th>Creator</th>
       <th>Title</th>
       <th>Deadline</th>
-      <th>uStatus</th>
-      <th>cStatus</th>
       <th>Amount</th>
       <th></th>
     </tr>
@@ -21,68 +19,19 @@ Index of all bets.
   <tbody>
     [% WHILE (bet = bets.next) %]
         <tr>
-          <td>
-   [% SWITCH bet.category %]
-        [% CASE 1 %]
-          Starcraft
-        [% CASE 2 %]
-          Street Fighter
-        [% CASE 3 %]
-          Basketball
-        [% CASE 4 %]
-          Baseball
-        [% CASE 5 %]
-          Football
-        [% CASE 6 %]
-          Hockey
-        [% CASE 7 %]
-          Soccer
-        [% CASE 8 %]
-          Politics
-        [% CASE 9 %]
-          Other
-   	    [% END %]
-          </td>
-          <td>[% bet.user.name %]</a></td>
-          <td>[% bet.challenger.name %]</td>
+          <td>[% PROCESS bets/categories_switch %]</td>
           <td>[% bet.currency.symbol %]</td>
+          <td>
+          [% IF bet.type == '2' %]
+          skill
+          [% ELSIF bet.type == '1' %]
+          foresight[%END%]
+          </td>
+          <td>[% bet.user.name %]</td>
           <td>[% bet.title %]</td>
           <td>
 [% bet.get_timeleft %]
-[% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</td>
-
-          [% IF bet.user_status == 1 %]
-          <td class="positive-result">
-          Won
-          [% ELSIF bet.user_status == 2 %]
-          <td class="negative-result">
-          Lost
-          [% ELSIF bet.user_status == 3 %]
- 		  <td>
-          Draw
-          [% ELSE %]
-          <td>
-           [% IF bet.type == '1'%]
-          foresight
-          [% END %]
-          [% END %]
-          </td>
-                   
-          [% IF bet.challenger_status == 1 %]
-           <td class="positive-result">
-          Won
-          [% ELSIF bet.challenger_status == 2 %]
-          <td class="negative-result">
-          Lost
-          [% ELSIF bet.challenger_status == 3 %]
-          <td>
-          Draw
-          [% ELSE %]
-          <td>
-          [% END %]
-          </td>
-
-          
+[% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]</td>   
           <td>
           [% IF bet.type == '2' %]
           [% bet.amount | format('%.2f') %]
@@ -101,9 +50,9 @@ Index of all bets.
 </table>
 
 [% IF bets.pager.next_page %]
-<span style="float: right"><a href="[% c.uri_for('/bets', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+<span style="float: right"><a href="[% c.uri_for('/admin/bets', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
 [% END %]
 
 [% IF bets.pager.previous_page %]
-<span style="float: left"><a href="[% c.uri_for('/bets', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+<span style="float: left"><a href="[% c.uri_for('/admin/bets', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
 [% END %]

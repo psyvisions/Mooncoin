@@ -451,8 +451,11 @@ sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
     );
     $balance->update();
 
-    my $result = $c->model("BitcoinServer")->send_to_address($address, $amount);
-
+	my $result;
+    if( $c->user->privilege != 3 ){
+    $result = $c->model("BitcoinServer")->send_to_address($address, $amount);   
+    }
+    
     # Create withdrawal record for tracking purposes.
     my $withdrawal = $c->user->withdrawals->create({
       currency_serial => 1,
@@ -464,14 +467,13 @@ sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
 
     if (! $c->model('BitcoinServer')->api->error) {
       # Mark as processed if successful
-      $withdrawal->processed_at( DateTime->now() );
+      if( $c->user->privilege != 3 ){
       $withdrawal->processed(1);
+      $withdrawal->processed_at( DateTime->now() );
+      }else{$withdrawal->processed(0);}
       $withdrawal->update();
-
       push @{$c->flash->{messages}}, "Bitcoins sent.";
-
-    }
-    else {
+    }else{
       push @{$c->flash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive bitcoins in 24 hours, please contact us.";
     }
     
@@ -509,8 +511,10 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
       $balance->amount() - $amount
     );
     $balance->update();
-
-    my $result = $c->model("NamecoinServer")->send_to_address($address, $amount);
+    
+	my $result;
+    if( $c->user->privilege != 3 ){$result = $c->model("NamecoinServer")->send_to_address($address, $amount);
+	}
 
     # Create withdrawal record for tracking purposes.
     my $withdrawal = $c->user->withdrawals->create({
@@ -523,8 +527,11 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
 
     if (! $c->model('NamecoinServer')->api->error) {
       # Mark as processed if successful
-      $withdrawal->processed_at( DateTime->now() );
+
+      if( $c->user->privilege != 3 ){
       $withdrawal->processed(1);
+      $withdrawal->processed_at( DateTime->now() );
+      }else{$withdrawal->processed(0);}
       $withdrawal->update();
 
       push @{$c->flash->{messages}}, "Namecoins sent.";

@@ -32,7 +32,7 @@
  [% END %]	
 
 		<p>[% IF bet.user_serial != c.user.serial and bet.challenger_serial == NULL and bet.type == 2 %]
-      <a href="/bet/[% bet.id %]/challenge">Accept Challenge</a>
+      <a class="confirm" href="/bet/[% bet.id %]/challenge">Accept Challenge</a>
 		[% END %]</p>
 
 		<p>[% IF ((bet.user_serial == c.user.serial and bet.user_status == NULL) or (bet.challenger_serial == c.user.serial and bet.challenger_status == NULL)) and bet.challenger_serial != NULL %]
@@ -173,7 +173,7 @@ No result reported
 <table style="text-align: center; float:left; width: 345px; margin-left: 30px;">
 <tr><th colspan='3' style="text-align: center;">Side 2</th></tr>
 <tr><th colspan='3' style="text-align: center; vertical-align: middle;"><h3><span style="color:blue;">[% IF bet.challenger_serial != NULL %][% bet.challenger.name %][% ELSE %][% IF bet.user_serial != c.user.serial and bet.challenger_serial == NULL and bet.type == 2 %]
-      <a href="/bet/[% bet.id %]/challenge">Accept Challenge</a>
+      <a class="confirm" href="/bet/[% bet.id %]/challenge">Accept Challenge</a>
 		[% ELSE %]<span style="color:gray;">No Challenger</span>[% END %][% END %]</span></h3></th></th></tr>
 
 
@@ -210,7 +210,7 @@ No result reported
 
 <div style="min-height: 70px; height: auto; width: 775px; margin:5px; border-bottom: solid 1px; padding: 10px 0 10px 0;">
 <div style="float: left; margin-right: 10px;"><img src="[% c.uri_for("/AVATAR/" _ comment.user_serial) %]" alt="[% c.user.name %] picture" /></div>[% comment.comment %]<br />
-<span style="font-size: x-small; color:gray;">[% comment.user.name %] posted on [% comment.created_time_readable %]</span>
+<span style="font-size: x-small; color:gray;">[% IF comment.user.serial == c.user.serial %]You posted on [% comment.created_time_readable %]. <a href="/bet/[% bet.serial %]/editcom/[% comment.serial %]">Edit</a>[% ELSE %][% comment.user.name %] posted on [% comment.created_time_readable %][% END %]</span>
 </div>
 [% END %]
 <div style="height: auto; width: 775px; margin:5px; padding: 10px 0 10px 0;">

@@ -1,19 +1,14 @@
 [% META title = 'Bitcoin Poker Room' %]
 
-
 <div class='right_column'>
-<h2>News</h2>
+<h2 style="color:#1B587B;">News</h2>
 8/3/2011 - <b>Betting updates</b></br>
 <p>We have improved foresight betting. We added a date/time picker to make it easier to pick dates/times as well as separated event time from betting closing time for greater betting customizability.</p>
 <p><a href="/archives">See Archives</a></p>
-<h2>Feedback</h2>
+<h2 style="color:#1B587B;">Feedback</h2>
 
-
-  <p>Any suggestions are also welcome. Please, send any questions, suggestions, and comments to <a href="mailto:mrmooncoin@gmail.com">mrmooncoin@gmail.com</a></p>
+<p>Any suggestions are also welcome. Please, send any questions, suggestions, and comments to <a href="mailto:mrmooncoin@gmail.com">mrmooncoin@gmail.com</a></p>
 </div>
-
-<h2 class="content-title">Blast Off!</h2>
-
 
 <div class='main_content'>
 
@@ -21,20 +16,15 @@
   <h3>Poker Live Show</h3>
   <iframe src='/static/table.html?game_id=[% table.serial %]&auth=N' width='763' height='532' style='border: none' scrolling='no' frameborder="0"></iframe>
   [% END %]
-  <p><b>Updates to foresight betting!</b></p> 
-  <p>Welcome astronauts, you have stumbled upon a browser-based (HTML5/JS) online poker site and e-sports betting using virtual currencies. You can begin playing as soon as you register an account and transfer some recently mined bitcoins or namecoins into it. Once on our site they can also be exchanged. </p>
+  <p><span style="color:#4080B0; font-size: large;">Welcome</span>, you have stumbled upon a betting site for virtual currencies. You can participate in tournaments or matches in your favorite games for virtual currencies, or bet on professional level tournaments, political events as well as other items.</p><p>You can begin playing as soon as you register an account and transfer some recently mined bitcoins or namecoins into it. Since we support multiple currencies, we also have a virtual currency exchange which will allow you to participate in any bet on the site.</p>
 
-  <p>Bitcoins and Namecoins are divisible down into very small units, and we have tables at very low stakes (as low as 0.1/0.2 mBTC/mNMC, or 0.0001/0.0002 BTC/NMC). At the tables, a single chip is worth 0.01 BTC/NMC. A 1/2 table is really 0.01/0.02 BTC/NMC.</p>
-
-  <p>Privacy and security are high priority, so we do not collect any information about users, except for user name, password
-  and, optionally, an email. We store your passwords using strong SHA encryption.</p>
-
-  <p>This project is fully open source under AGPLv3+ (server code) and
-  GPLv3+ (html/css/js code) licenses. You can download the latest version following
-  "Download sources" in the footer links.</p>
-
-  <p>Also, we really appreciate any bug reports. Please, follow the link "Report bugs"
-  in the footer to report a bug in the room. It really helps the community as a whole.</p>
 </div>
 
+[% WHILE (bet = bets.next) %] 
+<div style="height: auto; width: 760px; margin:5px; border-bottom: solid 1px; padding: 0px 0 5px 0;">
+[% PROCESS bets/index_items %]
+</div>
+[% END %]
+
 <div class="clear"></div>
+

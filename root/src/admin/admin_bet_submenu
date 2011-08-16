@@ -5,5 +5,5 @@
 <li><a href='[% c.uri_for('/admin/bets/conflict') %]'>Conflict</a></li>
 <li><a href='[% c.uri_for('/admin/bets/timedout') %]'>Timed out</a></li>
 <li><a href='[% c.uri_for('/admin/bets/finished') %]'>Finished</a></li>
-  <li><a href='[% c.uri_for('/admin/reports') %]'>Reports</a></li>
+<li><a href='[% c.uri_for('/admin/reports') %]'>Reports</a></li>
 </ul>

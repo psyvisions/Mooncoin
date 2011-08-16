@@ -2,7 +2,7 @@
 [% PROCESS admin/admin_submenu %]
 [% PROCESS admin/admin_bet_submenu %]
 
-<table class='withdrawals'>
+<table id="hor-minimalist-b" style="width: 930px;">
   <thead>
     <tr>
       <th>ID</th>

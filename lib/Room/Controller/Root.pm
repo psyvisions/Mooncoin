@@ -50,6 +50,18 @@ sub index :Path :Args(0) {
    if ($table->players > 4) {
      $c->stash->{table} = $table;
    }
+   
+   ## bets on front page
+   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
+  active => undef,
+  
+  }, { 
+      rows => 25,
+      order_by => { 
+        -asc => 'deadline' 
+      } 
+  });
+
 }
 
 sub archives :Local { }

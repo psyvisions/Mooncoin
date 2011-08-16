@@ -1,0 +1,42 @@
+[% META title = 'Report' %]
+[% PROCESS arbitration/arbitration_submenu %]
+
+<div style="clear:both;"></div>
+<div class='right_column' style="height: 350px;">
+<h2>Actions</h2>
+   <a href="[% c.uri_for("/bet/" _ report.bet.serial) %]">Bet Link</a> 
+  <p><a href="/user/arbitrator/report/[% report.id %]/notify">Notify Admin</a></p>
+</div>
+
+  <h2>Report info</h2>
+
+    <h3>Issuer</h3>
+    <a href="[% c.uri_for("/profile/" _ report.user.serial) %]">[% report.user.name  | html %]</a> @ [% report.bet.created_time_readable %]
+    
+    <h3>Subject</h3>
+    [% report.title %]
+
+    <h3>Body</h3>
+    [% report.description %]
+    
+    <dt><h3>Participants</h3>
+    [% IF report.bet.type == 2 %]
+    <a href="[% c.uri_for("/user/arbitrator/user/" _ report.bet.challenger.serial) %]">[% report.bet.challenger.name %]</a>
+  
+    [% ELSIF report.bet.type == 1 %]
+    <table id="hor-minimalist-b" style="width: 670px;">
+    <tr><th>User</th><th>Amount</th><th>Side</th></tr>
+    [% WHILE (userbet = cur_user_bets.next) %]
+    <tr>  
+      <td><a href="[% c.uri_for("/user/arbitrator/user/" _ userbet.user.serial) %]">[% userbet.user.name | html %]</a></td><td>[% userbet.amount %]</td><td>[% userbet.side %]</td> 
+    </tr>
+    [% END %]
+    </table>
+
+    [% END %]
+
+    
+
+
+
+

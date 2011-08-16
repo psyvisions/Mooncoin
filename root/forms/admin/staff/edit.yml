@@ -1,0 +1,31 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+
+  - type: Text
+    name: arb_userserial
+    label: Arbitrator Serial
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+     
+  - type: Text
+    name: percent_amount
+    label: Compensation
+    comment: Percent of mooncoin profits
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+
+  - type: Submit
+    value: Save
+    name: submit
+
+constraints:
+  - SingleValue

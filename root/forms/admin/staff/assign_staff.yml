@@ -1,0 +1,67 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+
+  - type: Text
+    name: arb_userserial
+    label: Arbitrator Serial
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+
+  - type: Select
+    name: arb_type
+    label: Type
+    empty_first: Type
+    constraints:
+      - Required
+    options:
+      - [ '1', 'Foresight' ]
+      - [ '2', 'Skill' ]
+
+  - type: Select
+    name: arb_category
+    label: Category
+    empty_first: Category
+    constraints:
+      - Required
+    options:
+      - [ '1', 'StarCraft' ]
+      - [ '3', 'Basketball' ]
+      - [ '4', 'Baseball' ]
+      - [ '5', 'Football' ]
+      - [ '6', 'Hockey' ]
+      - [ '7', 'Soccer' ]
+      - [ '8', 'Politics' ]
+      - [ '9', 'Other' ]      
+
+  - type: Text
+    name: deposit
+    label: Expected Deposit
+    comment: Required to arbitrate
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+     
+  - type: Text
+    name: percent_amount
+    label: Compensation
+    comment: Percent of mooncoin profits
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+
+  - type: Submit
+    value: Save
+    name: submit
+
+constraints:
+  - SingleValue

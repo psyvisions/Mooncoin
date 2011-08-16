@@ -1,0 +1,7 @@
+<ul class='bets_submenu'>
+  [% IF c.user %]
+    <li><a href='[% c.uri_for('/user/arbitrator') %]'>Terms</a></li>
+    <li><a href='[% c.uri_for('/user/arbitrator/bets') %]'>Bets</a></li>
+    <li><a href='[% c.uri_for('/user/arbitrator/reports') %]'>Reports</a></li>
+  [% END %]
+</ul>

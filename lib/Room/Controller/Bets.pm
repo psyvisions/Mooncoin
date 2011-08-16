@@ -612,7 +612,31 @@ sub comment :Chained('base') :PathPart('comment') :FormConfig{
   }
 }
 
+sub comment_edit :Chained('base') :PathPart('editcom') :Args(1) :FormConfig{
+  my ($self, $c, $id) = @_;
+  	  my $bet = $c->stash->{bet};
+    
+      $c->stash->{comment} = $c->model("PokerNetwork::Comments")->search({serial => $id})->first;
 
+     my $form = $c->stash->{form};
+
+     
+     $form->get_field({name => 'comment'})->default(
+    $c->stash->{comment}->comment
+  );
+     
+ if ($form->submitted_and_valid) {
+  
+  $c->stash->{comment}->comment(
+    $form->params->{comment}
+  );
+  
+    $c->stash->{comment}->update();
+  
+  push @{$c->flash->{messages}}, "This comment has been edited.";
+  $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
+  }
+}
 
 sub status :Chained('base') :PathPart('status') :FormConfig{
   my ($self, $c) = @_;

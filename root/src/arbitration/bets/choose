@@ -1,0 +1,59 @@
+[% META title = 'Bets' %]
+<div style="margin-top:25px;">
+<p>After reviewing evidence you can decide who the winner is here when a game is in conflict.</p>
+
+<h2>Current Bets</h2>
+
+<table style="text-align: center; float:left; width: 345px;">
+<tr><th colspan='3' style="text-align: center;">Side 1</th></tr>
+
+<tr><th colspan='3' style="text-align: center;"><h3><span style="color:red;">[% bet.user.name %]</span></h3></th></th></tr>
+
+[% IF bet.user_status != undef %]
+<tr><td  colspan='3'><h3>Reported Result</h3> 
+<p style="margin-top: -15px;"><span style="font-size: small;">on [% bet.u_status_time_readable %]</span></p>
+[% SWITCH bet.user_status %]
+[% CASE 1 %]
+<h3 style="color: green;">Win</h3>
+[% CASE 2 %]
+<h3 style="color: red;">Loss</h3>
+[% CASE 3 %]
+<h3>Draw</h3>
+[% CASE undef %]
+No result reported
+[% END %]
+</h3></td></tr>
+
+[% END %]
+
+<tr><td  colspan='3'><h3>Amount</h3> <h3 style="color: green;">[% bet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
+</table>
+<table style="text-align: center; float:left; width: 345px; margin-left: 30px;">
+<tr><th colspan='3' style="text-align: center;">Side 2</th></tr>
+<tr><th colspan='3' style="text-align: center; vertical-align: middle;"><h3><span style="color:blue;">[% IF bet.challenger_serial != NULL %][% bet.challenger.name %][% ELSE %][% IF bet.user_serial != c.user.serial and bet.challenger_serial == NULL and bet.type == 2 %]
+      <a href="/bet/[% bet.id %]/challenge">Accept Challenge</a>
+		[% ELSE %]<span style="color:gray;">No Challenger</span>[% END %][% END %]</span></h3></th></th></tr>
+
+
+[% IF bet.challenger_status != undef %]
+<tr><td  colspan='3'><h3>Reported Result</h3>
+<p style="margin-top: -15px;"><span style="font-size: small;">on [% bet.c_status_time_readable %]</span></p>
+[% SWITCH bet.challenger_status %]
+[% CASE 1 %]
+<h3 style="color: green;">Win</h3>
+[% CASE 2 %]
+<h3 style="color: red;">Loss</h3>
+[% CASE 3 %]
+<h3>Draw</h3>
+[% END %]
+[% END %]
+
+</h3></td></tr>
+
+<tr><td  colspan='3'><h3>Amount</h3> <h3 style="color: green;">[% bet.amount %]<span style="color:black;"> mc </span></h3></td></tr>
+
+</table>
+<br />
+[% form %]
+
+</div>

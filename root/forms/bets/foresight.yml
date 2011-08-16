@@ -19,7 +19,6 @@ elements:
       - Required
     options:
       - [ '1', 'StarCraft' ]
-      - [ '2', 'Street Fighter' ]
       - [ '3', 'Basketball' ]
       - [ '4', 'Baseball' ]
       - [ '5', 'Football' ]
@@ -60,6 +59,7 @@ elements:
 
   - type: Textarea
     name: bet_description
+    id: wysiwyg
     label: Description
     comment: Give details about what you wish to bet on.
     constraints:

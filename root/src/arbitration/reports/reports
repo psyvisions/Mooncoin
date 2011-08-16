@@ -1,0 +1,38 @@
+[% META title = 'Reports' %]
+[% PROCESS arbitration/arbitration_submenu %]
+
+<table id="hor-minimalist-b" style="width: 930px;">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Bet ID</th>
+      <th>User</th>
+      <th>Subject</th>
+      <th>Created On</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    [% WHILE (report = reports.next) %]
+        <tr>
+          <td>[% report.id %]</td>
+          <td><a href="/user/arbitrator/bet/[% report.bet_serial %]/view">[% report.bet_serial %]</td>
+          <td><a href="[% c.uri_for("/user/arbitrator/user/" _ report.user.serial) %]">[% report.user.name %]</a></td>
+  
+  
+ 
+          <td>[% report.title %]</td>
+          <td>[% report.created_at %]</td>
+          <td><a href="/user/arbitrator/report/[% report.id %]/view">View</a></td>
+        </tr>
+    [% END %]
+  </tbody>
+</table>
+
+[% IF reports.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('/user/arbitrator/reports', undef, { page => reports.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF reports.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('/user/arbitrator/reports', undef, { page => reports.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]

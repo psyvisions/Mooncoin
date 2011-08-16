@@ -12,6 +12,7 @@ elements:
   - type: Textarea
     name: report_description
     label: Description
+    id: wysiwyg
     comment: Explain your concern with the bet and why you would like it to be cancelled. 
     constraints:
       - Required

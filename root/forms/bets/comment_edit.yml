@@ -1,0 +1,18 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Textarea
+    name: comment
+    id: wysiwyg
+    label: Comment
+    constraints:
+      - Required
+
+  - type: Submit
+    value: Submit Comment
+    name: submit
+
+constraints:
+  - SingleValue

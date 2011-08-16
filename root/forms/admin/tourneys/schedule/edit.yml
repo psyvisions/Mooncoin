@@ -81,6 +81,7 @@ elements:
     label: Currency
     options: 
       - [1, 'Bitcoin']
+      - [2, 'Namecoin']
     constraints:
       - Required
 

@@ -180,6 +180,12 @@ __PACKAGE__->has_many(
   'userbets' => 'Room::Schema::PokerNetwork::Result::User2bet',
   { 'foreign.user_serial' => 'self.serial' },
 );
+
+__PACKAGE__->has_many(
+  'sections' => 'Room::Schema::PokerNetwork::Result::Arb2section',
+  { 'foreign.user_serial' => 'self.serial' },
+);
+
 sub get_bitcoin_deposit_address {
   my ($self) = @_;
 

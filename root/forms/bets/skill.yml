@@ -41,6 +41,7 @@ elements:
   - type: Textarea
     name: bet_description
     label: Description
+    id: wysiwyg
     comment: Give details about what you wish to bet on.
     constraints:
       - Required

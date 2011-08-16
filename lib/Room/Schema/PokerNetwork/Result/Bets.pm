@@ -142,6 +142,36 @@ sub get_total {
   return $value;
 }
 
+sub get_total_s1 {
+  my ($self) = @_;
+     ## Total side one amount
+     my $holder = $self->userbets->search({ 
+     bet_serial => $self->serial, side => 1}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
+           
+     my $row_one = $holder->first;
+
+     my $value  = $row_one->get_column('total_amount');
+	 
+	 if($value == undef){$value = 0;}	
+		
+  return $value;
+}
+
+sub get_total_s2 {
+  my ($self) = @_;
+     ## Total side two amount
+     my $holder = $self->userbets->search({ 
+     bet_serial => $self->serial, side => 2}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
+           
+     my $row_two = $holder->first;
+
+     my $value  = $row_two->get_column('total_amount'); 
+	 
+	 if($value == undef){$value = 0;}	
+		
+  return $value;
+}
+
 sub get_ratio {
   my ($self) = @_;
   
@@ -342,7 +372,7 @@ sub deadline_passed{
 
 sub get_timeleft_update{
   my ($self) = @_;
-  
+  my $string;
   if( $self->challenger_serial != undef){
   my $timehold = $self->challenged_at;
   if ( $self->challenger_status == undef and $self->user_status != undef ){
@@ -369,7 +399,7 @@ sub get_timeleft_update{
   
 my $string = '<span style="color: green; font-size: large;">';
   my $hold;
-  my $string = '<span style="color: green; font-size: large;">';
+  $string = '<span style="color: green; font-size: large;">';
   if($diff->years > 0){if($diff->years != 1){$hold = 's'} $string = $string . $diff->years . " <span style='color: black; font-size: small;'>Year".$hold."</span> ";}
   if($diff->months > 0){if($diff->months != 1){$hold = 's'}$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Month".$hold."</span> ";}  if($diff->weeks > 0){ if($diff->weeks != 1){$hold = 's'} $string = $string . $diff->weeks . " <span style='color: black; font-size: small;'>Week".$hold."</span> ";}
   if($diff->days > 0){if($diff->days != 1){$hold = 's'}$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Day".$hold."</span> ";}

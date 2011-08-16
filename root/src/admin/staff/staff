@@ -1,0 +1,48 @@
+[% META title = 'Bets' %]
+[% PROCESS admin/admin_submenu %]
+[% PROCESS admin/staff/staff_submenu %]
+<div style="clear:both;"></div>
+Index of staff 
+
+<table id="hor-minimalist-b" style="width: 960px;">
+  <thead>
+    <tr>
+      <th>User Serial</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Category</th>
+      <th>Deposit</th>
+      <th>Percentage</th>
+      <th>Action</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    [% WHILE (bet = arbs.next) %]
+        <tr>
+          <td>[% bet.user.serial %]</td>
+          <td>[% bet.user.name %]</td>
+          <td>[% IF bet.type == '2' %]Skill[% ELSIF bet.type == '1' %]Foresight[% END %]</td>
+          <td>[% PROCESS bets/categories_switch %]</td>
+                   
+
+          <td>[% IF bet.deposit == undef or bet.deposit == 0 %]<span style="color:red;">[% ELSIF bet.deposit == 1 %]<span style="color:green;">[% ELSE %]<span>[% END %][% bet.deposit_amount %]</span></td>          
+          <td>[% bet.percentage %]</td>
+          <td>
+            <ul class='actions-list'>
+              <a href="[% c.uri_for('/admin/arbitrator/' _ bet.serial'edit') %]">Edit</a> | 
+              <a  class="confirm" href="[% c.uri_for('/admin/arbitrator/' _ bet.serial'delete') %]">Delete</a>
+            </ul>
+          </td>
+        </tr>
+    [% END %]
+  </tbody>
+</table>
+
+[% IF bets.pager.next_page %]
+<span style="float: right"><a href="[% c.uri_for('/bets', undef, { page => bets.pager.next_page}) %]">Next &gt;&gt;</a></span>
+[% END %]
+
+[% IF bets.pager.previous_page %]
+<span style="float: left"><a href="[% c.uri_for('/bets', undef, { page => bets.pager.previous_page}) %]">&lt;&lt; Prev</a></span>
+[% END %]

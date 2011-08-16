@@ -1,0 +1,5 @@
+<div style="clear:both;"></div>
+<ul class='admin_submenu' style="margin-top: 5px; margin-bottom: 5px;">
+<li><a href='[% c.uri_for('/admin/staff/assignment') %]'>Assign</a></li>
+<li><a href='[% c.uri_for('/admin/staff/withdrawals') %]'>Withdrawals</a></li>
+</ul>

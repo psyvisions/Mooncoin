@@ -6,11 +6,10 @@ BEGIN {extends 'Catalyst::Controller::HTML::FormFu'; }
 
 sub base :Chained :PathPart('admin') :CaptureArgs(0) {
   my ($self, $c) = @_;
-
-
-
+    if (!$c->user || $c->user->privilege != 2) {
+    $c->detach( '/default' );
+  }
 }
-
 
 =head1 NAME
 
@@ -23,7 +22,6 @@ Catalyst Controller.
 =head1 METHODS
 
 =cut
-
 
 =head2 index
 
@@ -162,7 +160,7 @@ sub report_freeze :Chained('report_base') :PathPart('freeze') :Args(0) {
   
   my $dd = $c->stash->{report};
   $dd->delete;
-  
+  #active 1 is frozen
   $bet->active('1');
   $bet->finished_at(DateTime->now);
   $bet->update();
