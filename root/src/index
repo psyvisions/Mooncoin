@@ -2,8 +2,8 @@
 
 <div class='right_column'>
 <h2 style="color:#1B587B;">News</h2>
-8/3/2011 - <b>Betting updates</b></br>
-<p>We have improved foresight betting. We added a date/time picker to make it easier to pick dates/times as well as separated event time from betting closing time for greater betting customizability.</p>
+8/16/2011 - <b>Moderators</b></br>
+<p>In order to increase the speed and quality of betting on mooncoin we have started taking on moderation staff. There are also several other visual improvements and wysiwyg forms added. Skill tournaments coming soon!</p>
 <p><a href="/archives">See Archives</a></p>
 <h2 style="color:#1B587B;">Feedback</h2>
 
@@ -17,14 +17,19 @@
   <iframe src='/static/table.html?game_id=[% table.serial %]&auth=N' width='763' height='532' style='border: none' scrolling='no' frameborder="0"></iframe>
   [% END %]
   <p><span style="color:#4080B0; font-size: large;">Welcome</span>, you have stumbled upon a betting site for virtual currencies. You can participate in tournaments or matches in your favorite games for virtual currencies, or bet on professional level tournaments, political events as well as other items.</p><p>You can begin playing as soon as you register an account and transfer some recently mined bitcoins or namecoins into it. Since we support multiple currencies, we also have a virtual currency exchange which will allow you to participate in any bet on the site.</p>
-
+[% count = 0 %]
 </div>
-
+<h2>Bitcoin Bets</h2>
 [% WHILE (bet = bets.next) %] 
 <div style="height: auto; width: 760px; margin:5px; border-bottom: solid 1px; padding: 0px 0 5px 0;">
 [% PROCESS bets/index_items %]
 </div>
 [% END %]
-
+<h2>Namecoin Bets</h2>
+[% WHILE (bet = nmc_bets.next) %] 
+<div style="height: auto; width: 760px; margin:5px; border-bottom: solid 1px; padding: 0px 0 5px 0;">
+[% PROCESS bets/index_items %]
+</div>
+[% END %]
 <div class="clear"></div>
 

@@ -73,7 +73,11 @@
   [% IF bet.type == '1' %] 	   
   <div style="float:left; margin-left: 30px;">
   <h3>Event Date and Time</h3>  <p>[% bet.event_time_readable %]</p>
-  <p>[% bet.get_timeleft_event %]</p>
+  <p>
+
+  [% bet.get_timeleft_event %]
+
+  </p>
   [% IF bet.event_passed == 1 %]<span style="color: red;"><i>The event has concluded</i></span>[% END %]
   </div>
 
@@ -210,7 +214,7 @@ No result reported
 
 <div style="min-height: 70px; height: auto; width: 775px; margin:5px; border-bottom: solid 1px; padding: 10px 0 10px 0;">
 <div style="float: left; margin-right: 10px;"><img src="[% c.uri_for("/AVATAR/" _ comment.user_serial) %]" alt="[% c.user.name %] picture" /></div>[% comment.comment %]<br />
-<span style="font-size: x-small; color:gray;">[% IF comment.user.serial == c.user.serial %]You posted on [% comment.created_time_readable %]. <a href="/bet/[% bet.serial %]/editcom/[% comment.serial %]">Edit</a>[% ELSE %][% comment.user.name %] posted on [% comment.created_time_readable %][% END %]</span>
+<span style="font-size: x-small; color:gray;">[% IF comment.user.serial == c.user.serial %]You posted on [% comment.created_time_readable %]. <a href="/bet/[% bet.serial %]/editcom/[% comment.serial %]">Edit</a>[% ELSE %]<span style="color:[% IF comment.user.privilege == 2 %]green[% ELSIF comment.user.privilege == 3 %]green[% END %];">[% comment.user.name %]</span> posted on [% comment.created_time_readable %][% END %]</span>
 </div>
 [% END %]
 <div style="height: auto; width: 775px; margin:5px; padding: 10px 0 10px 0;">

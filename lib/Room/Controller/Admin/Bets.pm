@@ -745,6 +745,10 @@ sub userbet_cancel :Chained('bet_base') :PathPart('del') :Args(1) {
       $balance->amount() + ( $amount / 100 )
     );
     
+    #Add amount to total for tracking purposes
+    $bet->amount( $bet->amount - $amount );
+    $bet->update();
+    
     $balance->update(); 
     $c->stash->{userbet}->delete;
     

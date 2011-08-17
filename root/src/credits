@@ -3,34 +3,33 @@
 <p>The poker room at mooncoin is built on top of few open source technologies:</p>
 
 <h2>python-poker-network and python-poker-engine</h2>
-<p>Both used to build "back end" for this poker room. More information: <a href='http://pokersource.info/'>http://pokersource.info/</a></p>
+<p>The backend of our poker room. More information: <a href='http://pokersource.info/'>http://pokersource.info/</a></p>
 
 <h2>jPoker</h2>
-<p>Client for poker-network server based on original jPoker client from authors of poker-network software. More information: <a href='http://pokersource.info/'>http://pokersource.info/</a></p>
+<p>A client designed for the poker-network server based on original jPoker client from the authors of poker-network software. More information: <a href='http://pokersource.info/'>http://pokersource.info/</a></p>
 
 <h2>Bitcoin</h2>
-<p>Bitcoin - new technology for digital currencies. Bitcoins network allows players generate "coins" and use as payment in our poker room.
+<p>Bitcoin - a new technology in digital currencies. The bitcoins network allows players to generate "coins" to use as currency on our website.
 Most important: players can't spend twice their "coins" and in the same time generation of new "coins" depends on CPU power. So we effectively
 avoid abuse from dishonest players (think about players, who register fresh account, login and go All-In in the first round).</p>
 <p>To learn more: <a href='http://www.bitcoin.org'>http://www.bitcoin.org</a></p>
 
 <h2>Namecoin</h2>
-<p>Namecoin - new technology for digital currencies. namecoins network allows players generate "coins" and use as payment in our poker room. Using the same source code as bitcoin, they use the economy to drive a p2p DNS. 
+<p>Namecoin - a more recent development in digital currencies.The namecoins network allows players to generate "coins" to use as a currency on our site. Using the same source code as bitcoin, they use the economy to drive a p2p DNS. 
 Most important: players can't spend twice their "coins" and in the same time generation of new "coins" depends on CPU power. So we effectively
 avoid abuse from dishonest players (think about players, who register fresh account, login and go All-In in the first round).</p>
 <p>To learn more: <a href='http://www.dot-bit.org'>http://www.dot-bit.org</a></p>
 
-
 <h2>Catalyst Framework</h2>
-<p><a href='http://www.catalystframework.org'>Catalyst Framework</a> - modern perl web framework for rapid web development and easy refactoring.
-This framework used to build user interface allowing user register, deposit, withdrawal, list tables, etc. Using catalyst framework we know that
-if we will need to adopt to something new in future we can do this easily. To learn more: <a href='http://www.catalystframework.org'>http://www.catalystframework.org</a></p>
+<p><a href='http://www.catalystframework.org'>Catalyst Framework</a> - a modern perl web-framework for rapid web development and easy refactoring.
+This framework used to build user interface allowing user register, deposit, withdrawal, list tables, exchange, betting etc. Using catalyst framework we know that
+future expansion is possible and practical. To learn more: <a href='http://www.catalystframework.org'>http://www.catalystframework.org</a></p>
 
 <h2>jQuery</h2>
-<p><a href='http://jquery.com'>jQuery</a> - great Javascript library allowing us to create really dynamic applications inside browser.</p>
+<p><a href='http://jquery.com'>jQuery</a> - great Javascript library allowing us to create dynamic applications inside a browser.</p>
 
 <h2>Apache, MySQL, Perl, Python</h2>
-<p>Without these no web application were possible.</p>
+<p>Without these mooncoin would not be possible.</p>
 
 <p></p>
 

@@ -1,6 +1,8 @@
 [% META title = 'News Archives' %]
 
 <h2>News Archive</h2>
+8/3/2011 - Betting updates</br>
+<p>We have improved foresight betting. We added a date/time picker to make it easier to pick dates/times as well as separated event time from betting closing time for greater betting customizability.</p>
 
 7/19/2011 - BTC/NMC Exchange!</br>
 <p>Along with our many updates to style and other updates rolled out recently we have finished work on our finest piece of code yet: The exchange. You can now exchange your virtual coins for others.</p>

@@ -13,11 +13,15 @@
 <h2>General</h2>
 <p><b>Q. What is the conversion rate to mooncoins?</b></p>
 <p>A. 100 mooncoins = 1 BTC/NMC</p>
+<p><b>Q. How do I get Bitcoins (Or alternatively Namecoins)?</b></p>
+<p>A. You mine them, using either cpu or gpu processing power. Look in the credits section for more information and links to the project pages.</p>
+<p><b>Q. What is with the green names in the comments?</b></p>
+<p>A. People with green names in the comments are either arbitrators(moderators) or administration.</p>
 <h2>Games of Foresight</h2>
 <p><b>Q, What is a game of foresight bet?</b></p>
-<p>A game of foresight is a bet that is placed on the predicated outcome of an event. So for example the World Series is coming, you can place a bet on which team is going to win the game. The bets are not 1:1 though, they are with other users and the odds are automatically recalculated when new bets are added. This system is multi-user, an unlimited number of users can participate in the bet.</p>
+<p>A game of foresight is a bet that is placed on the predicated outcome of an event. So for example the World Series is coming, you can place a bet on which team is going to win the game. The bets are not 1:1 though, they are with other users and the odds are automatically recalculated when new bets are added. This system is multi-user, an unlimited number of users can participate in the bet.</p><p>Your winnings are proportional to the amount betted. For example, an event is posted, 'Will the price of bitcoins will reach 30 USD on MtGox by January 2012'. You and another user each bet 50 mooncoins(mc) on side 1, 'yes' and another user bets 1000 mc on side 2, 'no'. If side 1 wins, you would win 500 mc or half of the other side because you put in half of side 1. In another example, if you only bet 20 mc and the other user bets 80 mc you would receive 200 mc and the other user would receive 800 mc.</p>
 <p><b>Q. How are games of foresight resolved?</b></p>
-<p>A. It is a two layer system. Users have the ability to report the result once the event starts, this allows our users to verify outcomes but also allows us to track honesty. On top of that each game of foresight bet is resolved by an actual person who googles the result and verifies what the users claim. It is then processed.</p>
+<p>A. It is a two layer system. Users have the ability to report in the comments with the result once the event ends, this allows our users to verify outcomes but also allows us to track honesty. On top of that each game of foresight bet is resolved by an actual person who googles the result and verifies what the users claim. It is then processed.</p>
 <p><b>Q. How many people can participate in games of foresight?</b></p>
 <p>A. Unlimited number of users can create an unlimited number of bets (well, limited by your funds). Odds are automatically generated from the bets placed. You are betting against other users, not the house.</p>
 <p><b>Q. How are draws resolved?</b></p>

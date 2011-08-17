@@ -4,9 +4,9 @@
   <title>Moonco.in</title>
 
   [% IF c.req.browser.mobile() %]
-  <link rel="stylesheet" href="[% c.uri_for( c.config.mobile_css ) %]" type="text/css" />
+  <link rel="stylesheet" href="[% c.config.mobile_css %]" type="text/css" />
   [% ELSE %]
-  <link rel="stylesheet" href="[% c.uri_for( c.config.css ) %]" type="text/css" />
+  <link rel="stylesheet" href="[% c.config.css %]" type="text/css" />
   [% END %]
 
   <script src="/static/jquery/jquery-1.5.2.min.js"></script>

@@ -1,13 +1,19 @@
 <div>
-
 [% IF bet.type == '1' %]
-<h2 style="margin-bottom: 0px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %]</a></h2>
-<a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Foresight</a> <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => [% bet.event_time_readable %].
+<h3 style="margin-bottom: 0px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %]</a></h3>
+<a href="[% c.uri_for('/bet/' _ bet.id'view') %]"><span style="color: gray">[% PROCESS bets/categories_switch %]</span> => [% bet.event_time_readable %].</a>
 
 
 <div style="margin-bottom: 35px;">
-<div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #eee; width: 30px; padding: 3px 3px 3px 8px; margin: 5px;">[% bet.get_total_s1 | format('%.2f') %]</div>
-<div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #4080B0; color: #eee; width: 30px; padding: 3px 3px 3px 8px; margin: 5px;">[% bet.get_total_s2 | format('%.2f') %]</div>
+
+<div class="inflate" style="float:left; padding: 8px 3px 3px 8px; color:#1B587B; font-size: medium;">[% bet.side_one | truncate(28) %]</div>
+
+<div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #1B587B; color: #fff; width: auto; padding: 3px 8px 3px 8px; margin: 5px;">[% bet.get_total_s1 | format('%.2f') %]</div>
+
+
+<div class="inflate" style="float:left; padding: 8px 3px 3px 8px; color:#4080B0; font-size: medium;">[% bet.side_two | truncate(28) %]</div>
+<div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #4080B0; color: #eee; width: auto; padding: 3px 8px 3px 8px; margin: 5px;">[% bet.get_total_s2 | format('%.2f') %]</div>
+
 <div style="float:right;">
 [% IF bet.deadline_passed == 0 %]<span style="color: gray;">Time left</span>[% END %] 
 [% bet.get_timeleft %]
@@ -23,7 +29,7 @@
 
 <h2 style="margin-bottom: 0px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %]</a></h2>
 
-<a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Game of Skill</a>   <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => <span style="color: green;">[% bet.amount %]</span> mc
+<a href="[% c.uri_for('/bet/' _ bet.id'view') %]">Skill Bet</a>   <span style="color: gray">[% PROCESS bets/categories_switch %]</span> => <span style="color: green;">[% bet.amount %]</span> mc
 [% END %]
 </div> 
 [% IF bet.type == 2 %][% IF bet.challenger_serial != undef %]<span style="font-size: large;color: black;">[% bet.user.name %]</span><span style="color: gray;"> was been challenged by </span><span style="font-size: large;color: black;">[% bet.challenger.name %]</span><span style="color: gray;"> on [% bet.challenged_time_readable %].</span>[% ELSE %]<span style="font-size: large; color: black;">[% bet.user.name %]</span> <span style="color: gray;">is awaiting a challenger.</span>[% END %][% END %]

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.41, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.54, for debian-linux-gnu (i686)
 --
 -- Host: localhost    Database: pythonpokernetwork
 -- ------------------------------------------------------
--- Server version	5.1.41-3ubuntu12.6
+-- Server version	5.1.54-1ubuntu4
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -47,6 +47,61 @@ CREATE TABLE `affiliates` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `arb2section`
+--
+
+DROP TABLE IF EXISTS `arb2section`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `arb2section` (
+  `serial` int(11) NOT NULL AUTO_INCREMENT,
+  `user_serial` int(11) DEFAULT NULL,
+  `rating` int(11) DEFAULT NULL,
+  `deposit` int(11) DEFAULT NULL,
+  `deposit_amount` float DEFAULT NULL,
+  `percentage` float DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `category` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`serial`)
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `bets`
+--
+
+DROP TABLE IF EXISTS `bets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bets` (
+  `type` int(11) DEFAULT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `category` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `currency_serial` int(11) DEFAULT NULL,
+  `user_serial` int(11) DEFAULT NULL,
+  `amount` float DEFAULT NULL,
+  `deadline` datetime NOT NULL,
+  `serial` int(11) NOT NULL AUTO_INCREMENT,
+  `user_status` int(11) DEFAULT NULL,
+  `challenger_status` int(11) DEFAULT NULL,
+  `challenged_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `challenger_serial` int(11) DEFAULT NULL,
+  `c_status_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `u_status_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `description` text,
+  `active` int(11) DEFAULT NULL,
+  `report_serial` int(11) DEFAULT NULL,
+  `finished_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `conditions` int(11) DEFAULT NULL,
+  `side_one` text,
+  `side_two` text,
+  PRIMARY KEY (`serial`)
+) ENGINE=MyISAM AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `chat_messages`
 --
 
@@ -61,6 +116,23 @@ CREATE TABLE `chat_messages` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`serial`)
 ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comments` (
+  `user_serial` int(11) DEFAULT NULL,
+  `bet_serial` int(11) DEFAULT NULL,
+  `comment` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `serial` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`serial`)
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +171,7 @@ CREATE TABLE `currencies` (
   PRIMARY KEY (`serial`,`url`),
   UNIQUE KEY `serial` (`serial`),
   UNIQUE KEY `url` (`url`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,7 +192,7 @@ CREATE TABLE `deposits` (
   `processed_at` datetime NOT NULL,
   PRIMARY KEY (`deposit_id`),
   KEY `user_serial` (`user_serial`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +208,7 @@ CREATE TABLE `hands` (
   `name` varchar(32) DEFAULT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`serial`)
-) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +242,7 @@ CREATE TABLE `monitor` (
   `param2` bigint(20) NOT NULL,
   `param3` bigint(20) NOT NULL,
   PRIMARY KEY (`serial`)
-) ENGINE=MyISAM AUTO_INCREMENT=494 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=671 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +278,7 @@ CREATE TABLE `pokertables` (
   KEY `pokertables_betting_structure` (`betting_structure`),
   KEY `pokertables_currency_serial` (`currency_serial`),
   KEY `resthost_serial` (`resthost_serial`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1401 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -279,6 +351,24 @@ CREATE TABLE `rank_tmp` (
   KEY `currency_serial_2` (`currency_serial`),
   KEY `rank` (`rank`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `reports`
+--
+
+DROP TABLE IF EXISTS `reports`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reports` (
+  `bet_serial` int(11) DEFAULT NULL,
+  `user_serial` int(11) DEFAULT NULL,
+  `description` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `title` varchar(100) DEFAULT NULL,
+  `serial` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`serial`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,7 +467,7 @@ CREATE TABLE `session_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   KEY `session_history_serial` (`user_serial`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -424,7 +514,7 @@ CREATE TABLE `tourneys` (
   PRIMARY KEY (`serial`),
   KEY `tourneys_start_time_index` (`start_time`),
   KEY `state` (`state`,`finish_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=508 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -472,7 +562,7 @@ CREATE TABLE `tourneys_schedule` (
   PRIMARY KEY (`serial`),
   KEY `tourneys_schedule_active_index` (`active`),
   KEY `tourneys_schedule_register_time_index` (`register_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -486,6 +576,48 @@ CREATE TABLE `tourneys_schedule2prizes` (
   `tourneys_schedule_serial` int(11) DEFAULT NULL,
   `prize_serial` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `trades`
+--
+
+DROP TABLE IF EXISTS `trades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trades` (
+  `serial` int(11) NOT NULL AUTO_INCREMENT,
+  `status` int(11) DEFAULT NULL,
+  `buy_currency` int(11) DEFAULT NULL,
+  `sell_currency` int(11) DEFAULT NULL,
+  `user_serial` int(11) DEFAULT NULL,
+  `amount` float NOT NULL,
+  `price` float NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `processed_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `balance` float DEFAULT NULL,
+  PRIMARY KEY (`serial`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user2bet`
+--
+
+DROP TABLE IF EXISTS `user2bet`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user2bet` (
+  `user_serial` int(11) DEFAULT NULL,
+  `bet_serial` int(11) DEFAULT NULL,
+  `amount` float DEFAULT NULL,
+  `side` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `serial` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`serial`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -579,10 +711,11 @@ CREATE TABLE `users` (
   `future_rating` float DEFAULT '1000',
   `games_count` int(11) DEFAULT '0',
   `data` text,
+  `timezone` int(11) DEFAULT NULL,
   PRIMARY KEY (`serial`),
   UNIQUE KEY `email_idx` (`email`),
   KEY `name_idx` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -644,14 +777,14 @@ CREATE TABLE `withdrawal` (
   `user_serial` int(11) NOT NULL,
   `currency_serial` int(11) NOT NULL,
   `amount` float NOT NULL,
-  `dest` text NOT NULL,
   `processed` int(11) NOT NULL,
   `info` text NOT NULL,
   `created_at` datetime NOT NULL,
   `processed_at` datetime NOT NULL,
+  `dest` text NOT NULL,
   PRIMARY KEY (`withdrawal_id`),
   KEY `user_serial` (`user_serial`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -663,4 +796,4 @@ CREATE TABLE `withdrawal` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-09-04 20:01:03
+-- Dump completed on 2011-08-16 17:09:20

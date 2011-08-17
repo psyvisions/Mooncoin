@@ -45,23 +45,33 @@ sub index :Path :Args(0) {
                                 rows => 1,
                           });
 
-   my $table = $tables_rs->first;
+  my $table = $tables_rs->first;
 
-   if ($table->players > 4) {
+  if ($table->players > 4) {
      $c->stash->{table} = $table;
-   }
+  }
    
-   ## bets on front page
-   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
+  ## bets on front page
+  $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
   active => undef,
-  
+  currency_serial => 1,
   }, { 
-      rows => 25,
+      rows => 10,
       order_by => { 
         -asc => 'deadline' 
       } 
   });
-
+  
+  $c->stash->{nmc_bets} = $c->model("PokerNetwork::Bets")->search({
+  active => undef,
+  currency_serial => 2,
+  }, { 
+      rows => 10,
+      order_by => { 
+        -asc => 'deadline' 
+      } 
+  });
+  
 }
 
 sub archives :Local { }

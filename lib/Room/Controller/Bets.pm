@@ -106,7 +106,7 @@ sub nmc_bets :Path('namecoin')  :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 6,
+      rows => 20,
       page => $page,
       order_by => { 
         -asc => 'deadline' 
@@ -139,7 +139,7 @@ sub btc_bets :Chained('base') :Path('bitcoin')  :CaptureArgs(2) {
   type => $game,
   category => $category,
   }, { 
-      rows => 6,
+      rows => 20,
       page => $page,
       order_by => { 
         -asc => 'deadline' 
@@ -177,7 +177,7 @@ sub awaiting_update :Path('awaiting_update') :Args(0) {
   -and => [{-or => [ { challenger_serial => $c->user->serial }, { user_serial => $c->user->serial } ] },{-or => [ { challenger_status => undef }, { user_status => undef } ]}],
     challenger_serial => {'!=' => 'undef'},
   }, { 
-      rows => 5,
+      rows => 20,
       page => $page,
       order_by => { 
         -desc => 'created_at' 
@@ -204,7 +204,7 @@ sub complete  :Path('complete') :Args(0) {
   -or => [{-or => [{user_serial => $c->user->serial},{challenger_serial => $c->user->serial}]},{serial => \@userbets }],
   }, 
   { 
-      rows => 5,
+      rows => 20,
       page => $page,
       order_by => { 
         -desc => 'created_at' 
@@ -448,8 +448,12 @@ sub view_bet : Chained('base') PathPart('view') Args(0) :FormConfig{
       $balance->amount() - ( $amount / 100 )
     );
     $balance->update();
-      
-     # Create bet
+    
+    #Add amount to total for tracking purposes
+    $bet->amount( $bet->amount + $amount );
+    $bet->update();
+    
+    # Create bet
     my $userbet = $c->user->userbets->create({
       bet_serial => $bet->serial,
       amount => $amount,
