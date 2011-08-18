@@ -58,7 +58,7 @@ sub index :Path :Args(0) {
   }, { 
       rows => 10,
       order_by => { 
-        -asc => 'deadline' 
+        -desc => 'amount' 
       } 
   });
   
@@ -68,7 +68,7 @@ sub index :Path :Args(0) {
   }, { 
       rows => 10,
       order_by => { 
-        -asc => 'deadline' 
+        -desc => 'amount' 
       } 
   });
   
