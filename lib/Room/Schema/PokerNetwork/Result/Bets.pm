@@ -420,14 +420,14 @@ my $string = '<span style="color: green; font-size: large;">';
 sub bet_time_readable{
   my ($self) = @_;
   my $strdate1 = str2time($self->deadline);
-  my $time1 = UnixDate(ParseDate("epoch $strdate1"), '%F %T');
+  my $time1 = UnixDate(ParseDate("epoch $strdate1"), '%F %T %Z');
   return $time1;
 }
 
 sub event_time_readable{
   my ($self) = @_;
   my $strdate1 = str2time($self->challenged_at);
-  my $time1 = UnixDate(ParseDate("epoch $strdate1"), '%F %T');
+  my $time1 = UnixDate(ParseDate("epoch $strdate1"), '%F %T %Z');
   return $time1;
 }
 
@@ -441,28 +441,28 @@ sub time_now_readable{
 sub created_time_readable{
   my ($self) = @_;
   my $crstr = str2time($self->created_at);
-  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T');
+  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T %Z');
   return $created;
 }
 
 sub challenged_time_readable{
   my ($self) = @_;
   my $crstr = str2time($self->challenged_at);
-  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T');
+  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T %Z');
   return $created;
 }
 
 sub u_status_time_readable{
   my ($self) = @_;
   my $crstr = str2time($self->u_status_at);
-  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T');
+  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T %Z');
   return $created;
 }
 
 sub c_status_time_readable{
   my ($self) = @_;
   my $crstr = str2time($self->c_status_at);
-  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T');
+  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T %Z');
   return $created;
 }
 
