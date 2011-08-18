@@ -3,13 +3,11 @@
 <h3 style="margin-bottom: 0px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]">[% bet.title %]</a></h3>
 <a href="[% c.uri_for('/bet/' _ bet.id'view') %]"><span style="color: gray">[% PROCESS bets/categories_switch %]</span> => [% bet.event_time_readable %].</a>
 
-
 <div style="margin-bottom: 35px;">
 
 <div class="inflate" style="float:left; padding: 8px 3px 3px 8px; color:#1B587B; font-size: medium;">[% bet.side_one | truncate(28) %]</div>
 
 <div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #1B587B; color: #fff; width: auto; padding: 3px 8px 3px 8px; margin: 5px;">[% bet.get_total_s1 | format('%.2f') %]</div>
-
 
 <div class="inflate" style="float:left; padding: 8px 3px 3px 8px; color:#4080B0; font-size: medium;">[% bet.side_two | truncate(28) %]</div>
 <div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #4080B0; color: #eee; width: auto; padding: 3px 8px 3px 8px; margin: 5px;">[% bet.get_total_s2 | format('%.2f') %]</div>
@@ -17,13 +15,13 @@
 <div style="float:right;">
 [% IF bet.deadline_passed == 0 %]<span style="color: gray;">Time left</span>[% END %] 
 [% bet.get_timeleft %]
-[% IF bet.deadline_passed == 1 %]<span style="color: red;"><i>No longer accepting bets</i></span>[% END %]
+[% IF bet.deadline_passed == 1 %][% IF bet.active ==undef %]<span style="color: red;"><i>No longer accepting bets</i></span>[% ELSE %][% SWITCH bet.active %][% CASE 1 %]<br /><b style="color: red;">Funds Frozen</b>
+[% CASE 2 %]<br /><b style="color: red;">Side 1 Won!</b>
+[% CASE 3 %]<br /><b style="color: blue;">Side 2 Won!</b>
+[% CASE 4 %]<br /><b style="color: red;">Draw!</b>
+[% END %][% END %][% END %]
 </div>
 </div>
-
-
-
-
 [% ELSE %]
 <div style="float: left; margin-right: 10px;"><a href="[% c.uri_for('/bet/' _ bet.id'view') %]"><img src="[% c.uri_for("/AVATAR/" _ bet.user_serial) %]" alt="[% c.user.name %] picture" /></a></div>
 
