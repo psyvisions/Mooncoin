@@ -52,7 +52,7 @@ __PACKAGE__->has_one(
 sub created_time_readable{
   my ($self) = @_;
   my $crstr = str2time($self->created_at);
-  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T');
+  my $created = UnixDate(ParseDate("epoch $crstr"), '%F %T %Z');
   return $created;
 }
 

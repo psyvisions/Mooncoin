@@ -245,12 +245,15 @@ sub get_timeleft{
   if($diff->is_positive == 1){
   my $string = '<span style="color: green; font-size: large;">';
   if($diff->years > 0){if($diff->years != 1){$hold = 's'} $string = $string . $diff->years . " <span style='color: black; font-size: small;'>Year".$hold."</span> ";}
-  if($diff->months > 0){if($diff->months != 1){$hold = 's'}$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Month".$hold."</span> ";}  if($diff->weeks > 0){ if($diff->weeks != 1){$hold = 's'} $string = $string . $diff->weeks . " <span style='color: black; font-size: small;'>Week".$hold."</span> ";}
+  if($diff->months > 0){if($diff->months != 1){$hold = 's'}$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Month".$hold."</span> ";}  
+    if($diff->months == 0){
+  if($diff->weeks > 0){ if($diff->weeks != 1){$hold = 's'} $string = $string . $diff->weeks . " <span style='color: black; font-size: small;'>Week".$hold."</span> ";}
   if($diff->days > 0){if($diff->days != 1){$hold = 's'}$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Day".$hold."</span> ";}
-  if($diff->years == 0){
+  if($diff->weeks == 0){
   if($diff->hours > 0){if($diff->hours != 1){$hold = 's'}$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hour".$hold."</span> ";} 
+  if($diff->days == 0){
   if($diff->minutes > 0){if($diff->minutes != 1){$hold = 's'}$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minute".$hold."</span> ";}
-  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}   }else{$string = $string . '</span>';}  
+  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}   }else{$string = $string . '</span>';}  }else{$string = $string . '</span>';} }else{$string = $string . '</span>';} 
   return $string;}
 }
 
@@ -279,12 +282,15 @@ sub get_timeleft_event{
   if($diff->is_positive == 1){
   my $string = '<span style="color: green; font-size: large;">';
   if($diff->years > 0){if($diff->years != 1){$hold = 's'} $string = $string . $diff->years . " <span style='color: black; font-size: small;'>Year".$hold."</span> ";}
-  if($diff->months > 0){if($diff->months != 1){$hold = 's'}$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Month".$hold."</span> ";}  if($diff->weeks > 0){ if($diff->weeks != 1){$hold = 's'} $string = $string . $diff->weeks . " <span style='color: black; font-size: small;'>Week".$hold."</span> ";}
+  if($diff->months > 0){if($diff->months != 1){$hold = 's'}$string = $string . $diff->months . " <span style='color: black; font-size: small;'>Month".$hold."</span> ";}  
+    if($diff->months == 0){
+  if($diff->weeks > 0){ if($diff->weeks != 1){$hold = 's'} $string = $string . $diff->weeks . " <span style='color: black; font-size: small;'>Week".$hold."</span> ";}
   if($diff->days > 0){if($diff->days != 1){$hold = 's'}$string = $string . $diff->days . " <span style='color: black; font-size: small;'>Day".$hold."</span> ";}
-  if($diff->years == 0){
+  if($diff->weeks == 0){
   if($diff->hours > 0){if($diff->hours != 1){$hold = 's'}$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hour".$hold."</span> ";} 
+  if($diff->days == 0){
   if($diff->minutes > 0){if($diff->minutes != 1){$hold = 's'}$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minute".$hold."</span> ";}
-  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}   }else{$string = $string . '</span>';}  
+  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}   }else{$string = $string . '</span>';}  }else{$string = $string . '</span>';} }else{$string = $string . '</span>';} 
   return $string;}
 }
 
