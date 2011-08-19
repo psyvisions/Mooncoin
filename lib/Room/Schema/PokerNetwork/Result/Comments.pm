@@ -58,11 +58,11 @@ sub created_time_readable{
 
 =head1 AUTHOR
 
-Pavel Karoukin
+mrmoon
 
 =head1 LICENSE
 
-Copyright (C) 2010 Pavel A. Karoukin <pavel@yepcorp.com>
+mrmooncoin@gmail.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by

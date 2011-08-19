@@ -424,14 +424,16 @@ sub cancel :Chained('base') :PathPart('cancel') :Args(0) {
     $c->res->redirect(
       $c->uri_for('/exchange/orders')
     );
-}
+   }
   }
 }
 =head1 AUTHOR
 
-root
+mrmoon
 
 =head1 LICENSE
+
+mrmooncoin@gmail.com
 
 This library is free software. You can redistribute it and/or modify
 it under the same terms as Perl itself.

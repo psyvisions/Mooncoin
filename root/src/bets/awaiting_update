@@ -1,7 +1,5 @@
 [% META title = 'Bets' %]
-[% PROCESS bets/bets_submenu %]
-Index of all bets. 
-
+[% PROCESS bets/bet_winloss %]
 <div style='width: auto; min-height: auto;'>
 <h2>Bets awaiting updates</h2>
 <p>The following is a list of bets that you have become associated with, all bets listed are games of skill which you are awaiting an update from either the original author of the bet or the challenger. After the first update by either user, the second user has 7 days to update their status or they forfeit the bet.</p> 

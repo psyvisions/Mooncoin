@@ -1,0 +1,311 @@
+li {
+  margin: 1em 0;
+}
+
+ul.menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+}
+
+ul.menu {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-image: none;
+}
+
+ul.menu li {
+  display: inline;
+  margin: 0 20px 0 0;
+  padding: 0;
+}
+
+#header ul.menu {
+  text-align: right;
+  padding-bottom: 10px;
+}
+
+#wrapper {
+  width: 1024px;
+  margin: 0 auto;
+}
+
+a {
+  color: #1b587b;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a img {
+  border: none;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #ffffff;
+    color: #46494c;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    font-family: Ubuntu, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+#header {
+    background-color: #fff;
+	
+    border-bottom: 1px solid #596D71;
+}
+
+#footer {
+    background-color: #fff;
+    text-align: center;
+    border-top: 1px solid #596D71;
+    width: 100%;
+    padding: 4px;
+}
+
+#content {
+    padding: 10px 10px 40px;
+}
+
+h1.title {
+    padding: 4px;
+    margin: 0px;
+}
+
+.message {
+    color: #66AA66;
+}
+
+.error {
+    color: #CC4444;
+}
+
+.message-error {
+  color: #9a1302;
+}
+
+#footer_menu {
+  margin: 10px;
+}
+
+form span.comment {
+  display: block;
+  font-size: 80%;
+  font-style: italic;
+  color: #56595C;
+}
+
+form > fieldset > div {
+  margin: 10px 0;
+}
+
+form label {
+  width: 150px;
+  display: inline-block;
+}
+
+h2.account-info span {
+  font-size: 14px;
+  font-weight: normal;
+  position: relative;
+  top: -5px;
+}
+
+form div.submit {
+  float: left;
+}
+
+.profile-avatar {
+  width: 200px;
+  float: right;
+  text-align: right;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+}
+
+table td {
+  vertical-align: top;
+}
+
+.withdrawal-additional-info textarea {
+  width: 700px;
+  height: 300px;
+}
+
+.clear {
+  width: 100%;
+  height: 0px;
+  clear: both;
+  font-size: 1px;
+  overflow: hidden;
+}
+
+
+.withdrawal-info {
+  width: 30%;
+  float: left;
+}
+
+.withdrawal-additional-info {
+  width: 68%;
+  float: right;
+}
+
+.admin_submenu {
+ margin-top: 0px;
+ margin-bottom: -5px;
+ float: right;
+}
+
+.admin_submenu li{
+  list-style: none;
+  margin-right: 15px;
+  display: inline;
+}
+
+.bets_submenu {
+ margin-top: 0px;
+ margin-bottom: -5px;
+ float: right;
+}
+
+.bets_submenu li{
+  list-style: none;
+  margin-right: 15px;
+  display: inline;
+}
+
+.right_column {
+  width: 220px;
+  float: right;
+  margin-left: 20px;
+}
+
+.main_content {
+  clear: left;
+}
+
+#content > h2.content-title {
+  float: left;
+}
+
+.tables-categories {
+  float: left;
+  width: 22%;
+  background: #EEE;
+}
+
+.tables {
+  float: right;
+  width: 74%;
+}
+
+.tables .tables-list {
+  display: none;
+}
+
+.tables .tables-list:first-child {
+  display: block;
+}
+
+.tables-categories li li ul {
+  padding: 0;
+}
+
+.tables-categories li {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tables-categories li li ul li {
+  margin: 0.5em 0;
+  padding: 0.5em 0 0.5em 0.5em;
+  list-style-position: inside;
+  text-decoration: none;
+}
+
+.tables-categories .active {
+  background: #FFF;
+}
+
+th {
+  text-align: left;
+}
+
+.tables-categories li ul {
+  display: none;
+}
+
+.popular-tables {
+  margin: 0.5em 0 0.5em 2em;
+  padding: 0.5em 0 0.5em 0.5em;
+}
+
+#accountinfolist ul{
+  list-style-type: none;
+}
+
+.positive-result {
+  background: #CCFFCC;
+}
+
+.negative-result {
+  background: #FFCCCC;
+}
+
+#hor-minimalist-b
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    background: #fff;
+    margin: 5px 7px 0 10px;
+    width: 315px;
+    border-collapse: collapse;
+    text-align: left;
+}
+#hor-minimalist-b th
+{
+    font-size: 14px;
+    font-weight: normal;
+    color: #1B587B;
+    padding: 10px 8px;
+    border-bottom: 2px solid #1B587B;;
+}
+#hor-minimalist-b td
+{
+    border-bottom: 1px solid #ccc;
+    color: #669;
+    padding: 6px 8px;
+}
+#hor-minimalist-b tbody tr:hover td
+{
+    color: #009;
+}
+
+.schedule-status-y {
+  background: #CFC;
+}
+
+button#cal {
+    background: url("cal.gif") repeat scroll 0 0 transparent;
+    border: 0 none;
+    cursor: pointer;
+    float: left;
+    height: 20px;
+    margin-right: 6px;
+    width: 20px;
+}

@@ -1,7 +1,5 @@
 [% META title = 'Bets' %]
-[% PROCESS bets/bets_submenu %]
-Index of all bets. 
-
+[% PROCESS bets/bets_submenu %] 
 <div style='width: auto; min-height: auto;'>
 <h2>Bets awaiting challengers</h2>
 <p>The following is a list of bets that you have become associated with, all bets listed are games of skill which you are awaiting a challenger. While bets are in this list they are still capable of being deleted.</p> 

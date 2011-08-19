@@ -19,13 +19,13 @@
   <p><span style="color:#4080B0; font-size: large;">Welcome</span>, you have stumbled upon a betting site for virtual currencies. You can participate in tournaments or matches in your favorite games for virtual currencies, or bet on professional level tournaments, political events as well as other items.</p><p>You can begin playing as soon as you register an account and transfer some recently mined bitcoins or namecoins into it. Since we support multiple currencies, we also have a virtual currency exchange which will allow you to participate in any bet on the site.</p>
 [% count = 0 %]
 </div>
-<h2>Bitcoin Bets</h2>
+<h2>Popular Bitcoin Bets</h2>
 [% WHILE (bet = bets.next) %] 
 <div style="height: auto; width: 760px; margin:5px; border-bottom: solid 1px; padding: 0px 0 5px 0;">
 [% PROCESS bets/index_items %]
 </div>
 [% END %]
-<h2>Namecoin Bets</h2>
+<h2>Popular Namecoin Bets</h2>
 [% WHILE (bet = nmc_bets.next) %] 
 <div style="height: auto; width: 760px; margin:5px; border-bottom: solid 1px; padding: 0px 0 5px 0;">
 [% PROCESS bets/index_items %]

@@ -91,25 +91,15 @@ sub report_cancel :Chained('report_base') :PathPart('cancel') :Args(0) {
   my $amount = $bet->amount;
   my $c_balance = $bet->user->balances->search({currency_serial => $bet->currency_serial })->first;
   
-  if (! $c_balance) {
-    $c_balance = $bet->challenger->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $c_balance->amount(0);
-    $c_balance->update();
-  }
-      my $fees = $amount * 0.01;
+    my $fees = $amount * 0.01;
     my $amount_due = $amount - $fees;
   
-      $c_balance->amount(
+    $c_balance->amount(
       $c_balance->amount() + ( $amount_due / 100 )
     );
     $c_balance->update();
 
   my $u_balance = $bet->challenger->balances->search({currency_serial => $bet->currency_serial })->first;
-   if (! $u_balance) {
-    $u_balance = $bet->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $u_balance->amount(0);
-    $u_balance->update();
-  }
 
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
@@ -123,12 +113,6 @@ sub report_cancel :Chained('report_base') :PathPart('cancel') :Args(0) {
    foreach $userbet($bet->userbets) { 
     my $amount = $userbet->amount;
     my $balance = $userbet->user->balances->search({currency_serial => $bet->currency_serial })->first;
-   
-    if (! $balance) {
-      $balance = $userbet->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-      $balance->amount(0);
-      $balance->update();
-    }
     
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
@@ -174,11 +158,11 @@ sub report_freeze :Chained('report_base') :PathPart('freeze') :Args(0) {
 
 =head1 AUTHOR
 
-Pavel Karoukin
+mrmoon
 
 =head1 LICENSE
 
-Copyright (C) 2010 Pavel A. Karoukin <pavel@yepcorp.com>
+mrmooncoin@gmail.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by

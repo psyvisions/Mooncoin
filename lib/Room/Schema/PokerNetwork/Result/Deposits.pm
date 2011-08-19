@@ -50,7 +50,7 @@ __PACKAGE__->set_primary_key("deposit_id");
 
 __PACKAGE__->has_one(
   'currency' => 'Room::Schema::PokerNetwork::Result::Currencies',
-  { 'foreign.serial' => 'self.currency_serial' },
+  { 'foreign.serial' => 'self.currency_serial' }, { cascade_delete => 0 },
 );
 # Created by DBIx::Class::Schema::Loader v0.04006 @ 2010-09-27 11:47:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TfffnTDxPNXCprfGWMEtFw

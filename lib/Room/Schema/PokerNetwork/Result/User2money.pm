@@ -53,7 +53,7 @@ sub __filter_divide { my $self = shift; shift() / 10000 }
 
 __PACKAGE__->has_one(
   'currency' => 'Room::Schema::PokerNetwork::Result::Currencies',
-  { 'foreign.serial' => 'self.currency_serial' },
+  { 'foreign.serial' => 'self.currency_serial' }, { cascade_delete => 0 }
 );
 
 

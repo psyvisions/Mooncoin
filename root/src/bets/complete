@@ -1,7 +1,6 @@
 [% META title = 'Bets' %]
 [% PROCESS bets/bets_submenu %]
-Index of all bets. 
-
+[% PROCESS bets/bet_winloss %]
 <div style='width: auto; min-height: auto;'>
 <h2>Completed Bets</h2>
 <p>This is a history of all bets which you have become associated with that have been completed.</p> 

@@ -13,8 +13,6 @@ BEGIN { extends 'Catalyst::Controller' }
 #
 __PACKAGE__->config(namespace => '');
 
-
-
 =head1 NAME
 
 Room::Controller::Root - Root Controller for Room

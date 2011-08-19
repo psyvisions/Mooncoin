@@ -95,11 +95,11 @@ sub notify :Chained('report_base') :PathPart('notify') :Args(0) {
 
 =head1 AUTHOR
 
-Pavel Karoukin
+mrmoon
 
 =head1 LICENSE
 
-Copyright (C) 2010 Pavel A. Karoukin <pavel@yepcorp.com>
+mrmooncoin@gmail.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
@@ -113,7 +113,6 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 =cut
 

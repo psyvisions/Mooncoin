@@ -142,11 +142,8 @@ sub register :Local :Args(0) :FormConfig {
       $c->uri_for('/user')
     );
   }
-
   my $form = $c->stash->{form};
-
   if ($form->submitted_and_valid) {
-
     if (
           $c->model("PokerNetwork::Users")->search({ name => $form->params->{name} })->count > 0
        ) {
@@ -154,7 +151,6 @@ sub register :Local :Args(0) :FormConfig {
       $form->process();
       return;
     }
-
     if (
           $form->params->{email} ne '' &&
           $c->model("PokerNetwork::Users")->search({ email => $form->params->{email} })->count > 0
@@ -163,7 +159,6 @@ sub register :Local :Args(0) :FormConfig {
       $form->process();
       return;
     }
-
     my $user = $c->model("PokerNetwork::Users")->new({
       name => $form->params->{name},
       password => $form->params->{password},
@@ -173,11 +168,8 @@ sub register :Local :Args(0) :FormConfig {
     if ( $form->params->{email} ) {
       $user->email( $form->params->{email} );
     }
-
     $user->insert();
-
     push @{$c->flash->{messages}}, "Account successfully created. Please, login with your details.";
-
     $c->res->redirect(
       $c->uri_for('/user/login')
     );
@@ -365,7 +357,7 @@ sub deposit_bitcoin_refresh :Private {
   if ($bitcoins_new_balance > $c->user->bitcoins_received) {
     my $diff = $bitcoins_new_balance - $c->user->bitcoins_received;
     $c->user->bitcoins_received(
-      $c->user->bitcoins_received + $diff
+   $c->user->bitcoins_received + $diff
     );
 
     $c->user->update;

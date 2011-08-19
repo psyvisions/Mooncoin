@@ -115,16 +115,16 @@ __PACKAGE__->belongs_to(
 
 __PACKAGE__->has_many(
   'report' => 'Room::Schema::PokerNetwork::Result::Reports',
-  { 'foreign.serial' => 'self.report_serial' }, { cascade_delete => 1 },
+  { 'foreign.serial' => 'self.report_serial' }, 
 );
 
 __PACKAGE__->has_many(
   'comments' => 'Room::Schema::PokerNetwork::Result::Comments',
-  { 'foreign.bet_serial' => 'self.serial' }, { cascade_delete => 0 },
+  { 'foreign.bet_serial' => 'self.serial' }, 
 );
 __PACKAGE__->has_many(
   'userbets' => 'Room::Schema::PokerNetwork::Result::User2bet',
-  { 'foreign.bet_serial' => 'self.serial' }, { cascade_delete => 0 },
+  { 'foreign.bet_serial' => 'self.serial' }, 
 );
 
 sub get_total {
@@ -220,8 +220,6 @@ sub get_h_side {
      elsif( $total_side_one < $total_side_two and $total_side_one != undef ){
       $h_side = 2;
     }
-    #9 means that only one side has a bet, this is used to determine when the ratio should be displayed
-    elsif ( $total_side_one == 0 or $total_side_two == 0 ){$h_side = 9;}
     else{$h_side = 0;}
     
     return $h_side;    
@@ -483,24 +481,21 @@ sub who_won{
   $value = 'conflict';
   }
   }
-
   return $value;
-
 }
 
 # Created by DBIx::Class::Schema::Loader v0.04006 @ 2010-09-27 11:47:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TfffnTDxPNXCprfGWMEtFw
 
-
 # You can replace this text with custom content, and it will be preserved on regeneration
 
 =head1 AUTHOR
 
-Pavel Karoukin
+mrmoon
 
 =head1 LICENSE
 
-Copyright (C) 2010 Pavel A. Karoukin <pavel@yepcorp.com>
+mrmooncoin@gmail.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by

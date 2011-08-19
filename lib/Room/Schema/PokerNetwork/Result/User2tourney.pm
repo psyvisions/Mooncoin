@@ -33,12 +33,12 @@ __PACKAGE__->set_primary_key("user_serial", "tourney_serial");
 
 __PACKAGE__->belongs_to(
   user => 'Room::Schema::PokerNetwork::Result::Users',
-  { serial => 'user_serial' }
+  { serial => 'user_serial' }, { cascade_delete => 0 },
 );
 
 __PACKAGE__->belongs_to(
   tourney => 'Room::Schema::PokerNetwork::Result::Tourneys',
-  { serial => 'tourney_serial' }
+  { serial => 'tourney_serial' }, { cascade_delete => 0 },
 );
 
 

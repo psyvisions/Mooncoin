@@ -42,11 +42,10 @@ sub auto :Private {
 
 =cut
 
-
 sub index :Path :CaptureArgs(2) {
   my ( $self, $c, $game, $category) = @_;
   
-   my @userbets = ();
+  my @userbets = ();
   $c->stash->{user_bets} = $c->model("PokerNetwork::User2bet")->search({
   user_serial => $c->user->serial,
   });
@@ -55,7 +54,6 @@ sub index :Path :CaptureArgs(2) {
   push(@userbets, $holder->bet_serial );
   }  
 
-  
   my $page = $c->req->params->{'page'};
   $page = 1 if $page < 1;
     $c->stash->{game} = $game;
@@ -114,7 +112,6 @@ sub nmc_bets :Path('namecoin')  :CaptureArgs(2) {
   });
 }
 
-
 ## BTC bet views ##
 sub btc_bets :Chained('base') :Path('bitcoin')  :CaptureArgs(2) {
   my ( $self, $c, $game, $category) = @_;
@@ -164,7 +161,6 @@ sub awaiting_challenger :Path('awaiting_challenger')  :CaptureArgs(2) {
         -desc => 'created_at' 
       } 
   });
-  
 }
 
 sub awaiting_update :Path('awaiting_update') :Args(0) {
@@ -213,14 +209,14 @@ sub complete  :Path('complete') :Args(0) {
 }
 
 sub base :Chained('/') PathPart('bet') CaptureArgs(1) {
-     my ($self, $c, $id) = @_;
-     my $bet = $c->model('PokerNetwork::Bets')->find($id);
+   my ($self, $c, $id) = @_;
+   my $bet = $c->model('PokerNetwork::Bets')->find($id);
 
-     if ( $bet == undef ) {
-         $c->stash( error_msg => "This item does not exist" );
-     } else {
-         $c->stash( bet => $bet );
-     }
+   if ( $bet == undef ) {
+     $c->stash( error_msg => "This item does not exist" );
+   } else {
+     $c->stash( bet => $bet );
+   }
 }
 
 sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) { 
@@ -298,7 +294,7 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
   }
 }
 
- sub skill :Path('/bet/skill') :FormConfig CaptureArgs(1) { 
+sub skill :Path('/bet/skill') :FormConfig CaptureArgs(1) { 
   my ( $self, $c, $currency) = @_;
   my $form = $c->stash->{form};
 
@@ -317,13 +313,7 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
     );
     $currency = 1;
   }
-    my $balance = $c->user->balances->search({currency_serial => $currency })->first;
-
-  if (! $balance) {
-    $balance = $c->user->balances->find_or_create({ currency_serial => $currency  });
-    $balance->amount(0);
-    $balance->update();
-  }
+  my $balance = $c->user->balances->search({currency_serial => $currency })->first;
 
   $c->stash->{balance} = $balance;
   $c->stash->{current_balance} = floor($balance->amount * 100) / 100;
@@ -421,26 +411,20 @@ sub view_bet : Chained('base') PathPart('view') Args(0) :FormConfig{
      
   my $balance = $c->user->balances->search({currency_serial => $bet->currency_serial })->first;
 
-  if (! $balance) {
-    $balance = $c->user->balances->find_or_create({ currency_serial => $bet->currency_serial  });
-    $balance->amount(0);
-    $balance->update();
-  }
-
-     $c->stash->{balance} = $balance;
-     $c->stash->{current_balance} = floor($balance->amount * 100) / 100;
+  $c->stash->{balance} = $balance;
+  $c->stash->{current_balance} = floor($balance->amount * 100) / 100;
      
  if ($form->submitted_and_valid and $bet->type == 1 and $bet->deadline_passed == 0 ){
      
-      my $amount = $form->params->{amount};
-      my $side = $form->params->{side};
+   my $amount = $form->params->{amount};
+   my $side = $form->params->{side};
 
 
-    if ( ($balance->amount * 100) < $amount || $amount < 0.01  || int($amount * 100) < $amount  )  {
-      $form->get_field("amount")->get_constraint({ type => "Callback" })->force_errors(1);
-      $form->process();
-      return;
-    };
+   if ( ($balance->amount * 100) < $amount || $amount < 0.01  || int($amount * 100) < $amount  )  {
+     $form->get_field("amount")->get_constraint({ type => "Callback" })->force_errors(1);
+     $form->process();
+     return;
+   };
 
   if( $c->stash->{deadline_passed} == 0 ){
   
@@ -449,7 +433,7 @@ sub view_bet : Chained('base') PathPart('view') Args(0) :FormConfig{
     );
     $balance->update();
     
-    #Add amount to total for tracking purposes
+    #Add amount to total for tracking purposes (ie sorting by popular bets on index)
     $bet->amount( $bet->amount + $amount );
     $bet->update();
     
@@ -470,7 +454,6 @@ sub view_bet : Chained('base') PathPart('view') Args(0) :FormConfig{
    }  
  }
  
- 
 sub delete :Chained('base') :PathPart('delete') :Args(0) {
   my ($self, $c) = @_;
   my $bet = $c->stash->{bet};
@@ -480,19 +463,12 @@ sub delete :Chained('base') :PathPart('delete') :Args(0) {
       $c->uri_for('/bets')
     );
      }else{
-
   my $userbet = $bet->userbets->first;
   if($bet->type == 2){
   
   if($c->user->serial == $c->stash->{bet}->user_serial and $c->stash->{bet}->challenger_serial == NULL ){
   
   my $balance = $c->user->balances->search({currency_serial => $bet->currency_serial, })->first;
-
-   if (! $balance) {
-    $balance = $c->user->balances->find_or_create({ currency_serial => $bet->currency_serial, });
-    $balance->amount(0);
-    $balance->update();
-  }
 
   $c->stash->{balance} = $balance;
   $c->stash->{current_balance} = floor($balance->amount * 100) / 100;  
@@ -527,7 +503,6 @@ push @{$c->flash->{messages}}, "A bet has been placed on this event, therefore i
       $c->res->redirect(
       $c->uri_for('/bets')
     );}
-    
 }
 
 sub challenge :Chained('base') :PathPart('challenge') {
@@ -542,11 +517,6 @@ sub challenge :Chained('base') :PathPart('challenge') {
    my $balance = $c->user->balances->search({currency_serial => $bet->currency_serial,})->first;
    my $amount = $c->stash->{bet}->amount;
    
-   if (! $balance) {
-    $balance = $c->user->balances->find_or_create({ currency_serial => $bet->currency_serial, });
-    $balance->amount(0);
-    $balance->update();
-  }
   $c->stash->{balance} = $balance;
   $c->stash->{current_balance} = floor($balance->amount * 100) / 100;
   if($balance->amount < ( $amount / 100 )){
@@ -684,7 +654,6 @@ sub status :Chained('base') :PathPart('status') :FormConfig{
   }
 }
 
-
 sub report :Chained('base') :PathPart('report') :FormConfig{
   my ($self, $c) = @_;
   my $bet = $c->stash->{bet}; 
@@ -693,7 +662,6 @@ sub report :Chained('base') :PathPart('report') :FormConfig{
       $c->uri_for('/bets')
     );
      }else{
-
   my $form = $c->stash->{form};
   my $title = $form->params->{report_title};
   my $description = $form->params->{report_description};
@@ -730,9 +698,11 @@ sub report :Chained('base') :PathPart('report') :FormConfig{
 
 =head1 AUTHOR
 
-root
+mrmoon
 
 =head1 LICENSE
+
+mrmooncoin@gmail.com
 
 This library is free software. You can redistribute it and/or modify
 it under the same terms as Perl itself.

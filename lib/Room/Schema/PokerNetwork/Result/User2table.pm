@@ -36,7 +36,7 @@ __PACKAGE__->has_relationship(
 
 __PACKAGE__->belongs_to(
   user => 'Room::Schema::PokerNetwork::Result::Users',
-  { serial => 'user_serial' }
+  { serial => 'user_serial' }, { cascade_delete => 0 }
 );
 
 __PACKAGE__->belongs_to(

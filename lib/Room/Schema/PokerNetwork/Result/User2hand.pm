@@ -33,7 +33,7 @@ __PACKAGE__->belongs_to(
 
 __PACKAGE__->belongs_to(
   hand => 'Room::Schema::PokerNetwork::Result::Hands',
-  { serial => 'hand_serial' }
+  { serial => 'hand_serial' }, { cascade_delete => 0 }
 );
 
 =head1 AUTHOR
