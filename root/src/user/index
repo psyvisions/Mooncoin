@@ -6,25 +6,26 @@
 
 <div id="accountinfolist">
 <ul style="margin-left: -35px;">
-
   <li><strong>Username</strong><br />[% c.user.name %]</li>
   <li><strong>Email</strong><br />[% c.user.email %]</li>
   <li><strong>Emergency bitcoin address</strong><br />[% c.user.emergency_address %]</li>
-   <li><strong>Emergency namecoin address</strong><br />[% c.user.emergency_nmc_address %]</li>
-   <li><a href='[% c.uri_for('/user/hands') %]'>Hand History</a></li>
+  <li><strong>Emergency namecoin address</strong><br />[% c.user.emergency_nmc_address %]</li>
+  <li><a href='[% c.uri_for('/user/hands') %]'>Hand History</a></li>
 </ul>
 </div>
 </div>
 
 <div style="float:left; margin-left: 75px; height: auto;">
 [% IF c.user.balances %]
-
 <h2>Your balance</h2>
-  [% FOR balance IN c.user.balances %]
-     <p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
+[% FOR balance IN c.user.balances %]
+<p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
       - <span><a href="/user/deposit/[% balance.currency.name %]">Deposit</a></span></p>
   [% END %]
 [% END %]
+<h3>Betting Statistics<br /><span style="font-size: xx-small; color: #56595C;">Only foresight/skill betting</span></h3>
+
+[% PROCESS bets/bet_winloss %]
 </div>
 
 <div style="float:left; margin-left:75px;">
@@ -48,7 +49,7 @@ To change your avatar, make sure you have valid email set in your account
    <thead>
     <tr><th>ID</th><th>Currency</th><th>Date</th><th>Amount</th></tr></thead><tbody>
     [% FOR deposit IN c.user.deposits %]
-      <tr><td>[% deposit.deposit_id %]</td><td>[% deposit.currency.name %]</td><td>[% deposit.created_at %]</td><td>[% deposit.amount | format('%.2f') %]</td></tr>
+    <tr><td>[% deposit.deposit_id %]</td><td>[% deposit.currency.name %]</td><td>[% deposit.created_at %]</td><td>[% deposit.amount | format('%.2f') %]</td></tr>
     [% END %]
     </tbody>
   </table>

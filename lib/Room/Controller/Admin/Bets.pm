@@ -181,12 +181,7 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
   
   if( $bet->user_status == '1' and $bet->challenger_status == '2' ){
   my $u_balance = $c->stash->{bet}->user->balances->search({currency_serial => $bet->currency_serial})->first;
-   if (! $u_balance) {
-    my $amount = $amount * 2;
-    $u_balance = $c->stash->{bet}->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $u_balance->amount(0);
-    $u_balance->update();
-  }
+  my $amount = $amount * 2;
   
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
@@ -203,12 +198,7 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
   }
   elsif( $bet->user_status == '2' and $bet->challenger_status == '1' ){
   my $amount = $amount * 2;
-   my $c_balance = $c->stash->{bet}->challenger->balances->search({currency_serial => $bet->currency_serial})->first;
-   if (! $c_balance) {
-    $c_balance = $c->stash->{bet}->challenger->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $c_balance->amount(0);
-    $c_balance->update();
-  }
+  my $c_balance = $c->stash->{bet}->challenger->balances->search({currency_serial => $bet->currency_serial})->first;
   
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
@@ -226,26 +216,15 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
   elsif($bet->user_status == '3' and $bet->challenger_status == '3'){
   my $c_balance = $c->stash->{bet}->challenger->balances->search({currency_serial => $bet->currency_serial})->first;
   
-   if (! $c_balance) {
-    $c_balance = $c->stash->{bet}->challenger->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $c_balance->amount(0);
-    $c_balance->update();
-  }
+  $fees = $amount * 0.01;
+  $amount_due = $amount - $fees;
   
-     $fees = $amount * 0.01;
-    $amount_due = $amount - $fees;
-  
-      $c_balance->amount(
+    $c_balance->amount(
       $c_balance->amount() + ( $amount_due / 100 )
     );
     $c_balance->update();
 
   my $u_balance = $c->stash->{bet}->user->balances->search({currency_serial => $bet->currency_serial})->first;
-   if (! $u_balance) {
-    $u_balance = $c->stash->{bet}->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $u_balance->amount(0);
-    $u_balance->update();
-  }
 
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
@@ -316,12 +295,6 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
    my $balance = $userbet->user->balances->search({currency_serial => $bet->currency_serial })->first;
    
    if($userbet->side == 1){
-
-    if (! $balance) {
-      $balance = $userbet->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-      $balance->amount(0);
-      $balance->update();
-    }
     
     if( $h_side == 1 ){
     $reward = ($amount / $ratio);
@@ -369,20 +342,13 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
 
   }elsif($result == 2){
   
-    foreach $userbet( $bet->userbets ) { 
+   foreach $userbet( $bet->userbets ) { 
    my $ratio = $bet->get_ratio; 
    my $h_side = $bet->get_h_side;
    my $amount = $userbet->amount;
    my $balance = $userbet->user->balances->search({currency_serial => $bet->currency_serial })->first;
 
    if($userbet->side == 2){
-
-   
-    if (! $balance) {
-      $balance = $userbet->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-      $balance->amount(0);
-      $balance->update();
-    }
     
     if( $h_side == 2 ){
     $reward = ($amount / $ratio);
@@ -414,12 +380,12 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
 
     }
    
-   #update status for winner  
+  #update status for winner  
   }
 
   }
-   #active 3 is side 2 - confusing but helps record wins easier
-    $c->stash->{bet}->active('3');
+  #active 3 is side 2 - confusing but helps record wins easier
+  $c->stash->{bet}->active('3');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
   
@@ -434,15 +400,9 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
   my $fees;
   my $amount_due;
   
-     foreach $userbet($bet->userbets) { 
+    foreach $userbet($bet->userbets) { 
     my $amount = $userbet->amount;
     my $balance = $userbet->user->balances->search({currency_serial => $bet->currency_serial })->first;
-   
-    if (! $balance) {
-      $balance = $userbet->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-      $balance->amount(0);
-      $balance->update();
-    }
     
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
@@ -484,13 +444,8 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   
   if( $result == '1' ){
   my $u_balance = $c->stash->{bet}->user->balances->search({currency_serial => $bet->currency_serial})->first;
-   if (! $u_balance) {
-    my $amount = $amount * 2;
-    $u_balance = $c->stash->{bet}->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $u_balance->amount(0);
-    $u_balance->update();
-  }
-
+  my $amount = $amount * 2;
+  
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
 
@@ -508,11 +463,6 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   elsif( $result == '2' ){
   my $amount = $amount * 2;
    my $c_balance = $c->stash->{bet}->challenger->balances->search({currency_serial => $bet->currency_serial})->first;
-   if (! $c_balance) {
-    $c_balance = $c->stash->{bet}->challenger->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $c_balance->amount(0);
-    $c_balance->update();
-  }
   
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
@@ -532,12 +482,6 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   elsif( $result == '3' ){
   my $c_balance = $c->stash->{bet}->challenger->balances->search({currency_serial => $bet->currency_serial})->first;
   
-   if (! $c_balance) {
-    $c_balance = $c->stash->{bet}->challenger->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $c_balance->amount(0);
-    $c_balance->update();
-  }
-  
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
   
@@ -547,11 +491,6 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
     $c_balance->update();
 
   my $u_balance = $c->stash->{bet}->user->balances->search({currency_serial => $bet->currency_serial})->first;
-   if (! $u_balance) {
-    $u_balance = $c->stash->{bet}->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $u_balance->amount(0);
-    $u_balance->update();
-  }
 
     $fees = $amount * 0.01;
     $amount_due = $amount - $fees;
@@ -595,34 +534,23 @@ sub bet_cancel :Chained('bet_base') :PathPart('cancel') :Args(0) {
   my $amount = $c->stash->{bet}->amount;
   my $c_balance = $c->stash->{bet}->challenger->balances->search({currency_serial => $bet->currency_serial})->first;
   
-   if (! $c_balance) {
-    $c_balance = $c->stash->{bet}->challenger->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $c_balance->amount(0);
-    $c_balance->update();
-  }
+  $fees = $amount * 0.01;
+  $amount_due = $amount - $fees;
   
-    $fees = $amount * 0.01;
-    $amount_due = $amount - $fees;
-  
-      $c_balance->amount(
-      $c_balance->amount() + ( $amount_due / 100 )
-    );
-    $c_balance->update();
+  $c_balance->amount(
+    $c_balance->amount() + ( $amount_due / 100 )
+  );
+  $c_balance->update();
 
   my $u_balance = $c->stash->{bet}->user->balances->search({currency_serial => $bet->currency_serial})->first;
-   if (! $u_balance) {
-    $u_balance = $c->stash->{bet}->user->balances->find_or_create({ currency_serial => $bet->currency_serial });
-    $u_balance->amount(0);
-    $u_balance->update();
-  }
 
-    $fees = $amount * 0.01;
-    $amount_due = $amount - $fees;
+  $fees = $amount * 0.01;
+  $amount_due = $amount - $fees;
 
-    $u_balance->amount(
-      $u_balance->amount() + ( $amount_due / 100 )
-    );
-    $u_balance->update();
+  $u_balance->amount(
+    $u_balance->amount() + ( $amount_due / 100 )
+  );
+  $u_balance->update();
 
   }elsif( $bet->type == 1 ){ 
    foreach $userbet($bet->userbets) { 

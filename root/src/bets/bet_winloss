@@ -1,0 +1,9 @@
+<div style="float:left;" align="center">
+<b>Total Wins</b><br />
+<span style="color:green; font-size:large;">[% c.user.bet_wins %]</span> mc
+</div>
+<div style="float:left; margin-left: 35px;" align="center">
+<b>Total Loses</b><br />
+<span style="color:red; font-size:large;">[% c.user.bet_losses %]</span> mc
+</div>
+<div style="clear:both;"></div>

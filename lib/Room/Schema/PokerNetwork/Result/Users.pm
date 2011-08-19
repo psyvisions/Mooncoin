@@ -205,6 +205,48 @@ sub get_namecoin_deposit_address {
 
   return $self->data->namecoin_address;
 }
+  #active 2 means side 1 won, active 3 means side 2 won
+sub bet_wins {
+  my ($self) = @_;
+  my $rs = $self->userbets->search({ 
+  side => 1,
+  'bet.active' => 2,
+  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
+;
+  my $row_one = $rs->first;
+  my $total_p1 = $row_one->get_column('total_amount');
+  
+  $rs = $self->userbets->search({ 
+  side => 2,
+  'bet.active' => 3,
+  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
+;
+  $row_one = $rs->first;
+  my $total_p2 = $row_one->get_column('total_amount');
+  
+  return $total_p1 + $total_p2;
+}
+
+sub bet_losses {
+  my ($self) = @_;
+  my $rs = $self->userbets->search({ 
+  side => 2,
+  'bet.active' => 2,
+  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
+;
+  my $row_one = $rs->first;
+  my $total_p1 = $row_one->get_column('total_amount');
+  
+  $rs = $self->userbets->search({ 
+  side => 1,
+  'bet.active' => 3,
+  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
+;
+  $row_one = $rs->first;
+  my $total_p2 = $row_one->get_column('total_amount');
+  
+  return $total_p1 + $total_p2;
+}
 
 =head1 AUTHOR
 
