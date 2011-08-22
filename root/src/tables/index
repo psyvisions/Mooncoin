@@ -1,5 +1,8 @@
 [% META title = 'Tables list' %]
 [% PROCESS tables/tables_submenu %]
+<div style="clear:both;"></div>
+[% IF coin == 3 %][% PROCESS tables/slc_submenu %][% END %]
+
 <div class="tables-list-wrapper">
   <div class="tables-categories">
     <div class="active popular-tables">
@@ -46,12 +49,12 @@
 
     <div class="tables-notice">
       <p>
-      <h3>Please note</h3> <p>All bets are in Chips. I.e. 1/2 table have 0.01 BTC small blind and 0.02 BTC big blind.</p>
+      <h3>Please note</h3> <p>All bets are in Chips. I.e. 1/2 table have 0.01 [% symbol %] small blind and 0.02 [% symbol %] big blind.</p>
       </p>
     </div>
     <div class="tables-list-wrapper">
       <div class="tables-list" id="popular-tables">
-        <h2>Popular Bitcoin Tables</h2>
+        <h2>Popular [% SWITCH coin %][% CASE 1 %]Bitcoin[% CASE 2 %]Namecoin[% CASE 3 %]Solidcoin[% END %] Tables</h2>
         <table id="hor-minimalist-b" style="width: auto;">
           <thead>
           <tr>
@@ -70,7 +73,7 @@
           <tr>
             <td><a class="popup-window" rel="table" href="[% c.uri_for('/table/' _ table.serial _ '/view') %]">[% table.name %]</a></td>
             <td>[% table.variant %]</td>
-            <td>btc</td>
+            <td>[% symbol | lower %]</td>
             <td>[% table.betting_structure %]</td>
             <td>[% table.players %]</td>
             <td>[% table.player_timeout %]</td>
@@ -103,7 +106,7 @@
           <tr>
             <td><a class="popup-window" rel="table" target="table_[% table.serial %]" href="/static/table.html?game_id=[% table.serial %]&auth=[% c.session.pokernetwork_auth %]&uid=[% c.user.serial %]">[% table.name %]</a></td>
             <td>[% table.variant %]</td>
-            <td>btc</td>
+            <td>[% symbol | lower %]</td>
             <td>[% table.betting_structure %]</td>
             <td>[% table.players %]</td>
             <td>[% table.player_timeout %]</td>

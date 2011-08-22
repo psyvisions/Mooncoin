@@ -36,6 +36,8 @@ sub index :Chained('base') :PathPart('') :Args(0) {
   my ($self, $c) = @_;
   #total in btc wallet
   $c->stash->{bitcoin_balance} = $c->model("BitcoinServer")->get_balance();
+ #total in slc wallet
+  $c->stash->{solidcoin_balance} = $c->model("SolidcoinServer")->get_balance();
   #total in accounts
   my $rs = $c->model("PokerNetwork::User2Money")->search(
             { currency_serial => 1 },
@@ -149,6 +151,26 @@ sub promote :Chained('user') :Args(0) {
 }
 
 sub demote :Chained('user') :Args(0) {
+  my ($self, $c) = @_;
+  my $user = $c->stash->{user};  
+  $user->privilege(1);
+  $user->update();
+  $c->res->redirect(
+    $c->uri_for('/admin/user/' . $user->serial )
+  );
+}
+
+sub freeze :Chained('user') :Args(0) {
+  my ($self, $c) = @_;
+  my $user = $c->stash->{user};  
+  $user->privilege(999);
+  $user->update();
+  $c->res->redirect(
+    $c->uri_for('/admin/user/' . $user->serial )
+  );
+}
+
+sub unfreeze :Chained('user') :Args(0) {
   my ($self, $c) = @_;
   my $user = $c->stash->{user};  
   $user->privilege(1);

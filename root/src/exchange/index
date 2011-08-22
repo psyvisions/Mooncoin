@@ -1,8 +1,10 @@
 [% META title = 'Exchange' %]
 [% PROCESS exchange/exchange_submenu %]
 <div style="clear:both;"></div>
-<h2>Bitcoin/Namecoin Exchange</h2>
-<p>Welcome, this exchange was designed to allow you to trade namecoins for bitcoins or bitcoins for namecoins. The exchange simply facilitates the trades for a very small fee ( 0.2 % ) from each side of the transaction.</p>
+<h2>Bitcoin/[% IF coin != 3 %]Namecoin[% ELSE %]Solidcoin[% END %] Exchange</h2>
+<p>[% IF coin != 3 %]Namecoin Exchange | <a href="/exchange/solidcoin">Solidcoin Exchange</a>[% ELSE %]<a href="/exchange">Namecoin Exchange</a> | Solidcoin Exchange[% END %]</p>
+
+<p>Welcome, this exchange was designed to allow you to trade [% IF coin != 3 %]namecoins[% ELSE %]solidcoins[% END %] for bitcoins or bitcoins for [% IF coin != 3 %]namecoins[% ELSE %]solidcoins[% END %]. The exchange simply facilitates the trades for a very small fee ( 0.2 % ) from each side of the transaction.</p>
 
 [% PROCESS exchange/exchange_lasttrade %]
 
@@ -14,14 +16,14 @@
       function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn('datetime', 'Date');
-        data.addColumn('number', 'BTC per NMC');
+        data.addColumn('number', 'BTC per [% symbol %]');
         data.addColumn('string', 'title1');
         data.addColumn('string', 'text1');
         data.addRows([
 
 [% WHILE (rt = rt_graph.next) %]
 
- [new Date([% rt.chart_time.year %], [% rt.chart_time.month - 1 %], [% rt.chart_time.day %], [% rt.chart_time.hour %], [% rt.chart_time.minute %] ), [% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price %][% CASE 2 %][% rt.price %][% END %] , undefined, undefined, ],
+ [new Date([% rt.chart_time.year %], [% rt.chart_time.month - 1 %], [% rt.chart_time.day %], [% rt.chart_time.hour %], [% rt.chart_time.minute %] ), [% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price %][% CASE 2 %][% rt.price %][% CASE 3 %][% 1 / rt.price %][% END %] , undefined, undefined, ],
 [% END %]  ]);
 
         var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
@@ -34,8 +36,8 @@
 <div style="float:left;">
 <table id="hor-minimalist-b">
 <thead>
-<tr><th colspan="4"><h2>Selling BTC (Buying NMC)</h2></th></tr>
-<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">Amount</th><th scope="col">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</span></th></tr>
+<tr><th colspan="4"><h2>Selling BTC (Buying [% symbol %])</h2></th></tr>
+<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">Amount</th><th scope="col">Price Each<br /><span style="font-size: 10px;">(BTC per [% symbol %])</span></th></tr>
 </thead>
 <tbody>
 [% WHILE (bnmc = buy_nmc.next) %]
@@ -54,14 +56,14 @@
 <div style="float:left;">
 <table id="hor-minimalist-b">
 <thead>
-<tr><th colspan="3"><h2>Selling NMC (Buying BTC)</h2></th></tr>
-<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">Amount</th><th scope="col">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</span></th></tr>
+<tr><th colspan="3"><h2>Selling [% symbol %] (Buying BTC)</h2></th></tr>
+<tr style="text-align:center;"><th scope="col">Selling</th><th scope="col">Amount</th><th scope="col">Price Each<br /><span style="font-size: 10px;">(BTC per [% symbol %])</span></th></tr>
 </thead>
 <tbody>
 [% WHILE (snmc = sell_nmc.next) %]
 <tr>
-<td>NMC</td>
-<td>[% snmc.amount %] NMC</td>
+<td>[% symbol %]</td>
+<td>[% snmc.amount %] [% symbol %]</td>
 <td>[% snmc.price %]
 </td>
 </tr>
@@ -74,14 +76,14 @@
 <table id="hor-minimalist-b">
 <thead>
 <tr><th colspan="3"><h2>Recent Transactions</h2></th></tr>
-<tr style="text-align:center;"><th scope="col">Date</th><th scope="col">Amount Bought</th><th scope="col" width="65%">Price Each<br /><span style="font-size: 10px;">(BTC per NMC)</span></th></tr>
+<tr style="text-align:center;"><th scope="col">Date</th><th scope="col">Amount Bought</th><th scope="col" width="65%">Price Each<br /><span style="font-size: 10px;">(BTC per [% symbol %])</span></th></tr>
 </thead>
 <tbody>
 [% WHILE (rt = recent_trades.next) %]
 <tr>
 <td width="5%" style="width: 50px;">[% rt.processed_at %]</td>
-<td>[% rt.amount %] [% SWITCH rt.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% END %]</td>
-<td>[% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price | format('%.8f') %][% CASE 2 %][% rt.price | format('%.8f') %][% END %]
+<td>[% rt.amount %] [% SWITCH rt.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</td>
+<td>[% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price | format('%.8f') %][% CASE 2 %][% rt.price | format('%.8f') %][% CASE 3 %][% 1 / rt.price | format('%.8f') %][% END %]
 </td>
 </tr>
 [% END %]

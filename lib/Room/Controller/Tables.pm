@@ -24,11 +24,23 @@ Show list of all existing tables.
 
 =cut
 
-sub index_nmc :Path('namecoin') :Args(0) {
-    my ( $self, $c ) = @_;
-
+sub index :Path :Args(1) {
+    my ( $self, $c, $coin ) = @_;
+	
+	if($coin eq 'bitcoin'){
+	$c->stash->{coin} = 1;
+	$c->stash->{symbol} = 'BTC';
+	}elsif($coin eq 'namecoin'){
+	$c->stash->{coin} = 2;
+	$c->stash->{symbol} = 'NMC';
+	}elsif($coin eq 'solidcoin'){
+	$c->stash->{coin} = 3;
+	$c->stash->{symbol} = 'SLC';
+	}
+	my $hold = $c->stash->{coin};
+	
     my $tables_rs = $c->model("PokerNetwork::Pokertables")->search({
-                                currency_serial => 2,
+                                currency_serial => $hold,
                                 tourney_serial => 0,
                           },
                           {
@@ -73,58 +85,6 @@ sub index_nmc :Path('namecoin') :Args(0) {
     $c->stash->{tables_structure} = $tables_structure;
     $c->stash->{popular_tables} = \@popular_tables;
 }
-
-
-sub index_btc :Path('bitcoin') :Args(0) {
-    my ( $self, $c ) = @_;
-
-    my $tables_rs = $c->model("PokerNetwork::Pokertables")->search({
-                                currency_serial => 1,
-                                tourney_serial => 0,
-                          },
-                          {
-                                order_by => {
-                                  -desc => 'players',
-                                },
-                          });
-
-    my $tables_structure;
-    my $tables;
-    my @popular_tables;
-
-
-    while (my $rec = $tables_rs->next()) {
-      my $game_seats = ($rec->seats > 2) ? $rec->seats .'-max' : 'Heads Up';
-      my $game_limit = 'Limit';
-      my $game_bets;
-
-      # Determine betting limits
-      $game_limit = 'No Limit' if $rec->betting_structure =~ /-no-limit$/;
-      $game_limit = 'Pot Limit' if $rec->betting_structure =~ /-pot-limit$/;
-
-      # Determine bets
-      my @bets = split '-', $rec->betting_structure;
-      $game_bets = $bets[0] .'/'. $bets[1];
-
-      my $game_id = lc($game_seats .'-'. $rec->betting_structure .'-'. $rec->variant);
-      $game_id =~ s/\s/-/g;
-      $game_id =~ s/\./_/g;
-
-      my $game_variant = $rec->variant;
-
-      $tables_structure->{$game_variant}->{$game_seats}->{$game_limit}->{$game_bets}->{hash} = $game_id;
-      $tables_structure->{$game_variant}->{$game_seats}->{$game_limit}->{$game_bets}->{players} += $rec->players;
-
-      $tables->{$game_id}->{name} = $game_limit .' '. $game_seats .' Game ('. $game_bets .')';
-      push @{$tables->{$game_id}->{tables}}, $rec;
-      push @popular_tables, $rec unless $#popular_tables > 10;
-    }
-
-    $c->stash->{tables} = $tables;
-    $c->stash->{tables_structure} = $tables_structure;
-    $c->stash->{popular_tables} = \@popular_tables;
-}
-
 
 =head2 my 
 

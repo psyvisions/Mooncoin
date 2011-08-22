@@ -24,43 +24,58 @@ Catalyst Controller.
 
 =cut
 
-sub index :Path {
-  my ( $self, $c) = @_;
-
+sub index :Path CaptureArgs(1){
+  my ( $self, $c, $coin) = @_;
+  my $bitcoin = 1;
+  my $other = 2;
+  $c->stash->{coin} = 2;
+  $c->stash->{symbol} = 'NMC';
+  if($coin eq 'solidcoin'){
+  $other = 3;
+  $c->stash->{coin} = 3;
+  $c->stash->{symbol} = 'SLC';
+  }
+  
   $c->stash->{buy_nmc} = $c->model("PokerNetwork::Trades")->search({
-  status => 1, buy_currency => 2, sell_currency => 1,
+  status => 1, 
+  -and => [{buy_currency => $other},{sell_currency => $bitcoin}],
   }, { order_by => { -asc => 'price' } });
   
   $c->stash->{sell_nmc} = $c->model("PokerNetwork::Trades")->search({
-  status => 1, buy_currency => 1, sell_currency => 2,
+  status => 1, 
+  -and => [{buy_currency => $bitcoin},{sell_currency => $other}],
   }, {  order_by => { -asc => 'price' } });
   
   $c->stash->{recent_trades} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
+  -or => [{buy_currency => $other},{sell_currency => $other}],
   }, {  order_by => { -desc => 'processed_at' }});
   
   $c->stash->{last_trade} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
+  -or => [{buy_currency => $other},{sell_currency => $other}],
   }, { order_by => { -desc => 'processed_at' }})->first;  
   
   $c->stash->{rt_graph} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
+  -or => [{buy_currency => $other},{sell_currency => $other}],
   }, { order_by => { -desc => 'processed_at'}});
 
   $c->stash->{ask_buy} = $c->model("PokerNetwork::Trades")->search({
-  status => 1, sell_currency =>  1,
+  status => 1,
+  -and => [{buy_currency => $other},{sell_currency => $bitcoin}],
   }, { order_by => { -asc => 'price' }})->first;   
   
   $c->stash->{ask_sell} = $c->model("PokerNetwork::Trades")->search({
   status => 1,
-  sell_currency =>  2,
+  -and => [{buy_currency => $bitcoin},{sell_currency => $other}],
   }, { order_by => { -asc => 'price' }})->first;  
   
   # Get the value of everything bought in the last 24 hours in btc
   $c->stash->{btc_hold} = $c->model("PokerNetwork::Trades")->search({ 
   processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 24 DAY)' },
   status => 0,
-  sell_currency =>  1,
+  -and => [{buy_currency => $other},{sell_currency => $bitcoin}],
   }, {'+select' => [{ SUM => ('amount') }],'+as' => [qw/total_amount/], });
   my $row_one = $c->stash->{btc_hold}->first;
   $c->stash->{btc_total} = $row_one->get_column('total_amount');
@@ -68,7 +83,7 @@ sub index :Path {
   $c->stash->{btc_nmc_hold} = $c->model("PokerNetwork::Trades")->search({ 
   created_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
   status => 0,
-  sell_currency =>  2,
+  -and => [{buy_currency => $bitcoin},{sell_currency => $other}],
   }, {'+select' => [{ SUM => 'amount * price' }],'+as' => [qw/total_amount/], });
   my $row_two = $c->stash->{btc_nmc_hold}->first;
   $c->stash->{btc_nmc_total} = $row_two->get_column('total_amount');
@@ -79,7 +94,7 @@ sub index :Path {
   $c->stash->{nmc_btc_hold} = $c->model("PokerNetwork::Trades")->search({ 
   processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 24 DAY)' },
   status => 0,
-  sell_currency =>  1,
+  -and => [{buy_currency => $other},{sell_currency => $bitcoin}],
   }, {'+select' => [{ SUM => ('amount * price') }],'+as' => [qw/total_amount/], });
   my $row_three = $c->stash->{nmc_btc_hold}->first;
   $c->stash->{nmc_btc_total} = $row_three->get_column('total_amount');
@@ -87,21 +102,24 @@ sub index :Path {
   $c->stash->{nmc_hold} = $c->model("PokerNetwork::Trades")->search({ 
   created_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
   status => 0,
-  sell_currency =>  2,
+  -and => [{buy_currency => $bitcoin},{sell_currency => $other}],
   }, {'+select' => [{ SUM => 'amount * price' }],'+as' => [qw/total_amount/], });
   my $row_four = $c->stash->{nmc_hold}->first;
   $c->stash->{nmc_total} = $row_four->get_column('total_amount');
 
   $c->stash->{nmc_7dvolume} = $c->stash->{nmc_total} + $c->stash->{nmc_btc_total};
   my $nmc7d = $c->stash->{nmc_7dvolume};  
+  
   ##high low avg
   $c->stash->{btc_last24} = $c->model("PokerNetwork::Trades")->search({
-  status => 0, sell_currency =>  1,
+  status => 0, 
+  -and => [{buy_currency => $other},{sell_currency => $bitcoin}],
   processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
   }, { order_by => { -desc => 'processed_at'} })->get_column(' 1 / price');
   
   $c->stash->{nmc_last24} = $c->model("PokerNetwork::Trades")->search({
-  status => 0, sell_currency =>  2,
+  status => 0, 
+  -and => [{buy_currency => $bitcoin},{sell_currency => $other}],
   processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
   }, { order_by => { -desc => 'processed_at' } })->get_column('price');
 
@@ -120,11 +138,13 @@ sub index :Path {
   }else{$c->stash->{low} = $nmc7dmin;}
    
    my $nmc7davg = $c->model("PokerNetwork::Trades")->search({
-  status => 0, sell_currency =>  2,
+  status => 0, 
+  -and => [{buy_currency => $bitcoin},{sell_currency => $other}],
   processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
   }, { order_by => { -desc => 'processed_at' } })->count;
   my $btc7davg = $c->model("PokerNetwork::Trades")->search({
-  status => 0, sell_currency =>  1,
+  status => 0, 
+  -and => [{buy_currency => $other},{sell_currency => $bitcoin}],
   processed_at => { '>=' => \'DATE_SUB(CURDATE(),INTERVAL 7 DAY)' },
   }, { order_by => { -desc => 'processed_at' } })->count;  
   
@@ -133,11 +153,14 @@ sub index :Path {
   }
 }
 
-
-
-
-sub history :Path('history') {
-  my ( $self, $c) = @_;
+sub history :Path('history') CaptureArgs(1){
+  my ( $self, $c, $coin) = @_;
+  $c->stash->{coin} = 2;
+  $c->stash->{symbol} = 'NMC';
+  if($coin eq 'solidcoin'){
+  $c->stash->{coin} = 3;
+  $c->stash->{symbol} = 'SLC';
+  }
 
   $c->stash->{history} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
@@ -149,9 +172,14 @@ sub history :Path('history') {
   });
 }
 
-sub orders :Path('orders') {
-  my ( $self, $c) = @_;
-
+sub orders :Path('orders') CaptureArgs(1){
+  my ( $self, $c, $coin) = @_;
+  $c->stash->{coin} = 2;
+  $c->stash->{symbol} = 'NMC';
+  if($coin eq 'solidcoin'){
+  $c->stash->{coin} = 3;
+  $c->stash->{symbol} = 'SLC';
+  }
   $c->stash->{orders} = $c->model("PokerNetwork::Trades")->search({
   status => 1,
   user_serial => $c->user->serial,
@@ -163,38 +191,55 @@ sub orders :Path('orders') {
 }
 
 sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
-  my ($self, $c, $id) = @_;
-  my $trade = $c->model('PokerNetwork::Trades')->find($id);
+  my ($self, $c, $coin) = @_;
+  my $other = 2;
+  $c->stash->{coin} = 2;
+  $c->stash->{symbol} = 'NMC';
+  if($coin eq 'solidcoin'){
+  $other = 3;
+  $c->stash->{coin} = 3;
+  $c->stash->{symbol} = 'SLC';
+  my $slc_balance = $c->user->balances->search({currency_serial => 3})->first;
+
+  if (! $slc_balance) {
+    $slc_balance = $c->user->balances->find_or_create({ currency_serial => 3 });
+    $slc_balance->amount(0);
+    $slc_balance->update();
+  }
+  }
+  my @options;
+  if($coin eq undef){
+   push (@options, ['1', 'Bitcoin']);
+   push (@options, ['2', 'Namecoin']);
+  }elsif($coin eq 'solidcoin'){
+  $c->stash->{bcur} = 3;
+   push (@options, ['1', 'Bitcoin']);
+   push (@options, ['3', 'Solidcoin']);
+  }
+
   my $form = $c->stash->{form};
- 
+   
+  $form->get_field({name => 'trade_buy'})->options(\@options);
+  $form->get_field({name => 'trade_sell'})->options(\@options);
+  
   $c->stash->{recent_trades} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
-  }, { 
-      order_by => { 
-        -desc => 'processed_at' 
-      } 
-  });
-
-  $c->stash->{last_trade} = $c->stash->{recent_trades}->first;
- 
-  #form values
-  my $sell_currency = $form->params->{trade_sell};
-  my $buy_currency = $form->params->{trade_buy};  
-  my $amount = $form->params->{trade_amount};
-  my $price = $form->params->{trade_price};
-    if($sell_currency == 1 and $price != undef){
-  $price = ( 1 / $price);
-  }
-
- 
-  if ( $trade == undef ) {
-   $c->stash( error_msg => "This item does not exist" );
-  } else {
-   $c->stash( trade => $trade );
-  }
-
-  if ($form->submitted_and_valid and $sell_currency != $buy_currency and $price != 0) {
+  -or => [{buy_currency => $other},{sell_currency => $other}],
+  }, {  order_by => { -desc => 'processed_at' }});
   
+  $c->stash->{last_trade} = $c->model("PokerNetwork::Trades")->search({
+  status => 0,
+  -or => [{buy_currency => $other},{sell_currency => $other}],
+  }, { order_by => { -desc => 'processed_at' }})->first;  
+  
+  my $sell_currency = $form->params->{trade_sell};
+  my $buy_currency = $form->params->{trade_buy};
+  my $price = $form->params->{trade_price};
+  if ($form->submitted_and_valid and $sell_currency != $buy_currency and $price != 0) {
+  #form values
+
+  my $amount = $form->params->{trade_amount};
+
   my $balance = $c->user->balances->search({currency_serial => $sell_currency})->first;
 
   if (! $balance) {
@@ -205,8 +250,6 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
   
    $c->stash->{balance} = $balance;
    $c->stash->{current_balance} = $balance->amount;
-  
-  
   
     if ($balance->amount < $amount || $amount < 0.01 )  {
       $form->get_field("trade_amount")->get_constraint({ type => "Callback" })->force_errors(1);
@@ -219,7 +262,7 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
     );
     $balance->update();
 
-   # Create report
+   # Create Trade
    my $create = $c->model('PokerNetwork::Trades')->create({
       created_at => DateTime->now( time_zone => 'local' ),
       user_serial => $c->user->serial,
@@ -237,7 +280,7 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
   
       my $orders = $c->model('PokerNetwork::Trades')->search({
       status => 1,
-      buy_currency => $create->sell_currency,
+      -and => [{buy_currency => $create->sell_currency},{sell_currency => $create->buy_currency}],
       price => { '<=', => $invert_price},
       }, {  order_by => {  -asc => 'price' } });
 	
@@ -252,7 +295,7 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
 	 while( $orders->first != undef and $create->balance != 0 ){
 	  $order = $c->model('PokerNetwork::Trades')->search({
       status => 1,
-      buy_currency => $create->sell_currency,
+      -and => [{buy_currency => $create->sell_currency},{sell_currency => $create->buy_currency}],
       price => { '<=', => $invert_price},
       }, {  order_by => {  -asc => 'price' } })->first;
 	    my $balance_bought = ($create->balance * ( 1 / $order->price)); #Figure how much is being taken out of the prospect order
@@ -383,9 +426,11 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
 	## End processing ##
 
     push @{$c->flash->{messages}}, "You have posted an order.";
-    $c->res->redirect($c->uri_for('/exchange/orders'));
+    if($coin eq 'solidcoin'){
+    $c->res->redirect($c->uri_for('/exchange/orders/solidcoin'));
+    }else{
+    $c->res->redirect($c->uri_for('/exchange/orders'));}
   };   
- 
 }
 
 sub base :Chained('/') PathPart('exchange/order') CaptureArgs(1) {
@@ -409,6 +454,10 @@ sub cancel :Chained('base') :PathPart('cancel') :Args(0) {
     );
      }else{
   #return balance
+  my $coin;
+  if($order->buy_currency == 3 or $order->sell_currency == 3){
+    $coin = 3;
+  }
   if($order->status == 1){
    	my $update_balance = $order->user->balances->search({currency_serial => $order->sell_currency})->first;
 	$c->stash->{balance} = $update_balance;
@@ -418,12 +467,14 @@ sub cancel :Chained('base') :PathPart('cancel') :Args(0) {
      $update_balance->amount() + $order->balance
     );   
     $update_balance->update();
+
     $order->delete;
  
     push @{$c->flash->{messages}}, "The order has been cancelled and the remaining balance returned.";
-    $c->res->redirect(
-      $c->uri_for('/exchange/orders')
-    );
+ if($coin == 3){
+    $c->res->redirect($c->uri_for('/exchange/orders/solidcoin'));
+    }else{
+    $c->res->redirect($c->uri_for('/exchange/orders'));}
    }
   }
 }

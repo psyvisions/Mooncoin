@@ -1,0 +1,35 @@
+---
+indicator: submit
+auto_fieldset: 1
+
+elements:
+  - type: Text
+    name: solidcoin_address
+    label: Solidcoin address
+    constraints:
+      - Required
+      - type: Equal
+        others: solidcoin_address_2
+
+  - type: Text
+    name: solidcoin_address_2
+    label: Solidcoin address (repeat)
+    constraints:
+      - Required
+
+  - type: Text
+    name: amount
+    label: Amount
+    comment: Enter amount in SLC (not Mooncoins/Chips). Minimum withdrawal amount - 0.01 SLC. (You pay a 0.1 the 0.1 transfer fee.)
+    constraints:
+      - Required
+      - Number
+      - type: Callback
+        message: Incorrect value.
+
+  - type: Submit
+    value: Withdraw
+    name: submit
+
+constraints:
+  - SingleValue

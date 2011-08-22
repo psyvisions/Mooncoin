@@ -131,7 +131,7 @@ __PACKAGE__->inflate_column(
 );
 
 __PACKAGE__->add_json_columns(
-  data => qw/bitcoin_address bitcoins_received namecoin_address namecoins_received request_password hide_gravatar emergency_address emergency_nmc_address/,
+  data => qw/bitcoin_address bitcoins_received namecoin_address namecoins_received solidcoin_address solidcoins_received request_password hide_gravatar emergency_address emergency_nmc_address/,
 );
 
 __PACKAGE__->has_many(
@@ -205,6 +205,17 @@ sub get_namecoin_deposit_address {
 
   return $self->data->namecoin_address;
 }
+
+sub get_solidcoin_deposit_address {
+  my ($self) = @_;
+
+  if (! $self->data->solidcoin_address) {
+    
+  }
+
+  return $self->data->solidcoin_address;
+}
+
   #active 2 means side 1 won, active 3 means side 2 won
 sub bet_wins_btc {
   my ($self) = @_;

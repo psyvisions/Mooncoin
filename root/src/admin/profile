@@ -10,6 +10,11 @@
     [% ELSIF user.privilege == 3 %]
     <li><a  class="confirm" href="[% c.uri_for('/admin/user/' _ user.serial _ '/demote') %]">Demote Abitrator</a></li>
     [% END %]
+    [% IF user.privilege != 999 %]
+    <li><a  class="confirm" href="[% c.uri_for('/admin/user/' _ user.serial _ '/freeze') %]">Freeze Account</a></li>
+    [% ELSIF user.privilege == 999 %]
+    <li><a  class="confirm" href="[% c.uri_for('/admin/user/' _ user.serial _ '/unfreeze') %]">Unfreeze Account</a></li>
+    [% END %]
   </ul>
 </div>
 
@@ -18,7 +23,7 @@
     <h2 class="account-info">Account info:</h2>
     <ul>
       <li><strong>Username:</strong> [% user.name  | html %]</li>
-      <li><strong>Role:</strong> [% SWITCH user.privilege %][% CASE 1 %]User[% CASE 2 %]Administrator[% CASE 3 %]Arbitrator[% END %]</li>
+      <li><strong>Role:</strong> [% SWITCH user.privilege %][% CASE 1 %]User[% CASE 2 %]Administrator[% CASE 3 %]Arbitrator[% CASE 999 %]<span style="color:red;">Frozen</span>[% END %]</li>
       <li><strong>Email:</strong> [% user.email  | html %]</li>
       <li><strong>Deposit bitcoin address:</strong> [% user.bitcoin_address  | html %]</li>
       <li><strong>Deposit namecoin address:</strong> [% user.namecoin_address  | html %]</li>

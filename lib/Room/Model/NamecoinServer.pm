@@ -3,7 +3,7 @@ package Room::Model::NamecoinServer;
 use strict;
 use warnings;
 
-use base qw/ Catalyst::Model::Namecoin /;
+use base qw/ Catalyst::Model::Bitcoin /;
 
 =head1 NAME
 

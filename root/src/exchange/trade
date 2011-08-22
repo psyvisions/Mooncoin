@@ -8,31 +8,31 @@
 $(document).ready(function(){
 
   [% IF last_trade != undef %]
-  var price = [% 1 / last_trade.price %].toFixed(6);
+  var price = 1 / [% last_trade.price %];
   [% SWITCH last_trade.sell_currency %]
   [% CASE 1 %]
   $("#price_form").val(price);
   $("#price").html(price);
   $("#price_other").html(price);
-  [% CASE 2 %]
+  [% CASE coin %]
   $("#price_form").val([% last_trade.price %]);
   $("#price").html([% last_trade.price %]);
-  $("#price_other").html([% last_trade.price %]);  
+  $("#price_other").html([% last_trade.price %]);    
   [% END %]
   
   [% END %]
   $("#buy_currency").html('&nbsp;'+'BTC');
-  $("#buy_currency_other").html('&nbsp;'+'NMC'+'&nbsp;'+'ea.'+'&nbsp;'+'BTC');
+  $("#buy_currency_other").html('&nbsp;'+'[% symbol %]'+'&nbsp;'+'ea.'+'&nbsp;'+'BTC');
   $("select[name=trade_sell]").change(function(){
   var sCurr =parseInt($(this).val());
   if(sCurr == 1){
   $("#sell_currency").html('&nbsp;'+'BTC');
-  $("select[name=trade_buy]").val(2) 
-  $("#buy_currency_total").html('&nbsp;'+'NMC');
-  $("#fee_currency").html('&nbsp;'+'NMC');
+  $("select[name=trade_buy]").val([% coin %]) 
+  $("#buy_currency_total").html('&nbsp;'+'[% symbol %]');
+  $("#fee_currency").html('&nbsp;'+'[% symbol %]');
   }
-  if(sCurr == 2){
-  $("#sell_currency").html('&nbsp;'+'NMC');
+  if(sCurr == [% coin %]){
+  $("#sell_currency").html('&nbsp;'+'[% symbol %]');
   $("select[name=trade_buy]").val(1)
   $("#buy_currency_total").html('&nbsp;'+'BTC');
   $("#fee_currency").html('&nbsp;'+'BTC');
@@ -47,12 +47,12 @@ $(document).ready(function(){
   if(sCurr == 1){
   $("#buy_currency_total").html('&nbsp;'+'BTC');
   $("#fee_currency").html('&nbsp;'+'BTC');
-  $("select[name=trade_sell]").val(2)
-  $("#sell_currency").html('&nbsp;'+'NMC');
+  $("select[name=trade_sell]").val([% coin %])
+  $("#sell_currency").html('&nbsp;'+'[% symbol %]');
   }
-  if(sCurr == 2){
-  $("#buy_currency_total").html('&nbsp;'+'NMC');
-  $("#fee_currency").html('&nbsp;'+'NMC');
+  if(sCurr == [% coin %]){
+  $("#buy_currency_total").html('&nbsp;'+'[% symbol %]');
+  $("#fee_currency").html('&nbsp;'+'[% symbol %]');
   $("select[name=trade_sell]").val(1)
   $("#sell_currency").html('&nbsp;'+'BTC');
   }
@@ -126,25 +126,18 @@ function updateTotals(){
 
 <div style="width: 550px ; float: left; margin-left: 55px; ">
 
-[% IF last_trade != undef %]
-<div style="float:left; width:200;">
-<h3>Last Trade</h3> <p>
-
-[% SWITCH last_trade.sell_currency %]
-[% CASE 1 %]
-[% 1 / last_trade.price  | format('%.6f') %] <span style="font-size:12px;color:#1B587B;">BTC</span> ea. <span style="font-size:12px;color:#1B587B;">NMC</span>
-[% CASE 2 %]
-[% last_trade.price  | format('%.6f') %] <span style="font-size:12px;color:#1B587B;">BTC</span> ea. <span style="font-size:12px;color:#1B587B;">NMC</span>
-[% END %] 
-</p></div></span>
-[% END %]
+<div style="float:left; width: 175px;">
+<h3>Last Trade</h3> [% IF last_trade != undef %]
+<p>[% last_trade.price  | format('%.6f') %] <span style="font-size:12px;color:#1B587B;">[% SWITCH last_trade.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</span> ea. <span style="font-size:12px;color:#1B587B;">[% SWITCH last_trade.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</span></p>
+<p>[% ( 1 / last_trade.price)  | format('%.6f') %] </span><span style="font-size:12px;color:#1B587B;">[% SWITCH last_trade.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</span> ea. <span style="font-size:12px;color:#1B587B;">[% SWITCH last_trade.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</p>
+[% END %]</div>
 
 <div style="float:left; width:350;">
 [% IF c.user.balances %]
 
 <h3>Your balance</h3>
   [% FOR balance IN c.user.balances %]
-     <p>[% balance.amount * 100 | format('%.2f') %] Chips ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])
+     <p>[% IF balance.currency_serial != 3 %][% balance.amount * 100 | format('%.2f') %] Chips ([% END %][% balance.amount | format('%.2f') %] [% balance.currency.symbol %][% IF balance.currency_serial != 3 %])[% END %]
        <span><a href="/user/deposit/[% balance.currency.name %]">(Deposit)</a></span></p>
   [% END %]
 [% END %]

@@ -16,6 +16,6 @@
   <strong>Available amount to withdraw:</strong> [% current_balance %] BTC ([% current_balance * 100 | format('%.2f') %] Chips)
 </p>
 
-<p><i>Please note, larger amounts may require additional <strong>24 hours</strong> processing time. You will be notified if your withdrawal not processed immediately and require additional processing time.</i></p>
+<p><i>Please note, larger amounts may require additional <strong>24 hours</strong> processing time. You will be notified if your withdrawal not processed immediately and require additional processing time. Additionally can not withdraw more then two decimal places (Ex. 0.00)  from this form at this time, sorry for the inconvenience.</i></p>
 
 [% form %]

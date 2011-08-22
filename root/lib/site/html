@@ -8,14 +8,16 @@
   [% ELSE %]
   <link rel="stylesheet" href="[% c.config.css %]" type="text/css" />
   [% END %]
-
+  <link rel="stylesheet" type="text/css" href="/static/jquery/ui.1.8/themes/smoothness/jquery.ui.all.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/anytimec.css" />
+  
   <script src="/static/jquery/jquery-1.5.2.min.js"></script>
   <script src="/static/js/jquery.popupwindow.js"></script>
+  <link rel="stylesheet" href="/static/js/jquery.wysiwyg.css" type="text/css" />
   <script src="/static/script.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="/static/jquery/ui.1.8/themes/smoothness/jquery.ui.all.css">
-<link rel="stylesheet" type="text/css" href="/static/css/anytimec.css" />
-<script type="text/javascript" src="/static/js/anytimec.js"></script>
+
+  <script type="text/javascript" src="/static/js/anytimec.js"></script>
   <script language="JavaScript" type="text/javascript" src="/static/jquery/ui.1.8/ui/jquery-ui-1.8.4.custom.js"></script>
   
   <script language="JavaScript" type="text/javascript" src="/static/js/jquery.ajaxretry.js?a"></script>
@@ -31,7 +33,7 @@
   <script language="JavaScript" type="text/javascript" src="/static/js/mockup.js"></script>
   <script language="JavaScript" type="text/javascript" src="/static/js/bproom.js"></script>
 <script type="text/javascript" src="/static/js/jquery.wysiwyg.js"></script>
-<link rel="stylesheet" href="/static/js/jquery.wysiwyg.css" type="text/css" />
+
 <script type="text/javascript">
 $(function() {
     $('#wysiwyg').wysiwyg({

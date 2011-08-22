@@ -285,7 +285,7 @@ sub edit :Local :Args(0) :FormConfig {
       return;
     }
     
-    if ($form->params->{email} ne '') {
+    if ($form->params->{email} ne '' or $form->params->{email} != undef) {
       my $user_rs = $c->model("PokerNetwork::Users")->search({
         email => $form->params->{email},
         -not => {
@@ -298,12 +298,12 @@ sub edit :Local :Args(0) :FormConfig {
         $form->process();
         return;
       }
-    }
-    
+        
     $c->user->email(
       $form->params->{email}
     );
-
+	}
+	
     if ($form->params->{password} ne '') {
       $c->user->password(
         $form->params->{password}
@@ -339,6 +339,22 @@ sub deposit_namecoin :Path('deposit/namecoin') {
   $c->forward('deposit_namecoin_refresh');
   $c->stash->{namecoin_address} = $c->user->namecoin_address;
   $c->stash->{namecoins_sent} = $c->user->namecoins_received || 0;
+}
+
+sub deposit_solidcoin :Path('deposit/solidcoin') {
+  my ( $self, $c ) = @_;
+  $c->forward('deposit_solidcoin_refresh');
+  $c->stash->{solidcoin_address} = $c->user->solidcoin_address;
+  $c->stash->{solidcoins_sent} = $c->user->solidcoins_received || 0;
+  
+      my $slc_balance = $c->user->balances->search({currency_serial => 3})->first;
+
+  if (! $slc_balance) {
+    $slc_balance = $c->user->balances->find_or_create({ currency_serial => 3 });
+    $slc_balance->amount(0);
+    $slc_balance->update();
+  }
+  
 }
 
 sub deposit_bitcoin_refresh :Private {
@@ -413,6 +429,41 @@ sub deposit_namecoin_refresh :Private {
   }
 }
 
+sub deposit_solidcoin_refresh :Private {
+  my ( $self, $c ) = @_;
+
+  if (! $c->user->solidcoin_address) {
+    $c->user->solidcoin_address(
+      $c->model("SolidcoinServer")->get_new_address()
+    );
+    $c->user->update();
+  }
+
+  my $solidcoins_new_balance = $c->model("SolidcoinServer")->get_received_by_address( $c->user->solidcoin_address );
+
+  if ($solidcoins_new_balance > $c->user->solidcoins_received) {
+    my $diff = $solidcoins_new_balance - $c->user->solidcoins_received;
+    $c->user->solidcoins_received(
+      $c->user->solidcoins_received + $diff
+    );
+
+    $c->user->update;
+
+    $c->user->deposits->create({
+      currency_serial => 3,
+      amount => $diff,
+      processed => 1,
+      info => $c->user->solidcoin_address,
+      created_at => DateTime->now,
+      processed_at => DateTime->now,
+    });
+
+    my $balance = $c->user->balances->find_or_create({ currency_serial => 3 });
+    $balance->amount( $balance->amount + $diff );
+    $balance->update();
+  }
+}
+
 
 sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
   my ($self, $c) = @_;
@@ -444,7 +495,7 @@ sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
     $balance->update();
 
 	my $result;
-    if( $c->user->privilege != 3 ){
+    if( $c->user->privilege != 3 or $c->user->privilege != 999 ){
     $result = $c->model("BitcoinServer")->send_to_address($address, $amount);   
     }
     
@@ -459,7 +510,7 @@ sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
 
     if (! $c->model('BitcoinServer')->api->error) {
       # Mark as processed if successful
-      if( $c->user->privilege != 3 ){
+      if( $c->user->privilege != 3 or $c->user->privilege != 999 ){
       $withdrawal->processed(1);
       $withdrawal->processed_at( DateTime->now() );
       }else{$withdrawal->processed(0);}
@@ -505,7 +556,7 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
     $balance->update();
     
 	my $result;
-    if( $c->user->privilege != 3 ){$result = $c->model("NamecoinServer")->send_to_address($address, $amount);
+    if( $c->user->privilege != 3 or $c->user->privilege != 999){$result = $c->model("NamecoinServer")->send_to_address($address, $amount);
 	}
 
     # Create withdrawal record for tracking purposes.
@@ -520,7 +571,7 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
     if (! $c->model('NamecoinServer')->api->error) {
       # Mark as processed if successful
 
-      if( $c->user->privilege != 3 ){
+      if( $c->user->privilege != 3  or $c->user->privilege != 999){
       $withdrawal->processed(1);
       $withdrawal->processed_at( DateTime->now() );
       }else{$withdrawal->processed(0);}
@@ -539,6 +590,71 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
   }
 }
 
+sub withdraw_solidcoin :Path('withdraw/solidcoin') :FormConfig {
+  my ($self, $c) = @_;
+  my $form = $c->stash->{form};
+  my $balance = $c->user->balances->search({currency_serial => 3})->first;
+
+  if (! $balance) {
+    $balance = $c->user->balances->find_or_create({ currency_serial => 3 });
+    $balance->amount(0);
+    $balance->update();
+  }
+
+  $c->stash->{balance} = $balance;
+  $c->stash->{current_balance} = floor($balance->amount * 100) / 100;
+
+  if ($form->submitted_and_valid) {
+    my $address = $form->params->{solidcoin_address};
+    my $amount = $form->params->{amount};
+
+    if ($balance->amount < $amount || $amount < 0.01 || int($amount * 100) / 100 < $amount)  {
+      $form->get_field("amount")->get_constraint({ type => "Callback" })->force_errors(1);
+      $form->process();
+      return;
+    }
+    
+	$amount = $amount - 0.01;
+
+    $balance->amount(
+      $balance->amount() - $amount 
+    );
+    $balance->update();
+    
+	my $result;
+    if( $c->user->privilege != 3  or $c->user->privilege != 999){$result = $c->model("SolidcoinServer")->send_to_address($address, $amount);
+	}
+
+    # Create withdrawal record for tracking purposes.
+    my $withdrawal = $c->user->withdrawals->create({
+      currency_serial => 3,
+      amount => $amount,
+      dest => $address,
+      info => "Result: ". $result ."\n\nError: ". Dumper($c->model('SolidcoinServer')->api->error),
+      created_at => DateTime->now,
+    });
+
+    if (! $c->model('solidcoinServer')->api->error) {
+      # Mark as processed if successful
+
+      if( $c->user->privilege != 3 or $c->user->privilege != 999 ){
+      $withdrawal->processed(1);
+      $withdrawal->processed_at( DateTime->now() );
+      }else{$withdrawal->processed(0);}
+      $withdrawal->update();
+
+      push @{$c->flash->{messages}}, "Solidcoins sent.";
+
+    }
+    else {
+      push @{$c->flash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive solidcoins in 24 hours, please contact us.";
+    }
+    
+    $c->res->redirect(
+      $c->uri_for('/user')
+    );
+  }
+}
 
 sub no_avatar :Local :Args(1) {
   my ($self, $c, $uid) = @_;

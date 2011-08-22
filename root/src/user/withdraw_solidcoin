@@ -6,13 +6,13 @@
 [% PROCESS user/balance %]
 </div>
 
-<h2>Namecoin Withdraw</h2>
+<h2>Solidcoin Withdraw</h2>
 
-<p>You have the option to withdraw from either <a href="/user/withdraw/bitcoin">Bitcoins</a> or <a href="/user/withdraw/namecoin">Namecoins</a>.</p>
+<p>You have the option to withdraw from either <a href="/user/withdraw/bitcoin">Bitcoins</a> or <a href="/user/withdraw/solidcoin">Solidcoins</a>.</p>
 
-<p>It must be noted that Moonco.in is not an exchange, depositing NMC will only allow you withdraw NMC. Whereas depositing BTC will only allow you to withdraw BTC.</p>
+
 <p>
-  <strong>Available amount to withdraw:</strong> [% current_balance %] NMC ([% current_balance * 100 | format('%.2f') %] Chips)
+  <strong>Available amount to withdraw:</strong> [% current_balance %] NMC ([% balance.amount * 100 | format('%.2f') %] Chips)
 </p>
 
 <p><i>Please note, larger amounts may require additional <strong>24 hours</strong> processing time. You will be notified if your withdrawal not processed immediately and require additional processing time. Additionally can not withdraw more then two decimal places (Ex. 0.00) from this form at this time, sorry for the inconvenience.</i></p>

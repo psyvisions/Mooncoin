@@ -4,13 +4,14 @@
 <table id="hor-minimalist-b" style="width: 650px;">
 <thead>
 <tr><th colspan="4"><h2>Coins</h2></th></tr>
-<tr style="text-align:center;"><th scope="col">Distribution</th><th scope="col">Bitcoins</th><th scope="col">Namecoins<br /></th></tr>
+<tr style="text-align:center;"><th scope="col">Distribution</th><th scope="col">Bitcoins</th><th scope="col">Namecoins</th><th scope="col">Solidcoins</th></tr>
 </thead>
 <tbody>
 <tr>
 <td>Wallet</td>
 <td>[% bitcoin_balance %]</td>
 <td>[% namecoin_balance %]</td>
+<td>[% solidcoin_balance %]</td>
 </tr>
 <tr>
 <td>Exchange</td>

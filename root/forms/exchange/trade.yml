@@ -11,9 +11,6 @@ elements:
     empty_first: Sell
     constraints:
       - Required
-    options:
-      - [ '1', 'Bitcoins' ]
-      - [ '2', 'Namecoins' ]
 
   - type: Select
     name: trade_buy

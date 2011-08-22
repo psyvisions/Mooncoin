@@ -1,4 +1,5 @@
 <ul class='bets_submenu'>
   <li><a href='[% c.uri_for('/tables/bitcoin') %]'>Bitcoin Poker</a></li>
   <li><a href='[% c.uri_for('/tables/namecoin') %]'>Namecoin Poker</a></li>
+  <li><a href='[% c.uri_for('/tables/solidcoin') %]'>Solidcoin Poker</a></li>
 </ul>
