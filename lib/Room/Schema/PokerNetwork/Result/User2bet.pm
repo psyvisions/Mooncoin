@@ -49,7 +49,6 @@ __PACKAGE__->add_columns(
 );
 __PACKAGE__->set_primary_key("serial", "user_serial", "bet_serial");
 
-
 __PACKAGE__->belongs_to(
   'user' => 'Room::Schema::PokerNetwork::Result::Users',
   { 'foreign.serial' => 'self.user_serial' }, { cascade_delete => 0 },

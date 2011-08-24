@@ -14,7 +14,7 @@
 <tr>
 <td>[% order.amount %] [% SWITCH order.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</td>
 <td>[% order.price %] [% SWITCH order.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]<br />
-( [% ( 1 / order.price ) | format('%.4f') %] [% SWITCH order.buy_currency %][% CASE 2 %]BTC[% CASE 1 %]NMC[% CASE 3 %]BTC[% END %] )
+( [% ( 1 / order.price ) | format('%.8f') %] [% SWITCH order.buy_currency %][% CASE 2 %]BTC[% CASE 1 %]NMC[% CASE 3 %]BTC[% END %] )
 </td>
 <td>[% order.amount * order.price %] [% SWITCH order.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</td>
 <td>[% order.created_at %]</td>

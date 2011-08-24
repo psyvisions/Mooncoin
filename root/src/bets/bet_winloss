@@ -1,18 +1,18 @@
 <div style="float:left;" align="center">
 <b>Total btc wins</b><br />
-<span style="color:green; font-size:large;">[% c.user.bet_wins_btc | format('%.2f') %]</span> mc
+<span style="color:green; font-size:large;">[% c.user.bet_wins(1) | format('%.2f') %]</span> mc
 </div>
 <div style="float:left; margin-left: 35px;" align="center">
 <b>Total btc loses</b><br />
-<span style="color:red; font-size:large;">[% c.user.bet_losses_btc | format('%.2f') %]</span> mc
+<span style="color:red; font-size:large;">[% c.user.bet_losses(1) | format('%.2f') %]</span> mc
 </div>
 <div style="clear:both;"></div>
 <div style="float:left;" align="center">
 <b>Total nmc wins</b><br />
-<span style="color:green; font-size:large;">[% c.user.bet_wins_nmc | format('%.2f') %]</span> mc
+<span style="color:green; font-size:large;">[% c.user.bet_wins(2) | format('%.2f') %]</span> mc
 </div>
 <div style="float:left; margin-left: 35px;" align="center">
 <b>Total nmc loses</b><br />
-<span style="color:red; font-size:large;">[% c.user.bet_losses_nmc | format('%.2f') %]</span> mc
+<span style="color:red; font-size:large;">[% c.user.bet_losses(2) | format('%.2f') %]</span> mc
 </div>
 <div style="clear:both;"></div>

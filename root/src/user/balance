@@ -1,6 +1,6 @@
 [% IF c.user.balances %]
 <h2>Your balance</h2>
   [% FOR balance IN c.user.balances %]
-     <p>[% balance.amount * 100 | format('%.2f') %] mc ([% balance.amount | format('%.2f') %] [% balance.currency.symbol %])</p>
+     <p>[% balance.amount * 100 | format('%.4f') %] mc ([% balance.amount | format('%.4f') %] [% balance.currency.symbol %])</p>
   [% END %]
 [% END %]

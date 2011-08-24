@@ -1,13 +1,4 @@
 [% META title = 'Exchange' %]
-[% PROCESS exchange/exchange_submenu %]
-<div style="clear:both;"></div>
-<h2>Bitcoin/[% IF coin != 3 %]Namecoin[% ELSE %]Solidcoin[% END %] Exchange</h2>
-<p>[% IF coin != 3 %]Namecoin Exchange | <a href="/exchange/solidcoin">Solidcoin Exchange</a>[% ELSE %]<a href="/exchange">Namecoin Exchange</a> | Solidcoin Exchange[% END %]</p>
-
-<p>Welcome, this exchange was designed to allow you to trade [% IF coin != 3 %]namecoins[% ELSE %]solidcoins[% END %] for bitcoins or bitcoins for [% IF coin != 3 %]namecoins[% ELSE %]solidcoins[% END %]. The exchange simply facilitates the trades for a very small fee ( 0.2 % ) from each side of the transaction.</p>
-
-[% PROCESS exchange/exchange_lasttrade %]
-
 [% IF rt_graph != undef %]
   <script type='text/javascript' src='https://www.google.com/jsapi'></script>
     <script type='text/javascript'>
@@ -23,7 +14,7 @@
 
 [% WHILE (rt = rt_graph.next) %]
 
- [new Date([% rt.chart_time.year %], [% rt.chart_time.month - 1 %], [% rt.chart_time.day %], [% rt.chart_time.hour %], [% rt.chart_time.minute %] ), [% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price %][% CASE 2 %][% rt.price %][% CASE 3 %][% 1 / rt.price %][% END %] , undefined, undefined, ],
+ [new Date([% rt.chart_time.year %], [% rt.chart_time.month - 1 %], [% rt.chart_time.day %], [% rt.chart_time.hour %], [% rt.chart_time.minute %] ), [% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price %][% CASE 2 %][% rt.price %][% CASE 3 %][% rt.price %][% END %] , undefined, undefined, ],
 [% END %]  ]);
 
         var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
@@ -31,6 +22,14 @@
       }
     </script>
 [% END %]
+[% PROCESS exchange/exchange_submenu %]
+<div style="clear:both;"></div>
+<h2>Bitcoin/[% IF coin != 3 %]Namecoin[% ELSE %]Solidcoin[% END %] Exchange</h2>
+<p>[% IF coin != 3 %]Namecoin Exchange | <a href="/exchange/solidcoin">Solidcoin Exchange</a>[% ELSE %]<a href="/exchange">Namecoin Exchange</a> | Solidcoin Exchange[% END %]</p>
+
+<p>Welcome, this exchange was designed to allow you to trade [% IF coin != 3 %]namecoins[% ELSE %]solidcoins[% END %] for bitcoins or bitcoins for [% IF coin != 3 %]namecoins[% ELSE %]solidcoins[% END %]. The exchange simply facilitates the trades for a very small fee ( 0.2 % ) from each side of the transaction.</p>
+
+[% PROCESS exchange/exchange_lasttrade %]
 
 <div>
 <div style="float:left;">
@@ -64,7 +63,7 @@
 <tr>
 <td>[% symbol %]</td>
 <td>[% snmc.amount %] [% symbol %]</td>
-<td>[% snmc.price %]
+<td>[% snmc.price  | format('%.8f') %]
 </td>
 </tr>
 [% END %]
@@ -83,7 +82,7 @@
 <tr>
 <td width="5%" style="width: 50px;">[% rt.processed_at %]</td>
 <td>[% rt.amount %] [% SWITCH rt.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</td>
-<td>[% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price | format('%.8f') %][% CASE 2 %][% rt.price | format('%.8f') %][% CASE 3 %][% 1 / rt.price | format('%.8f') %][% END %]
+<td>[% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price | format('%.8f') %][% CASE 2 %][% rt.price | format('%.8f') %][% CASE 3 %][% rt.price | format('%.8f') %][% END %]
 </td>
 </tr>
 [% END %]

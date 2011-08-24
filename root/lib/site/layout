@@ -12,7 +12,7 @@
 [% IF messages %]
 <div class="messages messages-notify">
   [% FOREACH m IN messages %]
-    <div class="message message-notify">[% m %]</div>
+    <div class="message message-notify">[% m %]</div>test
   [% END %]
 </div>
 [% END %]

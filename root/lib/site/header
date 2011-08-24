@@ -12,7 +12,6 @@
   	|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <li><a href='[% c.uri_for('/bets/bitcoin') %]'>btcBets</a></li>
     <li><a href='[% c.uri_for('/bets/namecoin') %]'>nmcBets</a></li>
-    <li><a href='[% c.uri_for('/tables/bitcoin') %]'>Poker Tables</a></li>
     |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <li><a href='[% c.uri_for('/bets') %]'>My Bets</a></li>
     <li><a href='[% c.uri_for('/user') %]'>My Account</a></li>

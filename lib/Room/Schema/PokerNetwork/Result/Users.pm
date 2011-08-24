@@ -67,7 +67,7 @@ __PACKAGE__->add_columns(
     data_type => "VARCHAR",
     default_value => undef,
     is_nullable => 1,
-    size => 40,
+    size => 74,
   },
   "privilege",
   { data_type => "INT", default_value => 1, is_nullable => 1, size => 11 },
@@ -131,7 +131,7 @@ __PACKAGE__->inflate_column(
 );
 
 __PACKAGE__->add_json_columns(
-  data => qw/bitcoin_address bitcoins_received namecoin_address namecoins_received solidcoin_address solidcoins_received request_password hide_gravatar emergency_address emergency_nmc_address/,
+  data => qw/bitcoin_address bitcoins_received namecoin_address namecoins_received solidcoin_address solidcoins_received request_password hide_gravatar emergency_address emergency_nmc_address emergency_slc_address/,
 );
 
 __PACKAGE__->has_many(
@@ -216,96 +216,38 @@ sub get_solidcoin_deposit_address {
   return $self->data->solidcoin_address;
 }
 
+sub bet_wins(\$) {
+  my ($self, $currency) = @_;
+  my $userbet;
+  my $winnings;
   #active 2 means side 1 won, active 3 means side 2 won
-sub bet_wins_btc {
-  my ($self) = @_;
-  my $rs = $self->userbets->search({ 
-  side => 1,
-  'bet.currency_serial' => 1,
-  'bet.active' => 2,
-  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
-;
-  my $row_one = $rs->first;
-  my $total_p1 = $row_one->get_column('total_amount');
-  
-  $rs = $self->userbets->search({ 
-  side => 2,
-  'bet.currency_serial' => 1,
-  'bet.active' => 3,
-  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
-;
-  $row_one = $rs->first;
-  my $total_p2 = $row_one->get_column('total_amount');
-  
-  return $total_p1 + $total_p2;
-}
-sub bet_wins_nmc {
-  my ($self) = @_;
-  my $rs = $self->userbets->search({ 
-  side => 1,
-  'bet.currency_serial' => 2,
-  'bet.active' => 2,
-  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
-;
-  my $row_one = $rs->first;
-  my $total_p1 = $row_one->get_column('total_amount');
-  
-  $rs = $self->userbets->search({ 
-  side => 2,
-  'bet.currency_serial' => 2,
-  'bet.active' => 3,
-  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
-;
-  $row_one = $rs->first;
-  my $total_p2 = $row_one->get_column('total_amount');
-  
-  return $total_p1 + $total_p2;
+  foreach $userbet($self->userbets) { 
+    if( $userbet->side == 1 and $userbet->bet->currency_serial == $currency and $userbet->bet->active == 2){
+      $winnings += ($userbet->bet->get_ratio * $userbet->amount); 
+    }
+    if( $userbet->side == 2 and $userbet->bet->currency_serial == $currency and $userbet->bet->active == 3){
+      $winnings += ($userbet->bet->get_ratio * $userbet->amount); 
+    }
+  }
+  if($winnings == undef){$winnings = 0;}
+  return $winnings;
 }
 
-sub bet_losses_btc {
-  my ($self) = @_;
-  my $rs = $self->userbets->search({ 
-  side => 2,
-  'bet.currency_serial' => 1,
-  'bet.active' => 2,
-  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
-;
-  my $row_one = $rs->first;
-  my $total_p1 = $row_one->get_column('total_amount');
-  
-  $rs = $self->userbets->search({ 
-  side => 1,
-  'bet.currency_serial' => 1,
-  'bet.active' => 3,
-  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
-;
-  $row_one = $rs->first;
-  my $total_p2 = $row_one->get_column('total_amount');
-  
-  return $total_p1 + $total_p2;
-}
-
-sub bet_losses_nmc {
-  my ($self) = @_;
-  my $rs = $self->userbets->search({ 
-  side => 2,
-  'bet.currency_serial' => currency => 2,
-  'bet.active' => 2,
-  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
-;
-  my $row_one = $rs->first;
-  my $total_p1 = $row_one->get_column('total_amount');
-  
-  $rs = $self->userbets->search({ 
-  side => 1,
-  'bet.currency_serial' => 2,
-  'bet.active' => 3,
-  }, { '+select' => [{ SUM => 'me.amount' }],'+as' => [qw/total_amount/], prefetch => 'bet', join => 'bet'});
-;
-  $row_one = $rs->first;
-  my $total_p2 = $row_one->get_column('total_amount');
-  
-  return $total_p1 + $total_p2;
+sub bet_losses(\$) {
+  my ($self, $currency) = @_;
+  my $userbet;
+  my $winnings;
+  #active 2 means side 1 won, active 3 means side 2 won
+  foreach $userbet($self->userbets) { 
+    if( $userbet->side == 1 and $userbet->bet->currency_serial == $currency and $userbet->bet->active == 3){
+      $winnings += $userbet->amount; 
+    }
+    if( $userbet->side == 2 and $userbet->bet->currency_serial == $currency and $userbet->bet->active == 2){
+      $winnings += $userbet->amount; 
+    }
+  }
+  if($winnings == undef){$winnings = 0;}
+  return $winnings;
 }
 
 =head1 AUTHOR

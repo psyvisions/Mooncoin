@@ -176,8 +176,6 @@ sub register :Local :Args(0) :FormConfig {
   }
 }
 
-
-
 sub forgot_password :Local :Args(0) :FormConfig {
   my ($self, $c) = @_;
 
@@ -222,8 +220,6 @@ sub forgot_password :Local :Args(0) :FormConfig {
   }
 }
 
-
-
 sub reset_password :Local :Args(2) :FormConfig {
   my ($self, $c, $id, $key) = @_;
 
@@ -246,8 +242,6 @@ sub reset_password :Local :Args(2) :FormConfig {
     );
   }
 }
-
-
 
 sub edit :Local :Args(0) :FormConfig {
   my ( $self, $c ) = @_;
@@ -324,8 +318,6 @@ sub edit :Local :Args(0) :FormConfig {
     );
   }
 }
-
-
 
 sub deposit_bitcoin :Path('deposit/bitcoin') {
   my ( $self, $c ) = @_;
@@ -483,7 +475,7 @@ sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
     my $address = $form->params->{bitcoin_address};
     my $amount = $form->params->{amount};
 
-    if ($balance->amount < $amount || $amount < 0.01 || int($amount * 100) / 100 < $amount)  {
+    if ($balance->amount < $amount || $amount < 0.0100 || int($amount * 100) / 100 < $amount)  {
       $form->get_field("amount")->get_constraint({ type => "Callback" })->force_errors(1);
       $form->process();
       return;
@@ -544,7 +536,7 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
     my $address = $form->params->{namecoin_address};
     my $amount = $form->params->{amount};
 
-    if ($balance->amount < $amount || $amount < 0.01 || int($amount * 100) / 100 < $amount)  {
+    if ($balance->amount < $amount || $amount < 0.0100 || int($amount * 100) / 100 < $amount)  {
       $form->get_field("amount")->get_constraint({ type => "Callback" })->force_errors(1);
       $form->process();
       return;
@@ -608,7 +600,7 @@ sub withdraw_solidcoin :Path('withdraw/solidcoin') :FormConfig {
     my $address = $form->params->{solidcoin_address};
     my $amount = $form->params->{amount};
 
-    if ($balance->amount < $amount || $amount < 0.01 || int($amount * 100) / 100 < $amount)  {
+    if ($balance->amount < $amount || $amount < 0.0100 || int($amount * 100) / 100 < $amount)  {
       $form->get_field("amount")->get_constraint({ type => "Callback" })->force_errors(1);
       $form->process();
       return;
@@ -664,9 +656,6 @@ sub no_avatar :Local :Args(1) {
   );
 }
 
-
-
-
 =head1 AUTHOR
 
 Pavel Karoukin
@@ -688,8 +677,6 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 =cut
 
 __PACKAGE__->meta->make_immutable;
-

@@ -19,17 +19,21 @@
 [% IF c.user.balances %]
 <h2>Your balance</h2>
 [% FOR balance IN c.user.balances %]
-<p>  	[% IF balance.currency_serial != 3 %][% balance.amount * 100 | format('%.2f') %] Chips ([% END %][% balance.amount | format('%.2f') %] [% balance.currency.symbol %][% IF balance.currency_serial != 3 %])[% END %]
+<p>  	[% balance.amount * 100 | format('%.4f') %] Chips ([% balance.amount | format('%.4f') %] [% balance.currency.symbol %])
       - <span><a href="/user/deposit/[% balance.currency.name %]">Deposit</a></span></p>
   [% END %]
 [% END %]
+
+<h2>Betting Statistics<br /><span style="color:gray;font-size:xx-small;">Only foresight/skill bets</span></h2>
+[% PROCESS bets/bet_winloss %]
+
 </div>
 
 <div style="float:left; margin-left:75px;">
 <h2>Avatar</h2>
 
 <div style="float:left;">
- <img src="[% c.uri_for("/AVATAR/" _ c.user.serial) %]" alt="[% c.user.name %] picture" />
+ <img src="/AVATAR/[% c.user.serial %]" alt="[% c.user.name %] picture" />
 </div>
 
 <div style="float:left; width: 200px; padding-left: 15px; margin-top: -5px;">
@@ -46,7 +50,7 @@ To change your avatar, make sure you have valid email set in your account
    <thead>
     <tr><th>ID</th><th>Currency</th><th>Date</th><th>Amount</th></tr></thead><tbody>
     [% FOR deposit IN c.user.deposits %]
-    <tr><td>[% deposit.deposit_id %]</td><td>[% deposit.currency.name %]</td><td>[% deposit.created_at %]</td><td>[% deposit.amount | format('%.2f') %]</td></tr>
+    <tr><td>[% deposit.deposit_id %]</td><td>[% deposit.currency.name %]</td><td>[% deposit.created_at %]</td><td>[% deposit.amount | format('%.4f') %]</td></tr>
     [% END %]
     </tbody>
   </table>
@@ -71,7 +75,7 @@ To change your avatar, make sure you have valid email set in your account
           <tr>
             <td>[% withdrawal.id %]</td>
             <td>[% withdrawal.currency.name %]</td>
-            <td>[% withdrawal.amount %]</td>
+            <td>[% withdrawal.amount | format('%.4f') %]</td>
             <td>[% withdrawal.dest | html %]</td>
             <td>[% withdrawal.created_at %]</td>
             <td>[% withdrawal.processed_at %]</td>

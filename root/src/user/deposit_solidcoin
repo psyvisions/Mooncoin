@@ -11,7 +11,7 @@
 <p>We accept both <a href="/user/deposit/bitcoin">Bitcoins</a> and <a href="/user/deposit/solidcoin">Solidcoins</a> as deposit option. If you want to know more - 
 checkout <a href='http://www.bitcoin.org' target='_blank'>http://www.solidcoin.info</a></p>
 
-<p>We do not currently support games with solidcoins. You may only trade them for bitcoins.</p>
+<p>Once deposited you can use this balance to play poker or trade on our exchanges.</p>
 
 <p>We have generated address for all your transactions. Any money sent to this 
 address will be deposited to your account. Please note, that we wait until we 
@@ -26,5 +26,5 @@ transaction in order to finalize depositing of solidcoins.</strong></p>
 
 <p>Current exchange rate: 1 NMC = 100 Mooncoins(Chips).</p>
 
-<p>You sent so far <strong>&#xe3f;[% solidcoins_sent | format('%.2f') %]</strong>.</p>
+<p>You sent so far <strong>[% solidcoins_sent | format('%.2f') %] SLC</strong>.</p>
 </div>

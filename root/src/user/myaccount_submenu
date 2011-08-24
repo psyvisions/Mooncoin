@@ -1,9 +1,12 @@
 <ul class='bets_submenu'>
-  <li><a href='[% c.uri_for('/user/deposit/namecoin') %]'>Deposit Namecoins</a></li>
   <li><a href='[% c.uri_for('/user/deposit/bitcoin') %]'>Deposit Bitcoins</a></li>
+  <li><a href='[% c.uri_for('/user/deposit/namecoin') %]'>Deposit Namecoins</a></li>
+  <li><a href='[% c.uri_for('/user/deposit/solidcoin') %]'>Deposit Solidcoins</a></li>
   |&nbsp;&nbsp;&nbsp; 
+  <li><a href='[% c.uri_for('/user/withdraw/bitcoin') %]'>Withdraw Bitcoins</a></li> 
   <li><a href='[% c.uri_for('/user/withdraw/namecoin') %]'>Withdraw Namecoins</a></li>
-  <li><a href='[% c.uri_for('/user/withdraw/bitcoin') %]'>Withdraw Bitcoins</a></li>  
+  <li><a href='[% c.uri_for('/user/withdraw/solidcoin') %]'>Withdraw Solidcoins</a></li>
+  
   [% IF c.user.privilege == 3 %]
   |&nbsp;&nbsp;&nbsp;<li><a style="color:red;" href='[% c.uri_for('/user/arbitrator') %]'>Arbitration</a></li>
   [% END %]

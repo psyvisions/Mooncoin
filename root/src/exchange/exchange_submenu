@@ -9,10 +9,7 @@
   <li><a href='[% c.uri_for('/exchange/solidcoin') %]'>Statistics</a></li>
   [% END %]
   [% END %]
-  [% IF other != 3 %]
-  <li><a href='[% c.uri_for('/exchange#graph') %]'>Graph</a></li>[% ELSE %]
-  <li><a href='[% c.uri_for('/exchange/solidcoin#graph') %]'>Trade</a></li>
-  [% END %]
+  <li><a href='#graph'>Graph</a></li>
   [% IF c.user %]
   [% IF coin != 3 %]
   <li><a href='[% c.uri_for('/exchange/orders') %]'>Orders</a></li>

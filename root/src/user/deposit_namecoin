@@ -11,6 +11,8 @@
 <p>We accept both <a href="/user/deposit/bitcoin">Bitcoins</a> and <a href="/user/deposit/namecoin">Namecoins</a> as deposit option. If you want to know more - 
 checkout <a href='http://www.bitcoin.org' target='_blank'>http://www.dot-bit.org</a></p>
 
+<p>Once deposited you can use this balance to bet, play poker or trade on our exchanges.</p>
+
 <p>We have generated address for all your transactions. Any money sent to this 
 address will be deposited to your account. Please note, that we wait until we 
 get at least one confirmation of the transaction, so it will take some time for 
@@ -24,5 +26,5 @@ transaction in order to finalize depositing of namecoins.</strong></p>
 
 <p>Current exchange rate: 1 NMC = 100 Mooncoins(Chips).</p>
 
-<p>You sent so far <strong>&#xe3f;[% namecoins_sent | format('%.2f') %]</strong>.</p>
+<p>You sent so far <strong>[% namecoins_sent | format('%.2f') %] NMC</strong>.</p>
 </div>

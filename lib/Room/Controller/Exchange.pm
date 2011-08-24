@@ -35,7 +35,7 @@ sub index :Path CaptureArgs(1){
   $c->stash->{coin} = 3;
   $c->stash->{symbol} = 'SLC';
   }
-  
+
   $c->stash->{buy_nmc} = $c->model("PokerNetwork::Trades")->search({
   status => 1, 
   -and => [{buy_currency => $other},{sell_currency => $bitcoin}],
@@ -49,7 +49,7 @@ sub index :Path CaptureArgs(1){
   $c->stash->{recent_trades} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
   -or => [{buy_currency => $other},{sell_currency => $other}],
-  }, {  order_by => { -desc => 'processed_at' }});
+  }, {rows => 25, order_by => { -desc => 'processed_at' }});
   
   $c->stash->{last_trade} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
@@ -59,7 +59,7 @@ sub index :Path CaptureArgs(1){
   $c->stash->{rt_graph} = $c->model("PokerNetwork::Trades")->search({
   status => 0,
   -or => [{buy_currency => $other},{sell_currency => $other}],
-  }, { order_by => { -desc => 'processed_at'}});
+  }, {rows => 50, order_by => { -desc => 'processed_at'}});
 
   $c->stash->{ask_buy} = $c->model("PokerNetwork::Trades")->search({
   status => 1,
@@ -127,12 +127,14 @@ sub index :Path CaptureArgs(1){
   my $btc7dmax = $c->stash->{btc_last24}->max;
 
   if( $btc7dmax > $nmc7dmax ){
+  $btc7dmax = sprintf('%.8f', $btc7dmax) + 0; #converts it back to float
   $c->stash->{high} = $btc7dmax;
   }else{$c->stash->{high} = $nmc7dmax;}
   
   my $nmc7dmin = $c->stash->{nmc_last24}->min;
   my $btc7dmin = $c->stash->{btc_last24}->min;
-  
+  $btc7dmin = sprintf('%.8f', $btc7dmin) + 0;
+    
   if( $btc7dmin < $nmc7dmin ){
   $c->stash->{low} = $btc7dmin;
   }else{$c->stash->{low} = $nmc7dmin;}
@@ -150,6 +152,7 @@ sub index :Path CaptureArgs(1){
   
   if( $nmc7davg != 0 and $btc7davg != 0 ){ 
   $c->stash->{avg} = (( $c->stash->{nmc_last24}->sum + $c->stash->{btc_last24}->sum) / ($nmc7davg + $btc7davg));
+  $c->stash->{avg} = sprintf('%.8f', $c->stash->{avg}) + 0;
   }
 }
 
@@ -200,13 +203,8 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
   $c->stash->{coin} = 3;
   $c->stash->{symbol} = 'SLC';
   my $slc_balance = $c->user->balances->search({currency_serial => 3})->first;
-
-  if (! $slc_balance) {
-    $slc_balance = $c->user->balances->find_or_create({ currency_serial => 3 });
-    $slc_balance->amount(0);
-    $slc_balance->update();
   }
-  }
+  
   my @options;
   if($coin eq undef){
    push (@options, ['1', 'Bitcoin']);
@@ -235,28 +233,24 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
   my $sell_currency = $form->params->{trade_sell};
   my $buy_currency = $form->params->{trade_buy};
   my $price = $form->params->{trade_price};
+  
   if ($form->submitted_and_valid and $sell_currency != $buy_currency and $price != 0) {
   #form values
-
+  
+  if( $sell_currency == 1 ){
+  $price = 1 / $price;
+  }
   my $amount = $form->params->{trade_amount};
 
   my $balance = $c->user->balances->search({currency_serial => $sell_currency})->first;
-
-  if (! $balance) {
-    $balance = $c->user->balances->find_or_create({ currency_serial => $sell_currency });
-    $balance->amount(0);
-    $balance->update();
-  }
   
    $c->stash->{balance} = $balance;
    $c->stash->{current_balance} = $balance->amount;
-  
-    if ($balance->amount < $amount || $amount < 0.01 )  {
+   if ($balance->amount < $amount || $amount < 0.0010 )  {
       $form->get_field("trade_amount")->get_constraint({ type => "Callback" })->force_errors(1);
       $form->process();
       return;
     }
-
     $balance->amount(
       $balance->amount() - $amount
     );
@@ -276,8 +270,9 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
 	});
 	
 	## Try to process the transaction ##
-	  my $invert_price = ( 1 / $create->price );
-  
+	  my $invert_price = sprintf('%.8f', ( 1 / $create->price )); #adding 0.00 coverts it back to a float
+	  $invert_price = $invert_price + 0.00000001;
+
       my $orders = $c->model('PokerNetwork::Trades')->search({
       status => 1,
       -and => [{buy_currency => $create->sell_currency},{sell_currency => $create->buy_currency}],
@@ -331,7 +326,9 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
     	   );
     	   $creator_balance->update();
     	 #Since this new trade got entirely filled we set the status of the transaction update balance
-    	   $compare_price = ( 1 / $order->price );
+
+    	   $compare_price =  ( 1 / $order->price );
+ 		   
     	   $create->price($compare_price);
     	   $create->balance(0);
     	   $create->status(0);
@@ -375,7 +372,9 @@ sub trade :Chained('/') :Path('trade') CaptureArgs(1) :FormConfig{
     	   );
     	   $update_balance->update();
     	 #Since this looked up trade got entirely filled we set the status of the transaction update balance
-    	   $compare_price = ( 1 / $create->price );
+		   
+    	   $compare_price = $order->price;
+		   
     	   $order->price($compare_price);
     	   $order->balance(0);
     	   $order->status(0);

@@ -1,14 +1,11 @@
 [% META title = 'Bets' %]
 [% PROCESS exchange/exchange_submenu %]
+
 <script type="text/javascript">
-
-
-    
-    
 $(document).ready(function(){
 
   [% IF last_trade != undef %]
-  var price = 1 / [% last_trade.price %];
+  var price = [% 1 / last_trade.price | format('%.8f')%];
   [% SWITCH last_trade.sell_currency %]
   [% CASE 1 %]
   $("#price_form").val(price);
@@ -100,7 +97,7 @@ function updateTotals(){
     if(hold == 1 && valTwo != 0){
       total = valOne * ( 1 / valTwo );
     }
-    else if(hold == 2){
+    else if(hold == [% coin %]){
       total = valOne * valTwo;
     }else{total = 0;}
 
@@ -137,7 +134,7 @@ function updateTotals(){
 
 <h3>Your balance</h3>
   [% FOR balance IN c.user.balances %]
-     <p>[% IF balance.currency_serial != 3 %][% balance.amount * 100 | format('%.2f') %] Chips ([% END %][% balance.amount | format('%.2f') %] [% balance.currency.symbol %][% IF balance.currency_serial != 3 %])[% END %]
+     <p>[% balance.amount | format('%.8f') %] [% balance.currency.symbol %]
        <span><a href="/user/deposit/[% balance.currency.name %]">(Deposit)</a></span></p>
   [% END %]
 [% END %]
