@@ -14,7 +14,6 @@ use CatalystX::RoleApplicator;
 #                 directory
 
 use Catalyst qw/
-    -Debug
     StackTrace
     ConfigLoader
     Static::Simple
@@ -76,6 +75,20 @@ __PACKAGE__->config(
 
     'View::TT' => {
         ENCODING => 'UTF-8',
+    },
+
+    'Plugin::Authentication' => {
+        default => {
+            credential => {
+                user_model => 'PokerNetwork::Users',
+                class => 'Password',
+                password_type => 'self_check',
+            },
+            store => {
+                class => 'DBIx::Class',
+                user_model => 'PokerNetwork::Users',
+            },
+       },
     },
 );
 

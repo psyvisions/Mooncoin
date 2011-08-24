@@ -117,14 +117,36 @@ __PACKAGE__->set_primary_key("serial");
 # Created by DBIx::Class::Schema::Loader v0.04006 @ 2010-09-27 11:47:31
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7TyTlrEhWw004Jae61zkSw
 
+__PACKAGE__->load_components( qw( DateTime::Epoch TimeStamp) );
+
+
+# Relationships
+
 __PACKAGE__->has_many(
-  'usertourneys' => 'Room::Schema::PokerNetwork::Result::User2tourney',
-  { 'foreign.tourney_serial' => 'self.serial' },
-);
-__PACKAGE__->many_to_many(
-  users => 'usertourneys', 'user'
+    'usertourneys' => 'Room::Schema::PokerNetwork::Result::User2tourney',
+    { 'foreign.tourney_serial' => 'self.serial' },
 );
 
+__PACKAGE__->many_to_many(
+    users => 'usertourneys', 'user'
+);
+
+__PACKAGE__->many_to_many(
+    tables => 'usertourneys', 'tourney_table'
+);
+
+# Inflators
+
+__PACKAGE__->add_columns(
+  "start_time",
+  { data_type => "INT", inflate_datetime => 'epoch', is_nullable => 1, size => 11 },
+  "finish_time",
+  { data_type => "INT", inflate_datetime => 'epoch', is_nullable => 1, size => 11 },
+);
+
+
+
+# Filters
 
 __PACKAGE__->filter_column(
   prize_min => {
@@ -158,6 +180,32 @@ sub get_users_registered {
     my ($self) = @_;
 
     return $self->usertourneys->count;
+}
+
+
+sub get_table_serial {
+    my ($self, $serial) = @_;
+    my $usertourneys = $self->usertourneys;
+    
+    return $usertourneys->first->table_serial unless $serial;
+
+    my $users = $usertourneys->find({user_serial => $serial});
+
+    return $users->table_serial unless !$users;
+
+    return $usertourneys->first->table_serial;
+}
+
+
+sub is_user_registered {
+    my ($self, $serial) = @_;
+
+    if ($self->usertourneys->find({user_serial => $serial})) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }
 
 =head1 AUTHOR

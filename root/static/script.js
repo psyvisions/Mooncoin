@@ -8,28 +8,28 @@ var table_profile = {
           }
 };
 
-$(function() {
-    attach_behaviors($("html"));
+jQuery(function() {
+    attach_behaviors(jQuery("html"));
 
     return;
 
-    if ($("div.tables-list-wrapper").length > 0) {
+    if (jQuery("div.tables-list-wrapper").length > 0) {
       setTimeout("refresh_tables()", 15000);
     }
 });
 
 
 var refresh_tables = function() {
-    $.ajax({
+    jQuery.ajax({
       url: '/tables',
       success: function(data) {
-        var tables_list = $(data).find('div.tables-list-wrapper').html();
+        var tables_list = jQuery(data).find('div.tables-list-wrapper').html();
 
         if (tables_list) {
-          $("div.tables-list-wrapper").html(
+          jQuery("div.tables-list-wrapper").html(
             tables_list
           );
-          attach_behaviors($("div.tables-list-wrapper"));
+          attach_behaviors(jQuery("div.tables-list-wrapper"));
         }
         else {
           window.location = '/tables';
@@ -43,23 +43,23 @@ var refresh_tables = function() {
 }
 
 var attach_behaviors = function(c) {
-  $(".popup-window", c).popupwindow(table_profile);
+  jQuery(".popup-window", c).popupwindow(table_profile);
 
-  $(".tables-categories a", c).click(function() {
-    $(".tables .tables-list").hide();
-    $($(this).attr('href')).show();
-    $(".tables-categories *", c).removeClass('active');
-    $(this).parent().addClass('active');
+  jQuery(".tables-categories a", c).click(function() {
+    jQuery(".tables .tables-list").hide();
+    jQuery(jQuery(this).attr('href')).show();
+    jQuery(".tables-categories *", c).removeClass('active');
+    jQuery(this).parent().addClass('active');
     return false;
   });
 
-  $(".tables-categories li", c).click(function() {
-    $(this).children('ul:visible').slideUp();
-    $(this).children('ul:hidden').slideDown();
+  jQuery(".tables-categories li", c).click(function() {
+    jQuery(this).children('ul:visible').slideUp();
+    jQuery(this).children('ul:hidden').slideDown();
     return false;
   });
 
-  $("a.confirm", c).click(function() {
+  jQuery("a.confirm", c).click(function() {
     if (! confirm('Are you sure?')) {
       return false;
     }
@@ -67,6 +67,53 @@ var attach_behaviors = function(c) {
 
 }
 
+
 function popitup(link, game_id) {
   jQuery('<a rel="table" target="table_' + game_id + '" href="'+ link +'" />').popupwindow(table_profile).click();
 }
+
+jQuery(document).ready(function() { 
+  jQuery(".tweet").tweet({
+      username: "betcoin",
+      join_text: null,
+      avatar_size: null,/*AVATAR*/
+      count: 1,/*NUMBER OF TWEETS*/
+      auto_join_text_default: "we said,", 
+      auto_join_text_ed: "we",
+      auto_join_text_ing: "we were",
+      auto_join_text_reply: "we replied to",
+      auto_join_text_url: "we were checking out",
+      loading_text: "loading tweets..."
+  });
+});
+
+jQuery(document).ready(function() {
+  jQuery.ajax({
+    url: 'http://betcoin.blogspot.com/feeds/posts/default?alt=json-in-script',
+    dataType: 'jsonp',
+    success: function (data) {
+      var entries = data.feed.entry;
+      jQuery("#blogspot-posts").html('<ul></ul>');
+
+      var len = entries.length;
+      if (len > 2) { 
+        len = 2;
+      }
+      
+      for (var i=0; i < entries.length; i++) {
+        var date = new Date(entries[i].published["$t"]);
+        var date_str = date.format("mmmm d, yyyy");
+        var href = entries[i].link[4].href;
+        var title = entries[i].link[4].title;
+        var comments_href = entries[i].link[1].href;
+        var comments_title = entries[i].link[1].title;
+
+        jQuery("#blogspot-posts ul").append(
+          "<li><a href='" + href + "' target='_blank'>" + title + "</a>" +
+          "<p>" + date_str + ", <a href='" + comments_href + "' target='_blank'>" +
+          comments_title + "</a></p></li>" 
+        );
+      }
+    }
+  });
+})
