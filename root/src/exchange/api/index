@@ -1,0 +1,14 @@
+[% META title = 'Exchange API' %]
+
+[% PROCESS exchange/exchange_submenu %]
+<div style="clear:both;"></div>
+
+<p>This toolset is available for developers to use the data generated from the moonco.in exchange in their applications.
+
+<div align="center">
+<h2 style="margin: 35px 0 35px;"><a href="ticker/[% coin.name %]">Ticker</a></h2>
+<h2 style="margin-bottom: 35px;"><a href="ob/[% coin.name %]">Order Book</h2>
+<h2 style="margin-bottom: 35px;"><a href="last10/[% coin.name %]">Recent Trades ( Last 10 )</h2>
+<h2 style="margin-bottom: 35px;"><a href="last12h/[% coin.name %]">Recent Trades ( Last 12 Hours )</h2>
+<h2 style="margin-bottom: 35px;"><a href="price/[% coin.name %]">Variable Definitions for Prices and High/Low</h2>
+</div>

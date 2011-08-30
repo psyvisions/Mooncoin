@@ -89,7 +89,7 @@ sub notify :Chained('report_base') :PathPart('notify') :Args(0) {
         body => $message,
     );  
         
-    push @{$c->flash->{messages}}, "You have reported an issue regarding this bet.";
+    push @{$c->stash->{messages}}, "You have reported an issue regarding this bet.";
     $c->res->redirect($c->uri_for('/bet/' . $bet->serial . '/view'));
   }
 

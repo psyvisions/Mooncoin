@@ -10,3 +10,6 @@ log/room.log
 /lib/ppn/.DS_Store
 _trial*
 
+
+.DS_Store
+/root/static/img/supporters/

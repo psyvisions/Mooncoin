@@ -127,45 +127,13 @@ __PACKAGE__->has_many(
   { 'foreign.bet_serial' => 'self.serial' }, 
 );
 
-sub get_total {
-  my ($self) = @_;
+sub get_total(\$) {
+  my ($self, $side) = @_;
   ## Total bet amount
      my $holder = $self->userbets->search({ 
-     bet_serial => $self->serial,}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
-     my $total_holder = $holder->first;
+     bet_serial => $self->serial, side => $side}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], })->first;
 
-     my $value = $total_holder->get_column('total_amount');
-	 
-	 if($value == undef){$value = 0;}	
-		
-  return $value;
-}
-
-sub get_total_s1 {
-  my ($self) = @_;
-     ## Total side one amount
-     my $holder = $self->userbets->search({ 
-     bet_serial => $self->serial, side => 1}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
-     my $row_one = $holder->first;
-
-     my $value  = $row_one->get_column('total_amount');
-	 
-	 if($value == undef){$value = 0;}	
-		
-  return $value;
-}
-
-sub get_total_s2 {
-  my ($self) = @_;
-     ## Total side two amount
-     my $holder = $self->userbets->search({ 
-     bet_serial => $self->serial, side => 2}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
-     my $row_two = $holder->first;
-
-     my $value  = $row_two->get_column('total_amount'); 
+     my $value = $holder->get_column('total_amount');
 	 
 	 if($value == undef){$value = 0;}	
 		
@@ -251,7 +219,8 @@ sub get_timeleft{
   if($diff->hours > 0){if($diff->hours != 1){$hold = 's'}$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hour".$hold."</span> ";} 
   if($diff->days == 0){
   if($diff->minutes > 0){if($diff->minutes != 1){$hold = 's'}$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minute".$hold."</span> ";}
-  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}   }else{$string = $string . '</span>';}  }else{$string = $string . '</span>';} }else{$string = $string . '</span>';} 
+  if($diff->hours == 0){
+  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}   }else{$string = $string . '</span>';}  }else{$string = $string . '</span>';} }else{$string = $string . '</span>';} }else{$string = $string . '</span>';} 
   return $string;}
 }
 
@@ -276,7 +245,7 @@ sub get_timeleft_event{
   $diff = DateTime::Duration->new( years => 0, months => 0, days => 0, hours => 0, minutes => 0, seconds => 0);
   } 
 
-  my $hold;
+   my $hold;
   if($diff->is_positive == 1){
   my $string = '<span style="color: green; font-size: large;">';
   if($diff->years > 0){if($diff->years != 1){$hold = 's'} $string = $string . $diff->years . " <span style='color: black; font-size: small;'>Year".$hold."</span> ";}
@@ -288,10 +257,10 @@ sub get_timeleft_event{
   if($diff->hours > 0){if($diff->hours != 1){$hold = 's'}$string = $string . $diff->hours . " <span style='color: black; font-size: small;'>Hour".$hold."</span> ";} 
   if($diff->days == 0){
   if($diff->minutes > 0){if($diff->minutes != 1){$hold = 's'}$string = $string . $diff->minutes . " <span style='color: black; font-size: small;'>Minute".$hold."</span> ";}
-  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}   }else{$string = $string . '</span>';}  }else{$string = $string . '</span>';} }else{$string = $string . '</span>';} 
+  if($diff->hours == 0){
+  if($diff->seconds > 0){$string = $string . '</span>' . $diff->seconds . " <span style='color: black; font-size: x-small;'>Secs</span> ";}else{$string = $string . '</span>';}   }else{$string = $string . '</span>';}  }else{$string = $string . '</span>';} }else{$string = $string . '</span>';} }else{$string = $string . '</span>';} 
   return $string;}
 }
-
 sub event_passed{
   my ($self) = @_;
   my $passed;

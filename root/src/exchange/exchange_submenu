@@ -1,23 +1,12 @@
 <ul class='bets_submenu'>
   [% IF c.user %]
-  [% IF coin != 3 %]
-  <li><a href='[% c.uri_for('/exchange/trade') %]'>Trade</a></li>[% ELSE %]
-  <li><a href='[% c.uri_for('/exchange/trade/solidcoin') %]'>Trade</a></li>
+  <li><a href='/exchange/trade/[% coin.name %]'>Trade</a></li>
   [% END %]
-  [% IF coin != 3 %]
-  <li><a href='[% c.uri_for('/exchange') %]'>Statistics</a></li>[% ELSE %]
-  <li><a href='[% c.uri_for('/exchange/solidcoin') %]'>Statistics</a></li>
-  [% END %]
-  [% END %]
-  <li><a href='#graph'>Graph</a></li>
+  <li><a href='/exchange/[% coin.name %]'>Order Book</a></li>
+  <li><a href='/exchange/graph/[% coin.name %]'>Graph</a></li>
   [% IF c.user %]
-  [% IF coin != 3 %]
-  <li><a href='[% c.uri_for('/exchange/orders') %]'>Orders</a></li>
-  <li><a href='[% c.uri_for('/exchange/history') %]'>History</a></li>[% ELSE %] 
-  <li><a href='[% c.uri_for('/exchange/orders/solidcoin') %]'>Orders</a></li>
-  <li><a href='[% c.uri_for('/exchange/history/solidcoin') %]'>History</a></li>
-  <li><a href='[% c.uri_for('/user/deposit/solidcoin') %]'>Deposit SLC</a></li>
-  <li><a href='[% c.uri_for('/user/withdraw/solidcoin') %]'>Withdraw SLC</a></li>  
+  <li><a href='/exchange/orders/[% coin.name %]'>Orders</a></li>
+  <li><a href='/exchange/history/[% coin.name %]'>History</a></li> 
   [% END %]
-  [% END %]
+  <li><a href='/exchange/api/[% coin.name %]'>API</a></li> 
 </ul>

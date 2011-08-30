@@ -12,7 +12,7 @@
 
    # define a data structure to hold sitewide data
    site = {
-     title     => c.config.name,
+     title     => 'Mooncoin',
      copyright => '2011 Mooncoin',
    };
 

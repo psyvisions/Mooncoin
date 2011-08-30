@@ -1,0 +1,31 @@
+[% META title = 'Graph' %]
+[% IF rt_graph != undef %]
+  <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+      google.load('visualization', '1', {'packages':['annotatedtimeline']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('datetime', 'Date');
+        data.addColumn('number', 'BTC per [% coin.symbol %]');
+        data.addColumn('string', 'title1');
+        data.addColumn('string', 'text1');
+        data.addRows([
+        
+        [% WHILE (rt = rt_graph.next) %]
+ 
+ [new Date([% rt.chart_time.year %], [% rt.chart_time.month - 1 %], [% rt.chart_time.day %], [% rt.chart_time.hour %], [% rt.chart_time.minute %] ), [% SWITCH rt.sell_currency %][% CASE 1 %][% 1 / rt.price %][% CASE 2 %][% rt.price %][% END %] , undefined, undefined ],
+[% END %]  ]);
+
+        var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
+        chart.draw(data, {displayAnnotations: true, numberFormats: '#.######' });
+      }
+    </script>
+[% END %]
+[% PROCESS exchange/exchange_submenu %]
+<div style="clear:both;"></div>
+<h2>Bitcoin/[% coin.name | ucfirst %] Exchange</h2>
+
+<a name="graph">
+<div id='chart_div' style='width: 960px; height: 480px; margin-left: auto; margin-right: auto; margin-top: 25px;'></div></a>
+<br />

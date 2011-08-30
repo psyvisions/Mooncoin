@@ -1,6 +1,6 @@
 [% META title = 'Admin dashboard' %]
 [% PROCESS admin/admin_submenu %]
-
+[% IF c.catalyst_component_name.controller == admin %]test[% END %]
 <table id="hor-minimalist-b" style="width: 650px;">
 <thead>
 <tr><th colspan="4"><h2>Coins</h2></th></tr>

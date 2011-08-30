@@ -1,31 +1,33 @@
-<div style="float:left; width: 250px;">
-<h3>Last Trade</h3> [% IF last_trade != undef %]
-<p>[% last_trade.price  | format('%.6f') %] <span style="font-size:12px;color:#1B587B;">[% SWITCH last_trade.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</span> ea. <span style="font-size:12px;color:#1B587B;">[% SWITCH last_trade.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</span></p>
-<p>[% ( 1 / last_trade.price)  | format('%.6f') %] </span><span style="font-size:12px;color:#1B587B;">[% SWITCH last_trade.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</span> ea. <span style="font-size:12px;color:#1B587B;">[% SWITCH last_trade.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</p>
-[% END %]</div>
+[% IF last_trade != undef %]
+<div style="float:left; border: solid 2px #eee; padding: 3px; margin-left: 5px;">
 
-<div style="float:left; width: 250px;">
-<h3>Current Asking Price</h3>
+<b>Last Trade</b> 
+[% IF last_trade.sell_currency == 1 %][% 1 / last_trade.price  | format('%.4f') %][% ELSE %][% last_trade.price  | format('%.4f') %][% END %]
+</div>
+[% END %]
+
 [% IF ask_buy != undef %]
-<p><b>Buy [% symbol %](Sell BTC)</b><br />
-[% 1 / ask_buy.price | format('%.6f') %] <span style="font-size:12px;color:#1B587B;">BTC</span> ea. <span style="font-size:12px;color:#1B587B;">[% symbol %]</span></p>
+<div style="float:left; border: solid 2px #eee; padding: 3px; margin-left: 5px;">
+<b>High Bid</b>
+[% 1 / ask_buy.price | format('%.4f') %]
+</div>
 [% END %]
+
 [% IF ask_sell != undef %]
-<p><b>Sell [% symbol %] (Buy BTC) </b><br />
-[% ask_sell.price %] <span style="font-size:12px;color:#1B587B;">BTC</span> ea. <span style="font-size:12px;color:#1B587B;">[% symbol %]</span></p>
+<div style="float:left; border: solid 2px #eee; padding: 3px; margin-left: 5px;">
+<b>Low Ask</b>
+[% ask_sell.price | format('%.4f') %]
+</div>
 [% END %]
+
+<div style="float:left; border: solid 2px #eee; padding: 3px; margin-left: 5px;">
+<b>Volume</b> [% nmc_7dvolume | format('%.4f')  %] <span style="font-size:12px;color:#1B587B;">[% coin.symbol %]</span>
 </div>
 
-<div style="float:left; width: 250px; height: 150px;">
-<h3>Volume (7 days)</h3>
-<p>[% btc_7dvolume | format('%.6f') %] in <span style="font-size:12px;color:#1B587B;">BTC</span></p>
-<p>[% nmc_7dvolume | format('%.6f')  %] in <span style="font-size:12px;color:#1B587B;">[% symbol %]</span></p>
-</div>
-
-<div style="float:left; width: 250px; ">
-<h3>High/Low/Avg (7 days)<br /><span style="font-size: 10px; color: gray;">(BTC per [% symbol %])</div></h3>
-<p><b>High</b> [% high %]</p>
-<p><b>Low</b> [% low %]</p>
-<p><b>Avg</b> [% avg %]</p>
-</div>
+<div style="float:left; border: solid 2px #eee; padding: 3px; margin-left: 5px;">
+<b>High</b> [% high | format('%.4f') %]</div>
+<div style="float:left; border: solid 2px #eee; padding: 3px; margin-left: 5px;">
+<b>Low</b> [% low | format('%.4f') %]</div>
+<div style="float:left; border: solid 2px #eee; padding: 3px; margin-left: 5px;">
+<b>Avg</b> [% avg | format('%.4f') %]</div>
 <div style="clear:both;"></div>

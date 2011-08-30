@@ -1,21 +1,20 @@
 <!-- BEGIN site/header -->
-<a id="logo" title="Homepage" href="/">
-  [% IF c.config.logo %]
-    <img src="[% c.config.logo %]" alt="[% c.config.name %]" />
-  [% ELSE %]
-    <div class="logo-top">[% c.config.name %]</div>
-    <div class="logo-slogan">[% c.config.slogan %] <span style="color: black;">&spades;</span>&#9825;</div>
-  [% END %]
-</a>
 
+<div style="height:15px;">
+<div style="float:left; margin-top: 5px;"><img src="/static/img/moon-xsmall.png" ></div>
+<div style="float:left;margin-top:15px;"><h1 class="title"><span style="color:#1B587B;">Moon</span><span style="color:#4080B0;">coin</span></h1></div>
+</div>
 
 <ul class='menu'>
   <li class='first'><a href='[% c.uri_for('/') %]'>Home</a></li>
-  <li class='first'><a href='[% c.uri_for('/exchange') %]'>Exchange</a></li>
-  [% IF c.user %]
+  <li class='first'><a href='[% c.uri_for('/exchange/solidcoin') %]'>Exchange</a></li>
+    [% IF c.user %]
   	|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <li><a href='[% c.uri_for('/bets/bitcoin') %]'>btcBets</a></li>
     <li><a href='[% c.uri_for('/bets/namecoin') %]'>nmcBets</a></li>
+    <li><a href='[% c.uri_for('/tables/bitcoin') %]'>Poker Tables</a></li>
+    [% END %]
+    [% IF c.user %]
     |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <li><a href='[% c.uri_for('/bets') %]'>My Bets</a></li>
     <li><a href='[% c.uri_for('/user') %]'>My Account</a></li>

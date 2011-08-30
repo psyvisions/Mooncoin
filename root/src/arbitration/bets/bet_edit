@@ -1,4 +1,6 @@
 [% META title = 'Bets' %]
+[% PROCESS shared/js_wysiwyg %]
+[% PROCESS shared/js_datepicker %]
 [% PROCESS arbitration/arbitration_submenu %]
 <div style="clear:both;"></div>
 

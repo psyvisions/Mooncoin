@@ -1,6 +1,0 @@
-<ul class='bets_submenu'>
-  [% IF coin == 3 %]
-  <li><a href='[% c.uri_for('/user/deposit/solidcoin') %]'>Deposit SLC</a></li>
-  <li><a href='[% c.uri_for('/user/withdraw/solidcoin') %]'>Withdraw SLC</a></li>  
-  [% END %]
-</ul>

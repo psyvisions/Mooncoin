@@ -1,5 +1,6 @@
 [% META title = 'Bets' %]
-
+[% PROCESS shared/js_wysiwyg %]
+[% PROCESS shared/js_datepicker %]
 <link rel="stylesheet" type="text/css" href="/static/css/anytimec.css" />
 <script type="text/javascript" src="/static/js/anytimec.js"></script>
 

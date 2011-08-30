@@ -10,6 +10,7 @@
   <li><strong>Email</strong><br />[% c.user.email %]</li>
   <li><strong>Emergency bitcoin address</strong><br />[% c.user.emergency_address %]</li>
   <li><strong>Emergency namecoin address</strong><br />[% c.user.emergency_nmc_address %]</li>
+  <li><strong>Emergency solidcoin address</strong><br />[% c.user.emergency_slc_address %]</li>
   <li><a href='[% c.uri_for('/user/hands') %]'>Hand History</a></li>
 </ul>
 </div>
@@ -20,7 +21,7 @@
 <h2>Your balance</h2>
 [% FOR balance IN c.user.balances %]
 <p>  	[% balance.amount * 100 | format('%.4f') %] Chips ([% balance.amount | format('%.4f') %] [% balance.currency.symbol %])
-      - <span><a href="/user/deposit/[% balance.currency.name %]">Deposit</a></span></p>
+      - <span><a href="/user/deposit/[% balance.currency.name %]">Refresh</a></span></p>
   [% END %]
 [% END %]
 

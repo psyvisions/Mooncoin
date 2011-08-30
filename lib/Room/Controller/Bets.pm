@@ -23,13 +23,7 @@ Catalyst Controller.
 sub auto :Private {
   my ($self, $c) = @_;
 
-  if (!$c->user && $c->action->private_path !~ /bet\/(foresight|skill)/) {
-    $c->res->redirect(
-      $c->uri_for('/user/login', '')
-    );
-    return;
-  }
-  if (!$c->user && $c->action->private_path !~ /bets\/(namecoin|bitcoin)/) {
+  if (!$c->user) {
     $c->res->redirect(
       $c->uri_for('/user/login', '')
     );
@@ -222,21 +216,18 @@ sub base :Chained('/') PathPart('bet') CaptureArgs(1) {
 sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) { 
   my ( $self, $c, $currency ) = @_;
   my $form = $c->stash->{form};
+  my $othercurrency;
   
   if($currency eq 'bitcoin'){
   $currency = 1;
+  $othercurrency = 2;
   }elsif($currency eq 'namecoin'){
   $currency = 2;
-  }elsif($currency == undef){
-    $c->res->redirect(
-      $c->uri_for('/bets')
-    );
-    $currency = 1;
+  $othercurrency = 1;
   }else{
       $c->res->redirect(
       $c->uri_for('/bets')
     );
-    $currency = 1;
   }
 
   if ($form->submitted_and_valid) {
@@ -248,12 +239,6 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
   my $category = $form->params->{bet_category};
   my $side_one = $form->params->{bet_side_one};
   my $side_two = $form->params->{bet_side_two};
-  my $othercurrency;
-  if ($currency == 1){
-  $othercurrency = 2;
-  }else{
-  $othercurrency = 1;
-  }
 
     # Create bet
     my $bet = $c->user->bets->create({
@@ -283,10 +268,9 @@ sub foresight :Path('/bet/foresight') :FormConfig CaptureArgs(1) {
       created_at => DateTime->now( time_zone => 'local' ),
     });
     
-    
   if($currency == 1){ 
-  push @{$c->flash->{messages}}, "Your bitcoin game of foresight event has been started.";
-  }elsif($currency == 2){push @{$c->flash->{messages}}, "Your namecoin game of foresight event has been started.";}  
+  push @{$c->stash->{messages}}, "Your bitcoin game of foresight event has been started.";
+  }elsif($currency == 2){push @{$c->stash->{messages}}, "Your namecoin game of foresight event has been started.";}  
     
   $c->res->redirect(
       $c->uri_for('/bet/' . $bet->serial . '/view')
@@ -354,7 +338,7 @@ sub skill :Path('/bet/skill') :FormConfig CaptureArgs(1) {
       $c->uri_for('/bets')
     );
     
-   push @{$c->flash->{messages}}, "Your bet is placed and the coins have been placed in escrow.";
+   push @{$c->stash->{messages}}, "Your bet is placed and the coins have been placed in escrow.";
   }
 }
 
@@ -383,22 +367,7 @@ sub view_bet : Chained('base') PathPart('view') Args(0) :FormConfig{
      bet_serial => $bet->serial,
      side => 1,}, {order_by => { 
         -desc => 'created_at' } });
-  
-     ## Total side one amount
-     $c->stash->{userbets_s_one_total} = $c->model("PokerNetwork::User2bet")->search({ 
-     bet_serial => $bet->serial, side => 1}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
-     my $row_one = $c->stash->{userbets_s_one_total}->first;
-
-     $c->stash->{total_side_one} = $row_one->get_column('total_amount');
-     ## Total side two amount
-     $c->stash->{userbets_s_two_total} = $c->model("PokerNetwork::User2bet")->search({ 
-     bet_serial => $bet->serial, side => 2}, {'+select' => [{ SUM => 'amount' }],'+as' => [qw/total_amount/], });
-           
-     my $row_two = $c->stash->{userbets_s_two_total}->first;
-
-     $c->stash->{total_side_two} = $row_two->get_column('total_amount');  
- 
+   
      $c->stash->{userbets_s_two} = $c->model("PokerNetwork::User2bet")->search({ 
      bet_serial => $bet->serial,
      side => 2,
@@ -445,7 +414,7 @@ sub view_bet : Chained('base') PathPart('view') Args(0) :FormConfig{
       created_at => DateTime->now( time_zone => 'local' ),
     });
     
-     push @{$c->flash->{messages}}, "You have placed a bet on side " . $side . " for " . $amount . " mooncoins.";
+     push @{$c->stash->{messages}}, "You have placed a bet on side " . $side . " for " . $amount . " mooncoins.";
 }
        $c->res->redirect(
       $c->uri_for('/bet/' . $bet->serial . '/view')
@@ -483,7 +452,7 @@ sub delete :Chained('base') :PathPart('delete') :Args(0) {
   
   $dd->delete;
  
-  push @{$c->flash->{messages}}, "Your bet has been canceled and your coins has been returned.";
+  push @{$c->stash->{messages}}, "Your bet has been canceled and your coins has been returned.";
   };  
   $c->res->redirect(
       $c->uri_for('/bets')
@@ -493,12 +462,12 @@ sub delete :Chained('base') :PathPart('delete') :Args(0) {
 
     $bet->delete;
  
-    push @{$c->flash->{messages}}, "The event has been deleted.";
+    push @{$c->stash->{messages}}, "The event has been deleted.";
     $c->res->redirect(
       $c->uri_for('/bets')
     );
 }else{
-push @{$c->flash->{messages}}, "A bet has been placed on this event, therefore it can no longer be deleted.";
+push @{$c->stash->{messages}}, "A bet has been placed on this event, therefore it can no longer be deleted.";
 
       $c->res->redirect(
       $c->uri_for('/bets')
@@ -521,7 +490,7 @@ sub challenge :Chained('base') :PathPart('challenge') {
   $c->stash->{current_balance} = floor($balance->amount * 100) / 100;
   if($balance->amount < ( $amount / 100 )){
   
-  push @{$c->flash->{messages}}, "You don't have enough funds to accept the challenge.";
+  push @{$c->stash->{messages}}, "You don't have enough funds to accept the challenge.";
   $c->res->redirect(
     $c->uri_for('/bet/' . $c->stash->{bet}->id . '/view')
   );
@@ -536,19 +505,19 @@ sub challenge :Chained('base') :PathPart('challenge') {
   $c->stash->{bet}->challenged_at(DateTime->now( time_zone => 'local' ));
   $c->stash->{bet}->update();
 
-  push @{$c->flash->{messages}}, "You have accepted the challenge, the coins have been put into escrow.";
+  push @{$c->stash->{messages}}, "You have accepted the challenge, the coins have been put into escrow.";
   $c->res->redirect(
     $c->uri_for('/bet/' . $c->stash->{bet}->id . '/view')
   );
   }
   elsif( $c->stash->{bet}->type == 1 ){
-   push @{$c->flash->{messages}}, "Wrong bet type. Your actions are being logged.";
+   push @{$c->stash->{messages}}, "Wrong bet type. Your actions are being logged.";
   $c->res->redirect(
     $c->uri_for('/bet/' . $c->stash->{bet}->id . '/view')
   );
 
   }else {
-  push @{$c->flash->{messages}}, "This bet already has a challenger.";
+  push @{$c->stash->{messages}}, "This bet already has a challenger.";
   $c->res->redirect(
     $c->uri_for('/bet/' . $c->stash->{bet}->id . '/view')
   );
@@ -566,7 +535,7 @@ sub comment :Chained('base') :PathPart('comment') :FormConfig{
     );
      }else{
        if($bet->type == 2 and ($c->user->serial != $bet->user_serial and $c->user->serial != $bet->challenger_serial)){
-      push @{$c->flash->{messages}}, "You must be a participant to comment on this type.";
+      push @{$c->stash->{messages}}, "You must be a participant to comment on this type.";
     $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
   }
   my $form = $c->stash->{form};
@@ -580,7 +549,7 @@ sub comment :Chained('base') :PathPart('comment') :FormConfig{
       user_serial => $c->user->serial,
       comment => $comment,
     });
-    push @{$c->flash->{messages}}, "You have published a comment.";
+    push @{$c->stash->{messages}}, "You have published a comment.";
     $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
   };   
   }
@@ -607,7 +576,7 @@ sub comment_edit :Chained('base') :PathPart('editcom') :Args(1) :FormConfig{
   
     $c->stash->{comment}->update();
   
-  push @{$c->flash->{messages}}, "This comment has been edited.";
+  push @{$c->stash->{messages}}, "This comment has been edited.";
   $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
   }
 }
@@ -638,16 +607,16 @@ sub status :Chained('base') :PathPart('status') :FormConfig{
        $c->stash->{bet}->user_status($status);
  	   $c->stash->{bet}->u_status_at(DateTime->now( time_zone => 'local' ));
   	   $c->stash->{bet}->update();
-  	   push @{$c->flash->{messages}}, "You have updated your status in this game.";
+  	   push @{$c->stash->{messages}}, "You have updated your status in this game.";
      }
      elsif( $c->user->serial == $c->stash->{bet}->challenger_serial and $c->stash->{bet}->challenger_status == NULL){
        $c->stash->{bet}->challenger_status($status);
  	   $c->stash->{bet}->c_status_at(DateTime->now( time_zone => 'local' ));
   	   $c->stash->{bet}->update();
-  	   push @{$c->flash->{messages}}, "You have updated your status in this game.";
-     }else{push @{$c->flash->{messages}}, "Your status was NOT updated.";};
+  	   push @{$c->stash->{messages}}, "You have updated your status in this game.";
+     }else{push @{$c->stash->{messages}}, "Your status was NOT updated.";};
   }
-  else{push @{$c->flash->{messages}}, "Your status was NOT updated.";};  
+  else{push @{$c->stash->{messages}}, "Your status was NOT updated.";};  
   $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
   };
   }
@@ -690,7 +659,7 @@ sub report :Chained('base') :PathPart('report') :FormConfig{
         body => $message,
     );  
         
-    push @{$c->flash->{messages}}, "You have reported an issue regarding this bet.";
+    push @{$c->stash->{messages}}, "You have reported an issue regarding this bet.";
     $c->res->redirect($c->uri_for('/bet/' . $c->stash->{bet}->id . '/view'));
   };
 }

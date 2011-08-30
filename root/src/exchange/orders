@@ -2,7 +2,7 @@
 [% PROCESS exchange/exchange_submenu %]
 <div style="clear:both;"></div>
 <h2>Current Orders</h2>
-<p>Here you can view your current active trades.</p>
+<p>Here you can view your current active [% coin.name %] trades.</p>
 <div>
 <div style="float:center;">
 <table id="hor-minimalist-b" style="width:960; margin-left: auto; margin-right: auto;">
@@ -12,11 +12,11 @@
 <tbody>
 [% WHILE (order = orders.next) %]
 <tr>
-<td>[% order.amount %] [% SWITCH order.sell_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</td>
-<td>[% order.price %] [% SWITCH order.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]<br />
-( [% ( 1 / order.price ) | format('%.8f') %] [% SWITCH order.buy_currency %][% CASE 2 %]BTC[% CASE 1 %]NMC[% CASE 3 %]BTC[% END %] )
+<td>[% order.balance %] [% IF order.sell_currency == 1 %]BTC[% ELSE %][% coin.symbol %][% END %]</td>
+<td>[% order.price %] [% IF order.buy_currency == 1 %]BTC[% ELSE %][% coin.symbol %][% END %]<br />
+( [% ( 1 / order.price ) | format('%.8f') %] [% IF order.buy_currency == 2 %]BTC[% ELSE %][% coin.symbol %][% END %] )
 </td>
-<td>[% order.amount * order.price %] [% SWITCH order.buy_currency %][% CASE 1 %]BTC[% CASE 2 %]NMC[% CASE 3 %]SLC[% END %]</td>
+<td>[% order.amount * order.price %] [% IF order.buy_currency == 1 %]BTC[% ELSE %][% coin.symbol %][% END %]</td>
 <td>[% order.created_at %]</td>
 <td><a href="/exchange/order/[% order.serial %]/cancel">Cancel</a></td>
 </tr>

@@ -1,4 +1,6 @@
 [% META title = 'Foresight' %]
+[% PROCESS shared/js_wysiwyg %]
+
 [% PROCESS bets/bets_submenu %]
 <div style="clear:both;"></div>
 <div class='right_column' style="height: 350px;">
@@ -22,6 +24,7 @@
 
 [% form %]
 
+[% PROCESS shared/js_datepicker %]
 <script type="text/javascript">
 $(document).ready(function(){
 $("#betcal2").val("").attr("disabled","disabled");

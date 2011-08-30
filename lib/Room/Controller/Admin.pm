@@ -251,7 +251,7 @@ sub withdrawal_info :Chained('withdrawal_base') :PathPart('info') :Args(0) {
   );
   $c->stash->{withdrawal}->update();
   
-  push @{$c->flash->{messages}}, "Order additional info updated.";
+  push @{$c->stash->{messages}}, "Order additional info updated.";
 
   $c->res->redirect(
     $c->uri_for('/admin/withdrawal/' . $c->stash->{withdrawal}->id)
@@ -272,14 +272,14 @@ sub withdrawal_reprocess :Chained('withdrawal_base') :PathPart('reprocess') :Arg
       $withdrawal->processed(1);
       $withdrawal->update();
 
-      push @{$c->flash->{messages}}, "Order reprocessed. Bitcoins sent.";
+      push @{$c->stash->{messages}}, "Order reprocessed. Bitcoins sent.";
     }
     else {
-      push @{$c->flash->{errors}}, "Bitcoins not sent. Here is daemon answer: <pre>\n" . Dumper($result);
+      push @{$c->stash->{errors}}, "Bitcoins not sent. Here is daemon answer: <pre>\n" . Dumper($result);
     }
   }
   else {
-    push @{$c->flash->{errors}}, "Currently, only one currency supported. Currency serial should be equal 1.";
+    push @{$c->stash->{errors}}, "Currently, only one currency supported. Currency serial should be equal 1.";
   }
   
    # Hardcoded to handle only Namecoins right now
@@ -292,14 +292,14 @@ sub withdrawal_reprocess :Chained('withdrawal_base') :PathPart('reprocess') :Arg
       $withdrawal->processed(1);
       $withdrawal->update();
 
-      push @{$c->flash->{messages}}, "Order reprocessed. Namecoins sent.";
+      push @{$c->stash->{messages}}, "Order reprocessed. Namecoins sent.";
     }
     else {
-      push @{$c->flash->{errors}}, "Namecoins not sent. Here is daemon answer: <pre>\n" . Dumper($result);
+      push @{$c->stash->{errors}}, "Namecoins not sent. Here is daemon answer: <pre>\n" . Dumper($result);
     }
   }
   else {
-    push @{$c->flash->{errors}}, "Currently, only one currency supported. Currency serial should be equal 1.";
+    push @{$c->stash->{errors}}, "Currently, only one currency supported. Currency serial should be equal 1.";
   }
  
   $c->res->redirect(
@@ -319,7 +319,7 @@ sub mark_processed :Chained('mark') :PathPart('processed') {
   $c->stash->{withdrawal}->processed(1);
   $c->stash->{withdrawal}->update();
 
-  push @{$c->flash->{messages}}, "Withdrawal marked processed.";
+  push @{$c->stash->{messages}}, "Withdrawal marked processed.";
   $c->res->redirect(
     $c->uri_for('/admin/withdrawal/' . $c->stash->{withdrawal}->id)
   );
@@ -332,7 +332,7 @@ sub mark_unprocessed :Chained('mark') :PathPart('unprocessed') {
   $c->stash->{withdrawal}->processed(undef);
   $c->stash->{withdrawal}->update();
 
-  push @{$c->flash->{messages}}, "Withdrawal marked unprocessed.";
+  push @{$c->stash->{messages}}, "Withdrawal marked unprocessed.";
   $c->res->redirect(
     $c->uri_for('/admin/withdrawal/' . $c->stash->{withdrawal}->id)
   );
@@ -345,7 +345,7 @@ sub mark_canceled :Chained('mark') :PathPart('canceled') {
   $c->stash->{withdrawal}->processed( -1 );
   $c->stash->{withdrawal}->update();
   
-  push @{$c->flash->{messages}}, "Order canceled.";
+  push @{$c->stash->{messages}}, "Order canceled.";
   $c->res->redirect(
     $c->uri_for('/admin/withdrawal/' . $c->stash->{withdrawal}->id)
   );

@@ -35,6 +35,8 @@ __PACKAGE__->add_columns(
   { data_type => "FLOAT", default_value => undef, is_nullable => 0, size => 32 },  
   "price",
   { data_type => "FLOAT", default_value => undef, is_nullable => 0, size => 32 },
+  "bought",
+  { data_type => "FLOAT", default_value => undef, is_nullable => 0, size => 32 },
    "created_at",
   {
     data_type => "DATETIME",

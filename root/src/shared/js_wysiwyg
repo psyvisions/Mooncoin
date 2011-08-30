@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="/static/js/jquery.wysiwyg.css" type="text/css" />
+<script type="text/javascript" src="/static/js/jquery.wysiwyg.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('#wysiwyg').wysiwyg({
+    controls: {
+        removeFormat: { visible: false },
+        insertImage: { visible: false },
+        subscript: { visible: false },
+        superscript: { visible: false },
+        h1: { visible: false },
+        h2: { visible: false },
+        insertOrderedList: { visible: false },
+        insertUnorderedList: { visible: false },
+        insertHorizontalRule: { visible: false },
+        outdent: { visible: false },
+    }
+});
+});
+</script>

@@ -41,12 +41,9 @@ sub auto :Private {
 =cut
 
 sub index :Path :Args(0) {
-    my ( $self, $c ) = @_;
-
-    $c->forward('deposit_bitcoin_refresh');
-    $c->forward('deposit_namecoin_refresh');
-   
-   ##Initialize bitcoins  
+  my ( $self, $c ) = @_;
+  
+  ##Initialize bitcoins  
   my $btc_balance = $c->user->balances->search({currency_serial => 1})->first;
 
   if (! $btc_balance) {
@@ -63,6 +60,13 @@ sub index :Path :Args(0) {
     $nmc_balance->update();
   }
   
+  my $slc_balance = $c->user->balances->search({currency_serial => 3})->first;
+  if (! $slc_balance) {
+    $slc_balance = $c->user->balances->find_or_create({ currency_serial => 3 });
+    $slc_balance->amount(0);
+    $slc_balance->update();
+  }
+  
 }
 
 sub profile :Local :CaptureArgs(1) {
@@ -75,8 +79,6 @@ sub user_view :Chained('profile') :PathPart('profile') :Args(0) {
   my ($self, $c) = @_;
 
 }
-
-
 
 sub login :Local :Args(0) :FormConfig {
     my ( $self, $c ) = @_;
@@ -104,9 +106,10 @@ sub login :Local :Args(0) :FormConfig {
 
           return 1;
         }
-        
+
         $c->res->redirect(
           $c->uri_for('/user')
+          
         );
       }
       else {
@@ -124,15 +127,12 @@ sub logout :Local :Args(0) {
   $c->model("PokerNetwork")->logout(
     $c->session->{pokernetwork_auth}
   );
-  $c->session->{pokernetwork_auth} = undef;
-  
-  push @{$c->flash->{messages}}, "Logged out. Good bye.";
 
+  push @{$c->stash->{messages}}, "Logged out. Good bye.";
   $c->res->redirect(
     $c->uri_for('/')
   );
 }
-
 
 sub register :Local :Args(0) :FormConfig {
   my ( $self, $c ) = @_;
@@ -169,7 +169,7 @@ sub register :Local :Args(0) :FormConfig {
       $user->email( $form->params->{email} );
     }
     $user->insert();
-    push @{$c->flash->{messages}}, "Account successfully created. Please, login with your details.";
+    push @{$c->stash->{messages}}, "Account successfully created. Please, login with your details.";
     $c->res->redirect(
       $c->uri_for('/user/login')
     );
@@ -235,7 +235,7 @@ sub reset_password :Local :Args(2) :FormConfig {
     $user->password( $form->params->{password} );
     $user->update();
     
-    push @{$c->flash->{messages}}, "Password successfully reset.";
+    push @{$c->stash->{messages}}, "Password successfully reset.";
 
     $c->res->redirect(
       $c->uri_for('/user/login')
@@ -263,6 +263,11 @@ sub edit :Local :Args(0) :FormConfig {
   $form->get_field({name => 'emergency_nmc_address'})->default(
     $c->user->emergency_nmc_address
   );
+  
+  $form->get_field({name => 'emergency_slc_address'})->default(
+    $c->user->emergency_slc_address
+  );
+
 
   # If 'Cancel' button pressed - redirect to /user page
   if ($c->req->param('cancel')) {
@@ -307,17 +312,20 @@ sub edit :Local :Args(0) :FormConfig {
     $c->user->hide_gravatar( $form->params->{hide_gravatar} );
     $c->user->emergency_address( $form->params->{emergency_address} );
     $c->user->emergency_nmc_address( $form->params->{emergency_nmc_address} );
+    $c->user->emergency_slc_address( $form->params->{emergency_slc_address} );
 
     $c->user->update();
     $c->user->make_column_dirty('data');
 
-    push @{$c->flash->{messages}}, "Account successfully updated.";
+    push @{$c->stash->{messages}}, "Account successfully updated.";
 
     $c->res->redirect(
       $c->uri_for('/user')
     );
   }
 }
+
+sub deposit :Local { }
 
 sub deposit_bitcoin :Path('deposit/bitcoin') {
   my ( $self, $c ) = @_;
@@ -456,6 +464,7 @@ sub deposit_solidcoin_refresh :Private {
   }
 }
 
+sub withdraw :Local { }
 
 sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
   my ($self, $c) = @_;
@@ -507,9 +516,9 @@ sub withdraw_bitcoin :Path('withdraw/bitcoin') :FormConfig {
       $withdrawal->processed_at( DateTime->now() );
       }else{$withdrawal->processed(0);}
       $withdrawal->update();
-      push @{$c->flash->{messages}}, "Bitcoins sent.";
+      push @{$c->stash->{messages}}, "Bitcoins sent.";
     }else{
-      push @{$c->flash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive bitcoins in 24 hours, please contact us.";
+      push @{$c->stash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive bitcoins in 24 hours, please contact us.";
     }
     
     $c->res->redirect(
@@ -569,11 +578,11 @@ sub withdraw_namecoin :Path('withdraw/namecoin') :FormConfig {
       }else{$withdrawal->processed(0);}
       $withdrawal->update();
 
-      push @{$c->flash->{messages}}, "Namecoins sent.";
+      push @{$c->stash->{messages}}, "Namecoins sent.";
 
     }
     else {
-      push @{$c->flash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive namecoins in 24 hours, please contact us.";
+      push @{$c->stash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive namecoins in 24 hours, please contact us.";
     }
     
     $c->res->redirect(
@@ -635,11 +644,11 @@ sub withdraw_solidcoin :Path('withdraw/solidcoin') :FormConfig {
       }else{$withdrawal->processed(0);}
       $withdrawal->update();
 
-      push @{$c->flash->{messages}}, "Solidcoins sent.";
+      push @{$c->stash->{messages}}, "Solidcoins sent.";
 
     }
     else {
-      push @{$c->flash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive solidcoins in 24 hours, please contact us.";
+      push @{$c->stash->{errors}}, "We received your withdrawal request and will process it ASAP. If you will not receive solidcoins in 24 hours, please contact us.";
     }
     
     $c->res->redirect(

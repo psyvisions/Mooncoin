@@ -131,7 +131,7 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
   $c->stash->{bet}->active('2');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
-   push @{$c->flash->{messages}}, "Author Won!";
+   push @{$c->stash->{messages}}, "Author Won!";
   }
   elsif( $bet->user_status == '2' and $bet->challenger_status == '1' ){
   my $amount = $amount * 2;
@@ -148,7 +148,7 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
   $c->stash->{bet}->active('3');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
-  push @{$c->flash->{messages}}, "Challenger Won!";
+  push @{$c->stash->{messages}}, "Challenger Won!";
   }
   elsif($bet->user_status == '3' and $bet->challenger_status == '3'){
   my $c_balance = $c->stash->{bet}->challenger->balances->search({currency_serial => $bet->currency_serial})->first;
@@ -175,11 +175,11 @@ sub bet_process :Chained('bet_base') :PathPart('process') :Args(0) {
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
     
-  push @{$c->flash->{messages}}, "Draw";
+  push @{$c->stash->{messages}}, "Draw";
   
   }
   else{
-  push @{$c->flash->{messages}}, "Can't determine conclusion.";
+  push @{$c->stash->{messages}}, "Can't determine conclusion.";
   }
   
    my $arb_assign = $c->model('PokerNetwork::Arb2section')->search({user_serial => $c->user->serial, category => $bet->category, type => $bet->type,})->first;
@@ -286,7 +286,7 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
   
-   push @{$c->flash->{messages}}, "Side One wins!" . $result;
+   push @{$c->stash->{messages}}, "Side One wins!" . $result;
     
     $c->res->redirect(
       $c->uri_for('/user/arbitrator/bet/' . $bet->serial . '/view')
@@ -341,7 +341,7 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
   
-   push @{$c->flash->{messages}}, "Side 2 wins ! " . $result;
+   push @{$c->stash->{messages}}, "Side 2 wins ! " . $result;
     
     $c->res->redirect(
       $c->uri_for('/user/arbitrator/bet/' . $bet->serial . '/view')
@@ -370,7 +370,7 @@ sub determine :Chained('bet_base') :PathPart('determine') :FormConfig{
     $c->stash->{bet}->finished_at(DateTime->now);
     $c->stash->{bet}->update();
     
-    push @{$c->flash->{messages}}, "Draw, everyone received their funds.";
+    push @{$c->stash->{messages}}, "Draw, everyone received their funds.";
     
     $c->res->redirect(
       $c->uri_for('/user/arbitrator/bet/' . $bet->serial . '/view')
@@ -397,7 +397,7 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   my $fees;
   my $amount_due;
    if($bet->active != undef){
-   push @{$c->flash->{messages}}, "You already concluded this bet. Please don't try to process a bet twice.";
+   push @{$c->stash->{messages}}, "You already concluded this bet. Please don't try to process a bet twice.";
    $c->res->redirect(
    $c->uri_for('/user/arbitrator/bets')
    );}
@@ -425,7 +425,7 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   $c->stash->{bet}->active('0');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
-   push @{$c->flash->{messages}}, "Author Won!";
+   push @{$c->stash->{messages}}, "Author Won!";
   }
   elsif( $result == '2' ){
   my $amount = $amount * 2;
@@ -444,7 +444,7 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   $c->stash->{bet}->active('0');
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
-  push @{$c->flash->{messages}}, "Challenger Won!";
+  push @{$c->stash->{messages}}, "Challenger Won!";
   }
   elsif( $result == '3' ){
   my $c_balance = $c->stash->{bet}->challenger->balances->search({currency_serial => $bet->currency_serial})->first;
@@ -473,10 +473,10 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
     
-  push @{$c->flash->{messages}}, "Draw";
+  push @{$c->stash->{messages}}, "Draw";
   }
   else{
-  push @{$c->flash->{messages}}, "Can't determine conclusion.";
+  push @{$c->stash->{messages}}, "Can't determine conclusion.";
   }
   
   my $arb_assign = $c->model('PokerNetwork::Arb2section')->search({user_serial => $c->user->serial, category => $bet->category, type => $bet->type,})->first;
@@ -495,7 +495,7 @@ sub choose :Chained('bet_base') :PathPart('choose') :FormConfig{
       $c->uri_for('/user/arbitrator/bet/' . $bet->serial . '/view')
     );
   }  }else{
-  push @{$c->flash->{messages}}, "Wrong bet type.";
+  push @{$c->stash->{messages}}, "Wrong bet type.";
   $c->res->redirect(
       $c->uri_for('/user/arbitrator/bet/' . $bet->serial . '/view')
     );
@@ -552,7 +552,7 @@ sub bet_cancel :Chained('bet_base') :PathPart('cancel') :Args(0) {
   
   $bet->delete;
 
-  push @{$c->flash->{messages}}, "The bet has been cancelled and the coins have been returned." ;
+  push @{$c->stash->{messages}}, "The bet has been cancelled and the coins have been returned." ;
   
   $c->res->redirect(
       $c->uri_for('/user/arbitrator/bets')
@@ -566,7 +566,7 @@ sub bet_freeze :Chained('bet_base') :PathPart('freeze') :Args(0) {
   $c->stash->{bet}->finished_at(DateTime->now);
   $c->stash->{bet}->update();
   
-  push @{$c->flash->{messages}}, "This bet has been cancelled and a the coins have been frozen.";
+  push @{$c->stash->{messages}}, "This bet has been cancelled and a the coins have been frozen.";
   
   $c->res->redirect(
       $c->uri_for('/user/arbitrator/bet/' . $bet->serial . '/view')
@@ -624,7 +624,7 @@ sub bet_edit :Chained('bet_base') :PathPart('edit') :Args(0) :FormConfig {
     
    $c->stash->{bet}->update();
   
-    push @{$c->flash->{messages}}, "This bet has been edited.";
+    push @{$c->stash->{messages}}, "This bet has been edited.";
   
   $c->res->redirect(
       $c->uri_for('/user/arbitrator/bet/' . $c->stash->{bet}->serial . '/view')
@@ -640,7 +640,7 @@ sub comment_delete :Chained('bet_base') :PathPart('delcom') :Args(1) {
   $c->stash->{comment} = $c->model("PokerNetwork::Comments")->search({serial => $id})->first;
   $c->stash->{comment}->delete;
   
-  push @{$c->flash->{messages}}, "This comment has been deleted.";
+  push @{$c->stash->{messages}}, "This comment has been deleted.";
   
   $c->res->redirect(
       $c->uri_for('/user/arbitrator/bet/' . $c->stash->{bet}->serial . '/view')

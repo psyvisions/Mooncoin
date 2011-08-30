@@ -7,7 +7,6 @@ use Digest::MD5 qw(md5_hex);
 
 BEGIN { extends 'Catalyst::Controller' }
 
-#
 # Sets the actions in this controller to be registered with no prefix
 # so they function identically to actions created in MyApp.pm
 #
@@ -30,46 +29,18 @@ The root page (/)
 =cut
 
 sub index :Path :Args(0) {
-    my ( $self, $c ) = @_;
-    my $tables_rs = $c->model("PokerNetwork::Pokertables")->search({
-                                currency_serial => 1,
-                                tourney_serial => 0,
-                          },
-                          {
-                                order_by => {
-                                  -desc => 'players',
-                                },
-                                page => 1,
-                                rows => 1,
-                          });
+  my ( $self, $c ) = @_;
 
-  my $table = $tables_rs->first;
-
-  if ($table->players > 4) {
-     $c->stash->{table} = $table;
-  }
-   
   ## bets on front page
   $c->stash->{bets} = $c->model("PokerNetwork::Bets")->search({
   active => undef,
   currency_serial => 1,
   }, { 
-      rows => 10,
+      rows => 12,
       order_by => { 
         -desc => 'amount' 
       } 
   });
-  
-  $c->stash->{nmc_bets} = $c->model("PokerNetwork::Bets")->search({
-  active => undef,
-  currency_serial => 2,
-  }, { 
-      rows => 10,
-      order_by => { 
-        -desc => 'amount' 
-      } 
-  });
-  
 }
 
 sub archives :Local { }
@@ -83,18 +54,16 @@ sub auto :Path {
       $c->res->body('Working on updates. Should be up and running shortly.');
     }
 
-
     if ($c->user) {
       if (!$c->session->{pokernetwork_auth}) {
         $c->session->{pokernetwork_auth} = $c->sessionid;
       }
-      
+
       $c->model("PokerNetwork")->set_user_id_by_auth(
         $c->user->serial,
         $c->session->{pokernetwork_auth}
       );
     }
-
     1;
 }
 
@@ -115,8 +84,6 @@ sub AVATAR :Global :Args(1) {
   }
 }
 
-
-
 sub credits :Local {}
 sub contactus :Local {}
 sub fees :Local {}
@@ -129,7 +96,7 @@ Standard 404 error page
 
 sub default :Path {
     my ( $self, $c ) = @_;
-    $c->response->body( 'Page not found' );
+    $c->response->body( 'Page not found. Nothing but inky black stuff.' );
     $c->response->status(404);
 }
 

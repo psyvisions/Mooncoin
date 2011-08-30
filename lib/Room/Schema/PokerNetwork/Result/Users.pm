@@ -195,42 +195,34 @@ return false value.
 sub check_password {
     my ($self, $password) = @_;
     my $result;
-
     eval {
         $result = $self->_check_password_blowfish($password);
     };
-
     if (!$result) {
         $result = $self->password eq sha1_hex($password);
     }
-
     return $result;
 }
 
 
 sub get_bitcoin_deposit_address {
   my ($self) = @_;
-
+  if (! $self->data->bitcoin_address) {
+  }
   return $self->data->bitcoin_address;
 }
 
 sub get_namecoin_deposit_address {
   my ($self) = @_;
-
-  if (! $self->data->namecoin_address) {
-    
+  if (! $self->data->namecoin_address) { 
   }
-
   return $self->data->namecoin_address;
 }
 
 sub get_solidcoin_deposit_address {
   my ($self) = @_;
-
   if (! $self->data->solidcoin_address) {
-    
   }
-
   return $self->data->solidcoin_address;
 }
 

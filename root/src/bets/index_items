@@ -7,10 +7,10 @@
 
 <div class="inflate" style="float:left; padding: 8px 3px 3px 8px; color:#1B587B; font-size: medium;">[% bet.side_one | truncate(25) %]</div>
 
-<div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #1B587B; color: #fff; width: auto; padding: 3px 8px 3px 8px; margin: 5px;">[% bet.get_total_s1 | format('%.2f') %]</div>
+<div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #1B587B; color: #fff; width: auto; padding: 3px 8px 3px 8px; margin: 5px;">[% bet.get_total(1) | format('%.2f') %]</div>
 
 <div class="inflate" style="float:left; padding: 8px 3px 3px 8px; color:#4080B0; font-size: medium;">[% bet.side_two | truncate(25) %]</div>
-<div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #4080B0; color: #eee; width: auto; padding: 3px 8px 3px 8px; margin: 5px;">[% bet.get_total_s2 | format('%.2f') %]</div>
+<div style="float: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius:10px; background-color: #4080B0; color: #eee; width: auto; padding: 3px 8px 3px 8px; margin: 5px;">[% bet.get_total(2) | format('%.2f') %]</div>
 
 <div style="float:right;">
 [% IF bet.deadline_passed == 0 %]<span style="color: gray;">Time left</span>[% END %] 

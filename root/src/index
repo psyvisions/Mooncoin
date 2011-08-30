@@ -1,35 +1,26 @@
 [% META title = 'Bitcoin Poker Room' %]
-
 <div class='right_column'>
 <h2 style="color:#1B587B;">News</h2>
-8/23/2011 - <b>Exchange Updates</b></br>
-<p>Mooncoin has added a solidcoin exchange and during that process has done a lot of updates to the exchange in general. You now have more fine grain control over your trades and the charts should be more relevant.</p>
+8/23/2011 - <b>Bcrypt!</b></br>
+<p>Mooncoin puts serious thought into the security of our users, so we have took enabled bcrypt for password encryption. This method is much better then a SHA-256 + Salt. Just remember to update your passwords on the user page!</p>
 <p><a href="/archives">See Archives</a></p>
 <h2 style="color:#1B587B;">Feedback</h2>
 
 <p>Any suggestions are also welcome. Please, send any questions, suggestions, and comments to <a href="mailto:mrmooncoin@gmail.com">mrmooncoin@gmail.com</a></p>
+
+<div align="center">
+<span style="color: gray; font-size:xx-small;">Mooncoin is supported by</span>
+<a href="http://bitbrew.net"><img style="border: 2px solid #596D71;" src="/static/img/supporters/bitbrew.png"></a></div>
 </div>
 
 <div class='main_content'>
-
-  [% IF table %]
-  <h3>Poker Live Show</h3>
-  <iframe src='/static/table.html?game_id=[% table.serial %]&auth=N' width='763' height='532' style='border: none' scrolling='no' frameborder="0"></iframe>
-  [% END %]
-  <p><span style="color:#4080B0; font-size: large;">Welcome</span>, you have stumbled upon a betting site for virtual currencies. You can participate in tournaments or matches in your favorite games for virtual currencies, or bet on professional level tournaments, political events as well as other items.</p><p>You can begin playing as soon as you register an account and transfer some recently mined bitcoins or namecoins into it. Since we support multiple currencies, we also have a virtual currency exchange which will allow you to participate in any bet on the site.</p>
-[% count = 0 %]
+<p><span style="color:#4080B0; font-size: large;">Welcome</span>, you have stumbled upon a betting site for virtual currencies. You can participate in tournaments or matches in your favorite games for virtual currencies, or bet on professional level tournaments, political events as well as other items.</p><p>You can begin playing as soon as you register an account and transfer some recently mined bitcoins or namecoins into it. Since we support multiple currencies, we also have a virtual currency exchange which will allow you to participate in any bet on the site.</p>
 </div>
+
 <h2>Popular Bitcoin Bets</h2>
 [% WHILE (bet = bets.next) %] 
 <div style="height: auto; width: 760px; margin:5px; border-bottom: solid 1px; padding: 0px 0 5px 0;">
 [% PROCESS bets/index_items %]
 </div>
 [% END %]
-<h2>Popular Namecoin Bets</h2>
-[% WHILE (bet = nmc_bets.next) %] 
-<div style="height: auto; width: 760px; margin:5px; border-bottom: solid 1px; padding: 0px 0 5px 0;">
-[% PROCESS bets/index_items %]
-</div>
-[% END %]
 <div class="clear"></div>
-

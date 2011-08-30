@@ -5,13 +5,13 @@
 $(document).ready(function(){
 
   [% IF last_trade != undef %]
-  var price = [% 1 / last_trade.price | format('%.8f')%];
+  var price = [% 1 / last_trade.price | format('%.4f')%];
   [% SWITCH last_trade.sell_currency %]
   [% CASE 1 %]
   $("#price_form").val(price);
   $("#price").html(price);
   $("#price_other").html(price);
-  [% CASE coin %]
+  [% CASE coin.serial %]
   $("#price_form").val([% last_trade.price %]);
   $("#price").html([% last_trade.price %]);
   $("#price_other").html([% last_trade.price %]);    
@@ -19,17 +19,17 @@ $(document).ready(function(){
   
   [% END %]
   $("#buy_currency").html('&nbsp;'+'BTC');
-  $("#buy_currency_other").html('&nbsp;'+'[% symbol %]'+'&nbsp;'+'ea.'+'&nbsp;'+'BTC');
+  $("#buy_currency_other").html('&nbsp;'+'[% coin.symbol %]'+'&nbsp;'+'ea.'+'&nbsp;'+'BTC');
   $("select[name=trade_sell]").change(function(){
   var sCurr =parseInt($(this).val());
   if(sCurr == 1){
   $("#sell_currency").html('&nbsp;'+'BTC');
-  $("select[name=trade_buy]").val([% coin %]) 
-  $("#buy_currency_total").html('&nbsp;'+'[% symbol %]');
-  $("#fee_currency").html('&nbsp;'+'[% symbol %]');
+  $("select[name=trade_buy]").val([% coin.serial %]) 
+  $("#buy_currency_total").html('&nbsp;'+'[% coin.symbol %]');
+  $("#fee_currency").html('&nbsp;'+'[% coin.symbol %]');
   }
-  if(sCurr == [% coin %]){
-  $("#sell_currency").html('&nbsp;'+'[% symbol %]');
+  if(sCurr == [% coin.serial %]){
+  $("#sell_currency").html('&nbsp;'+'[% coin.symbol %]');
   $("select[name=trade_buy]").val(1)
   $("#buy_currency_total").html('&nbsp;'+'BTC');
   $("#fee_currency").html('&nbsp;'+'BTC');
@@ -44,12 +44,12 @@ $(document).ready(function(){
   if(sCurr == 1){
   $("#buy_currency_total").html('&nbsp;'+'BTC');
   $("#fee_currency").html('&nbsp;'+'BTC');
-  $("select[name=trade_sell]").val([% coin %])
-  $("#sell_currency").html('&nbsp;'+'[% symbol %]');
+  $("select[name=trade_sell]").val([% coin.serial %])
+  $("#sell_currency").html('&nbsp;'+'[% coin.symbol %]');
   }
-  if(sCurr == [% coin %]){
-  $("#buy_currency_total").html('&nbsp;'+'[% symbol %]');
-  $("#fee_currency").html('&nbsp;'+'[% symbol %]');
+  if(sCurr == [% coin.serial %]){
+  $("#buy_currency_total").html('&nbsp;'+'[% coin.symbol %]');
+  $("#fee_currency").html('&nbsp;'+'[% coin.symbol %]');
   $("select[name=trade_sell]").val(1)
   $("#sell_currency").html('&nbsp;'+'BTC');
   }
@@ -97,7 +97,7 @@ function updateTotals(){
     if(hold == 1 && valTwo != 0){
       total = valOne * ( 1 / valTwo );
     }
-    else if(hold == [% coin %]){
+    else if(hold == [% coin.serial %]){
       total = valOne * valTwo;
     }else{total = 0;}
 

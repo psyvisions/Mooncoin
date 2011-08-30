@@ -36,6 +36,11 @@ elements:
     label: Emergency NMC address
     comment: YOUR namecoin address where funds should be sent in case of emergency (server total loss, earthquake, etc)
 
+  - type: Text
+    name: emergency_slc_address
+    label: Emergency SC address
+    comment: YOUR solidcoin address where funds should be sent in case of emergency (server total loss, earthquake, etc)
+
   - type: Checkbox
     name: hide_gravatar
     label: Hide Gravatar

@@ -1,7 +1,6 @@
 [% META title = 'Tables list' %]
 [% PROCESS tables/tables_submenu %]
 <div style="clear:both;"></div>
-[% IF coin == 3 %][% PROCESS tables/slc_submenu %][% END %]
 
 <div class="tables-list-wrapper">
   <div class="tables-categories one-fourth">

@@ -1,0 +1,14 @@
+[% META title = 'Deposit' %]
+[% PROCESS user/myaccount_submenu %]
+<div style="clear:both;"></div>
+
+<div class='right_column' style="height: 350px">
+[% PROCESS user/balance %]
+</div>
+
+<div align="center">
+<h2>Which currency would you like to deposit?</h2>
+<h2 style="margin: 35px 0 35px;"><a href="deposit/bitcoin">Deposit Bitcoins</a></h2>
+<h2 style="margin-bottom: 35px;"><a href="deposit/namecoin">Deposit Namecoins</h2>
+<h2 style="margin-bottom: 35px;"><a href="deposit/solidcoin">Deposit Solidcoins</h2>
+</div>

@@ -1,8 +1,10 @@
 [% META title = 'Edit account' %]
-
+[% META title = 'Deposit' %]
+[% PROCESS user/myaccount_submenu %]
+<div style="clear:both;"></div>
 <div class="one">
 
-  <div class="one-fourth">[% PROCESS user/user_menu %]</div>
+  <div class="one-fourth"></div>
 
   <div class="inner-content last">
     [% form %]

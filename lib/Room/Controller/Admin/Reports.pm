@@ -73,7 +73,7 @@ sub report_delete :Chained('report_base') :PathPart('delete') :Args(0) {
   my ($self, $c) = @_;
   my $dd = $c->stash->{report};
   $dd->delete;
-  push @{$c->flash->{messages}}, "This report has been deleted and the bet is still on.";
+  push @{$c->stash->{messages}}, "This report has been deleted and the bet is still on.";
   $c->res->redirect(
       $c->uri_for('/admin/reports')
     );
@@ -129,7 +129,7 @@ sub report_cancel :Chained('report_base') :PathPart('cancel') :Args(0) {
   $dd->delete;
   $bet->delete;
  
-  push @{$c->flash->{messages}}, "The bet has been cancelled and the coins have been returned." ;
+  push @{$c->stash->{messages}}, "The bet has been cancelled and the coins have been returned." ;
   
   $c->res->redirect(
       $c->uri_for('/admin/reports')
@@ -149,7 +149,7 @@ sub report_freeze :Chained('report_base') :PathPart('freeze') :Args(0) {
   $bet->finished_at(DateTime->now);
   $bet->update();
   
-  push @{$c->flash->{messages}}, "This bet has been cancelled and a the funds have been freezed.";
+  push @{$c->stash->{messages}}, "This bet has been cancelled and a the funds have been freezed.";
   
   $c->res->redirect(
       $c->uri_for('/admin/reports')

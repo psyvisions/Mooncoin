@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>[% template.title or site.title %]</title>
+  <title>Moonco.in</title>
   [% PROCESS site/styles %]
   [% PROCESS site/js %]
 </head>

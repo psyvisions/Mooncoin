@@ -11,9 +11,9 @@
 <p>You have the option to withdraw from either <a href="/user/withdraw/bitcoin">Bitcoins</a> or <a href="/user/withdraw/solidcoin">Solidcoins</a>.</p>
 <p>If you would like to withdraw in another currency, you can use our <a href="/exchange">exchange</a> to convert it.</p>
 <p>
-  <strong>Available amount to withdraw:</strong> [% current_balance %] NMC
+  <strong>Available amount to withdraw:</strong> [% current_balance | format('%.4f') %] SC
 </p>
 
-<p><i>Please note, larger amounts may require additional <strong>24 hours</strong> processing time. You will be notified if your withdrawal not processed immediately and require additional processing time. Additionally can not withdraw more then two decimal places (Ex. 0.00) from this form at this time, sorry for the inconvenience.</i></p>
+<p><i>Please note, larger amounts may require additional <strong>24 hours</strong> processing time. You will be notified if your withdrawal not processed immediately and require additional processing time. <b>Additionally can not withdraw more then two decimal places (Ex. 0.00) from this form at this time, sorry for the inconvenience.</b></i></p>
 
 [% form %]

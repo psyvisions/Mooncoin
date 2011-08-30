@@ -92,7 +92,7 @@ sub assign_staff :Chained('base') :PathPart('staff/assignment') :FormConfig{
     percentage => $percentage,
     created_at => DateTime->now( time_zone => 'local' ),
   });
-    push @{$c->flash->{messages}}, "Staff position created.";
+    push @{$c->stash->{messages}}, "Staff position created.";
   $c->res->redirect($c->uri_for('/admin/staff'));
   };
 }
@@ -111,7 +111,7 @@ sub delete :Chained('staff_base') :Args(0) {
   $arb_balance->update();
   
   $user->delete;
-  push @{$c->flash->{messages}}, "Staff position deleted.";
+  push @{$c->stash->{messages}}, "Staff position deleted.";
   $c->res->redirect(
     $c->uri_for('/admin/staff' )
   );
@@ -163,7 +163,7 @@ sub edit :Chained('staff_base') :Args(0) :FormConfig{
    
   $c->stash->{staff}->update();
   
-  push @{$c->flash->{messages}}, "This arbitrator has been edited.";
+  push @{$c->stash->{messages}}, "This arbitrator has been edited.";
   
   $c->res->redirect(
       $c->uri_for('/admin/staff/')

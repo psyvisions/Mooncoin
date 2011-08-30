@@ -4,13 +4,15 @@
 <div class="secondary-menu">
   <ul>
     <li><a href="[% c.uri_for('/admin/user/' _ user.serial _ '/hands') %]">View user's hands.</a></li>
+    [% IF user.privilege != 2 %]
     <li><a  class="confirm" href="[% c.uri_for('/admin/user/' _ user.serial _ '/kick') %]">Kick user.</a></li>
-    [% IF user.privilege != 3 %]
+    [% END %]
+    [% IF user.privilege != 3 and user.privilege != 2 %]
     <li><a  class="confirm" href="[% c.uri_for('/admin/user/' _ user.serial _ '/promote') %]">Promote to Arbitrator</a></li>
     [% ELSIF user.privilege == 3 %]
     <li><a  class="confirm" href="[% c.uri_for('/admin/user/' _ user.serial _ '/demote') %]">Demote Abitrator</a></li>
     [% END %]
-    [% IF user.privilege != 999 %]
+    [% IF user.privilege != 999 and user.privilege != 2 %]
     <li><a  class="confirm" href="[% c.uri_for('/admin/user/' _ user.serial _ '/freeze') %]">Freeze Account</a></li>
     [% ELSIF user.privilege == 999 %]
     <li><a  class="confirm" href="[% c.uri_for('/admin/user/' _ user.serial _ '/unfreeze') %]">Unfreeze Account</a></li>
@@ -27,11 +29,13 @@
       <li><strong>Email:</strong> [% user.email  | html %]</li>
       <li><strong>Deposit bitcoin address:</strong> [% user.bitcoin_address  | html %]</li>
       <li><strong>Deposit namecoin address:</strong> [% user.namecoin_address  | html %]</li>
-      <li><strong>Emergency bitcoin address:</strong> [% user.emergency_address  | html %]</li>
+	  <li><strong>Deposit solidcoin address:</strong> [% user.solidcoin_address  | html %]</li>
       <li><strong>Bitcoins received:</strong> [% user.bitcoins_received %]</li>
       <li><strong>Namecoins received:</strong> [% user.namecoins_received %]</li>
+      <li><strong>Solidcoins received:</strong> [% user.solidcoins_received %]</li>
       <li><strong>BTC Balance:</strong>[% FOR balance IN user.balances %] [% IF balance.currency_serial == '1' %] [% balance.amount %] [% END %]  [% END %]</li>
       <li><strong>NMC Balance:</strong> [% FOR balance IN user.balances %] [% IF balance.currency_serial == '2' %] [% balance.amount %] [% END %]  [% END %]</li>
+      <li><strong>SC Balance:</strong> [% FOR balance IN user.balances %] [% IF balance.currency_serial == '3' %] [% balance.amount %] [% END %]  [% END %]</li>
     </ul>
   </div>
 

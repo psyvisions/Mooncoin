@@ -25,6 +25,7 @@ use Catalyst qw/
     Email
     Log::Handler
     LogWarnings
+    Compress
 /;
 
 extends 'Catalyst';
@@ -47,6 +48,12 @@ __PACKAGE__->apply_request_class_roles(qw/
 
 __PACKAGE__->config(
     name => 'Room',
+    
+    'Plugin::Compress' => {
+    	compression_format => 'gzip',
+    },
+
+    
     'Plugin::Session' => {
 
     },
@@ -104,7 +111,6 @@ sub dump_these {
 # Start the application
 __PACKAGE__->setup();
 
-
 =head1 NAME
 
 Room - Catalyst based application
@@ -143,6 +149,5 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 =cut
-
 
 1;

@@ -72,7 +72,7 @@ sub edit :Chained('schedule_base') :FormConfig {
     if ($form->submitted_and_valid && !$c->req->param('cancel')) {
         $form->model->update($schedule); 
         $c->res->redirect('/admin/tourneys/schedule/'. $schedule->serial);
-        push @{$c->flash->{messages}}, 'Schedule saved.';
+        push @{$c->stash->{messages}}, 'Schedule saved.';
     }
     elsif ( $c->req->param('cancel') ) {
         $c->res->redirect('/admin/tourneys/schedule/'. $schedule->serial);
